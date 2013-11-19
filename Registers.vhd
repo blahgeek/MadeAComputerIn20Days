@@ -1,8 +1,8 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
+-- use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+-- use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Registers is
 	port(
@@ -30,21 +30,21 @@ architecture Behavioral of Registers is
 				GPR <= (others => (others => '0'));
 			elsif ( clk'event and clk = '1' ) then
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") then
-					GPR(CONV_INTEGER(RegWriteNumber)) <= RegWriteValue;
+					GPR(to_integer(unsigned(RegWriteNumber))) <= RegWriteValue;
 				end if;
 
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") and 
 						RegReadNumberA = RegWriteNumber then
 					RegReadValueA <= RegWriteValue;
 				else
-					RegReadValueA <= GPR(CONV_INTEGER(RegReadNumberA));
+					RegReadValueA <= GPR(to_integer(unsigned(RegReadNumberA)));
 				end if;
 
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") and 
 						RegReadNumberB = RegWriteNumber then
 					RegReadValueB <= RegWriteValue;
 				else
-					RegReadValueB <= GPR(CONV_INTEGER(RegReadNumberB));
+					RegReadValueB <= GPR(to_integer(unsigned(RegReadNumberB)));
 				end if;
 
 			end if;

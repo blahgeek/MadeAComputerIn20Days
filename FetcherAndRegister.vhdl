@@ -44,25 +44,26 @@ entity FetcherAndRegister is
 
  architecture arch of FetcherAndRegister is
 
- -- component Register
- --   port (
- --    clk: in std_logic;
- --    RegReadNumberA: in std_logic_vector(4 downto 0);
- --    RegReadNumberB: in std_logic_vector(4 downto 0);
- --    RegWrite: in std_logic;
- --    RegWriteNumber: in std_logic_vector(4 downto 0);
- --    RegWriteValue: in std_logic_vector(31 downto 0);
- --    RegReadValueA: out std_logic_vector(31 downto 0);
- --    RegReadValueB: out std_logic_vector(31 downto 0));
- -- end component;
+ component Registers
+   port (
+    clk: in std_logic;
+    reset: in std_logic;
+    RegReadNumberA: in std_logic_vector(4 downto 0);
+    RegReadNumberB: in std_logic_vector(4 downto 0);
+    RegWrite: in std_logic;
+    RegWriteNumber: in std_logic_vector(4 downto 0);
+    RegWriteValue: in std_logic_vector(31 downto 0);
+    RegReadValueA: out std_logic_vector(31 downto 0);
+    RegReadValueB: out std_logic_vector(31 downto 0));
+ end component;
 
   signal state: std_logic := '0';
 
   signal s_REG_clock: std_logic := '0';
   signal s_REG_write: std_logic;
-  signal s_REG_read_number_B: std_logic_vector(4 downto 0);
+  signal s_REG_read_number_B: std_logic_vector(4 downto 0) := (others => '0');
   signal s_REG_read_value_B: std_logic_vector(31 downto 0);
-  signal s_REG_read_number_A, s_REG_write_number: std_logic_vector(4 downto 0);
+  signal s_REG_read_number_A, s_REG_write_number: std_logic_vector(4 downto 0) := (others => '0');
   signal s_REG_read_value_A, s_REG_write_value: std_logic_vector(31 downto 0);
 
 
@@ -90,9 +91,9 @@ entity FetcherAndRegister is
 
 begin
 
-  -- REG0: Register port map(s_REG_clock, s_REG_read_number_A, s_REG_read_number_B,
-  --                         s_REG_write, s_REG_write_number, 
-  --                         s_REG_write_value, s_REG_read_value_A, s_REG_read_value_B);
+  REG0: Registers port map(s_REG_clock, reset, s_REG_read_number_A, s_REG_read_number_B,
+                          s_REG_write, s_REG_write_number, 
+                          s_REG_write_value, s_REG_read_value_A, s_REG_read_value_B);
 
   BASERAM_CE <= '0';
   BASERAM_OE <= '0';

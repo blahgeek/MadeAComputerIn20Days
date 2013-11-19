@@ -4,7 +4,7 @@
 # ghdl --gen-makefile --ieee=synopsys -fexplicit RegistersTestbench
 
 GHDL=ghdl
-GHDLFLAGS= --ieee=synopsys -fexplicit
+GHDLFLAGS=
 GHDLRUNFLAGS= --vcd=Registers.vcd
 
 # Default target : elaborate
