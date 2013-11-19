@@ -7,6 +7,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity Registers is
 	port(
 		clk : in STD_LOGIC;
+		reset: in STD_LOGIC;
 		RegReadNumberA : in STD_LOGIC_VECTOR(4 downto 0);
 		RegReadNumberB : in STD_LOGIC_VECTOR(4 downto 0);
 		RegWrite : in STD_LOGIC;
@@ -21,9 +22,13 @@ architecture Behavioral of Registers is
 	type regs is array (0 to 31) of STD_LOGIC_VECTOR(31 downto 0);
 	signal GPR : regs := (others => (others => '0'));
 	begin
-		process(clk)
+		process(clk, reset)
 		begin
-			if ( clk'event and clk = '1' ) then
+			if reset = '1' then 
+				RegReadValueA <= (others => '0');
+				RegReadValueB <= (others => '0');
+				GPR <= (others => (others => '0'));
+			elsif ( clk'event and clk = '1' ) then
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") then
 					GPR(CONV_INTEGER(RegWriteNumber)) <= RegWriteValue;
 				end if;

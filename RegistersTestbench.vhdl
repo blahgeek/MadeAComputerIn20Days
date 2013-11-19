@@ -10,6 +10,7 @@ architecture arch of RegistersTestbench is
 component Registers 
     port(
         clk : in STD_LOGIC;
+        reset: in STD_LOGIC;
         RegReadNumberA : in STD_LOGIC_VECTOR(4 downto 0);
         RegReadNumberB : in STD_LOGIC_VECTOR(4 downto 0);
         RegWrite : in STD_LOGIC; 
@@ -29,7 +30,7 @@ end component;
 begin
 
     instance: Registers port map (
-        clock, s_read_a_num, s_read_b_num, s_write, s_write_num,
+        clock, '0', s_read_a_num, s_read_b_num, s_write, s_write_num,
         s_write_value, s_read_value_a, s_read_value_b);
 
     process begin
