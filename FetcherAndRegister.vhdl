@@ -163,7 +163,7 @@ begin
                   when others => outbuffer_ALU_operator <= "1111"; -- do nothing
                 end case ;
               else
-                if BASERAM_data(3) = '1' then  -- not jr
+                if BASERAM_data(3) = '0' then  -- not jr
                   numA_from_reg <= '1';
                   s_REG_read_number_A <= BASERAM_data(20 downto 16); -- rt
                   numB_from_reg <= '0'; -- B is immediate

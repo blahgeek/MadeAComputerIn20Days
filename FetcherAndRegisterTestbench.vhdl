@@ -64,6 +64,10 @@ component FetcherAndRegister port (
   signal REG_write:  std_logic;
   signal REG_write_addr:  std_logic_vector(4 downto 0);  -- we have 32 registers
 
+  signal BACK_REG_write : std_logic;
+  signal BACK_REG_write_addr: std_logic_vector(4 downto 0);
+  signal BACK_REG_write_data: std_logic_vector(31 downto 0);
+
   constant clk_period :time :=20 ns;
   signal data: std_logic_vector(31 downto 0);
 
@@ -74,9 +78,9 @@ begin
         clock => clock, 
         reset => '0',
 
-        BACK_REG_write => '0',
-        BACK_REG_write_addr => (others => '0'),
-        BACK_REG_write_data => (others => '0'),
+        BACK_REG_write => BACK_REG_write,
+        BACK_REG_write_addr => BACK_REG_write_addr,
+        BACK_REG_write_data => BACK_REG_write_data,
 
         BASERAM_CE  => open,
         BASERAM_OE  => open,
@@ -104,10 +108,26 @@ begin
         );
 
     process begin
-        data(31 downto 26) <= "000100";
-        data(25 downto 21) <= "00001";
+        BACK_REG_write <= '1';
+        BACK_REG_write_addr <= "11111"; -- R31
+        BACK_REG_write_data <= x"DEADBEEF";
+        data(31 downto 26) <= "001000"; -- addi
+        data(25 downto 21) <= "11111";
         data(20 downto 16) <= "00011";
         data(15 downto 0) <= "0000000000001111";
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        BACK_REG_write <= '0';
+        data(31 downto 26) <= "000000"; -- jr
+        data(25 downto 21) <= "11111";
+        data(20 downto 4) <= (others => '0');
+        data(3 downto 0) <= "1000";
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;
