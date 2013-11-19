@@ -104,7 +104,7 @@ begin
         );
 
     process begin
-        data(31 downto 26) <= "001010";
+        data(31 downto 26) <= "000100";
         data(25 downto 21) <= "00001";
         data(20 downto 16) <= "00011";
         data(15 downto 0) <= "0000000000001111";

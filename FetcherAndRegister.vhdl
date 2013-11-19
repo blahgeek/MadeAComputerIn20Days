@@ -18,23 +18,23 @@ entity FetcherAndRegister is
     BASERAM_addr: out std_logic_vector(19 downto 0);
     BASERAM_data: inout std_logic_vector(31 downto 0);
 
-    ALU_operator: out std_logic_vector(3 downto 0);
-    ALU_numA: out std_logic_vector(31 downto 0);
-    ALU_numB: out std_logic_vector(31 downto 0);
+    ALU_operator: out std_logic_vector(3 downto 0) := "1111";
+    ALU_numA: out std_logic_vector(31 downto 0) := (others => '0');
+    ALU_numB: out std_logic_vector(31 downto 0) := (others => '0');
 
-    JUMP_true: out std_logic;
+    JUMP_true: out std_logic := '0';
     JUMP_use_alu: out std_logic;
-    JUMP_true_if_alu_out_true: out std_logic;
+    JUMP_true_if_alu_out_true: out std_logic := '0';
     JUMP_addr: out std_logic_vector(31 downto 0);
 
-    MEM_read: out std_logic;
-    MEM_write: out std_logic;
+    MEM_read: out std_logic := '0';
+    MEM_write: out std_logic := '0';
     MEM_addr_or_data: out std_logic_vector(31 downto 0);
     MEM_use_aluout_as_addr: out std_logic;
     -- if it's set to 0: MEM use outbuffer_MEM_addr_or_data as addr, use ALU output as data
     -- else: MEM use outbuffer_MEM_addr_or_data as data, use ALU output as addr
 
-    REG_write: out std_logic;
+    REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
   ) ;
  end entity ; -- FetcherAndRegister 
@@ -64,21 +64,21 @@ entity FetcherAndRegister is
   signal s_REG_read_value_A, s_REG_write_value: std_logic_vector(31 downto 0);
 
 
-  signal outbuffer_ALU_operator: std_logic_vector(3 downto 0);
-  signal outbuffer_ALU_numA: std_logic_vector(31 downto 0);
-  signal outbuffer_ALU_numB: std_logic_vector(31 downto 0);
+  signal outbuffer_ALU_operator: std_logic_vector(3 downto 0) := "1111";
+  signal outbuffer_ALU_numA: std_logic_vector(31 downto 0) := (others => '0');
+  signal outbuffer_ALU_numB: std_logic_vector(31 downto 0) := (others => '0');
 
-  signal outbuffer_JUMP_true: std_logic;
+  signal outbuffer_JUMP_true: std_logic := '0';
   signal outbuffer_JUMP_use_alu: std_logic;
-  signal outbuffer_JUMP_true_if_alu_out_true: std_logic;
+  signal outbuffer_JUMP_true_if_alu_out_true: std_logic := '0';
   signal outbuffer_JUMP_addr: std_logic_vector(31 downto 0);
 
-  signal outbuffer_MEM_read: std_logic;
-  signal outbuffer_MEM_write: std_logic;
+  signal outbuffer_MEM_read: std_logic := '0';
+  signal outbuffer_MEM_write: std_logic := '0';
   signal outbuffer_MEM_addr_or_data: std_logic_vector(31 downto 0);
   signal outbuffer_MEM_use_aluout_as_addr: std_logic;
 
-  signal outbuffer_REG_write: std_logic;
+  signal outbuffer_REG_write: std_logic := '0';
   signal outbuffer_REG_write_addr: std_logic_vector(4 downto 0);
 
   signal immediate_sign_extend, immediate_zero_extend: std_logic_vector(31 downto 0);
@@ -110,6 +110,14 @@ begin
   begin
     if reset = '1' then
       state <= '0';
+      ALU_operator <= "1111";
+      ALU_numA <= (others => '0');
+      ALU_numB <= (others => '0');
+      JUMP_true <= '0';
+      JUMP_true_if_alu_out_true <= '0';
+      MEM_read <= '0';
+      MEM_write <= '0';
+      REG_write <= '0';
 
     elsif rising_edge(clock) then
 
@@ -251,7 +259,9 @@ begin
               outbuffer_JUMP_true <= '0';
               outbuffer_JUMP_true_if_alu_out_true <= '1';
               outbuffer_JUMP_use_alu <= '0';
-              outbuffer_JUMP_addr(31 downto 2) <= std_logic_vector(unsigned(PC)+1+unsigned(BASERAM_data(15 downto 0)));
+              outbuffer_JUMP_addr(31 downto 2) <= std_logic_vector(
+                      unsigned(PC(31 downto 2))+
+                      unsigned(BASERAM_data(15 downto 0))+1);
               outbuffer_JUMP_addr(1 downto 0) <= "00";
               outbuffer_MEM_read <= '0';
               outbuffer_MEM_write <= '0';
