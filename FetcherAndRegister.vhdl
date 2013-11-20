@@ -347,7 +347,6 @@ begin
           JUMP_addr <= outbuffer_JUMP_addr;
           MEM_read <= outbuffer_MEM_read;
           MEM_write <= outbuffer_MEM_write;
-          MEM_addr_or_data <= outbuffer_MEM_addr_or_data;
           MEM_use_aluout_as_addr <= outbuffer_MEM_use_aluout_as_addr;
           REG_write <= outbuffer_REG_write;
           REG_write_addr <= outbuffer_REG_write_addr;

@@ -30,6 +30,7 @@ begin
   begin
     if reset = '1' then
       state <= '0';
+      s_pc <= BEGIN_PC;
       PC <= BEGIN_PC;
     elsif rising_edge(clock) then
       case( state ) is

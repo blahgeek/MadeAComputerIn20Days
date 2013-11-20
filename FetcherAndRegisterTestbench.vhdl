@@ -121,10 +121,10 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '0';
-        data(31 downto 26) <= "000000"; -- jr
-        data(25 downto 21) <= "11111";
-        data(20 downto 4) <= (others => '0');
-        data(3 downto 0) <= "1000";
+        data(31 downto 26) <= "101011"; -- sw
+        data(25 downto 21) <= "00000";
+        data(20 downto 16) <= "00001";
+        data(15 downto 0) <= (others => '0');
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

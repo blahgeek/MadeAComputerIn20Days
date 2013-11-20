@@ -148,6 +148,21 @@ component Memory port (
   ) ;
 end component ; -- Memory
 
+component PCdecider port (
+    clock: in std_logic;
+    reset: in std_logic;
+
+    JUMP_true: in std_logic;
+    JUMP_use_alu: in std_logic;
+    JUMP_true_if_alu_out_true: in std_logic;
+    JUMP_addr: in std_logic_vector(31 downto 0);
+
+    ALU_output: in std_logic_vector(31 downto 0);
+
+    PC: out std_logic_vector(31 downto 0)
+  ) ;
+end component; -- PCdecider
+
     -- reset is '1' if not clicked, that's not what we want
     signal real_reset: std_logic := '0';
     signal real_clk_from_key: std_logic := '0';
@@ -201,7 +216,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     MEM_output, -- reg write data
     BaseRamCE, BaseRamOE, BaseRamWE, 
     BaseRamAddr, 
-    s_data,  -- data from sw
+    BaseRamData,  -- data from sw
     ALU_operator, ALU_numA, ALU_numB,
     A_JUMP_true, A_JUMP_use_alu, A_JUMP_true_if_alu_out_true, A_JUMP_addr,
     A_MEM_read, A_MEM_write, A_MEM_addr_or_data, A_MEM_use_aluout_as_addr,
@@ -232,6 +247,13 @@ Mem0: Memory port map (
     ExtRamCE, ExtRamOE, ExtRamWE,
     ExtRamAddr, ExtRamData);
 
+PC0: PCdecider port map(
+    real_clk_from_key, real_reset,
+    B_JUMP_true, B_JUMP_use_alu,
+    B_JUMP_true_if_alu_out_true, B_JUMP_addr,
+    ALU_output, PC);
+
 LED(15 downto 8) <= MEM_output(7 downto 0);
+LED(7 downto 0) <= PC(7 downto 0);
 
 end arch;

@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 # By i@BlahGeek.com
 
-def extend(n, length, sign=False):
-    b = n[0]
+def extend(n, length):
     while len(n) < length:
-        n = (b if sign else '0') + n
+        n = '0' + n
     return n
 
 def parse_register(s):
@@ -20,7 +19,7 @@ def parse_immediate(s, length, sign=False):
     s = int(s, 16 if ('x' in s) else 10)
     s = bin(s).split('b')[1]
     assert(len(s) <= length)
-    return extend(s, length, sign)
+    return extend(s, length)
 
 INSTRUCTIONS = {
     'add': ('r r r', '000000 B C A 00000 100000'), 
@@ -46,23 +45,25 @@ INSTRUCTIONS = {
     'ori': ('r r u16', '001101 B A C'),
     'xori': ('r r u16', '001110 B A C'),
     'lui': ('r u16', '001111 00000 A B'),
-    'lw': ('r i16 r', '100011 B C A'),
-    'sw': ('r i16 r', '101011 B C A'),
+    'lw': ('r i16 r', '100011 C A B'),
+    'sw': ('r i16 r', '101011 C A B'),
     'beq': ('r r i16', '000100 A B C'),
     'bne': ('r r i16', '000101 A B C'),
     'slti': ('r r i16', '001010 B A C'),
     'sltiu': ('r r u16', '001011 B A C'),
     'j': ('u26', '000010 A'),
     'jal': ('u26', '000011 A'),
+    'nop': ('', '0' * 32)
 }
 
 def parse_line(s):
     s = s.partition(';')[0].strip()  # comment
+    if not len(s): return '';
     inst, nouse, s = s.partition(' ')
     s = s.replace(',','').replace('\t','')
     parts = filter(lambda x: len(x), s.split(' '))
     format, code = INSTRUCTIONS[inst]
-    for i, x in enumerate(format.split(' ')):
+    for i, x in enumerate(filter(lambda t: len(t), format.split(' '))):
         parts[i] = parts[i].strip()
         if x == 'r':
             ret = parse_register(parts[i])
