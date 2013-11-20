@@ -56,5 +56,6 @@ begin
       
       end case ;
     end if;
+  end process;
 
 end architecture ; -- arch

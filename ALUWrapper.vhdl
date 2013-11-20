@@ -12,7 +12,6 @@ entity ALUWrapper is
     ALU_numB: in std_logic_vector(31 downto 0) ;
 
     ALU_output: out std_logic_vector(31 downto 0) := (others => '0');
-    ALU_numB_forward: out std_logic_vector(31 downto 0) := (others => '0');
 
     -- forward
     in_JUMP_true: in std_logic; 
@@ -79,7 +78,6 @@ begin
             MEM_write <= '0';
             REG_write <= '0';
             ALU_output <= (others => '0');
-            ALU_numB_forward <= (others => '0');
 
         elsif rising_edge(clock) then
             case( state ) is
@@ -104,7 +102,6 @@ begin
                 when others =>
 
                     ALU_output <= c;
-                    ALU_numB_forward <= b;
                     JUMP_true <= s_JUMP_true;
                     JUMP_addr <= s_JUMP_addr;
                     JUMP_use_alu <= s_JUMP_use_alu;
