@@ -122,6 +122,32 @@ component ALUWrapper port (
   ) ;
 end component; -- ALUWrapper
 
+component Memory port (
+    clock: in std_logic;
+    reset: in std_logic;
+
+    ALU_output: in std_logic_vector(31 downto 0);
+    MEM_read: in std_logic;
+    MEM_write: in std_logic;
+    MEM_addr_or_data: in std_logic_vector(31 downto 0);
+    MEM_use_aluout_as_addr: in std_logic;
+    -- if it's set to 0: MEM use MEM_addr_or_data as addr, use ALU output as data
+    -- else: MEM use MEM_addr_or_data as data, use ALU output as addr
+    MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
+
+    in_REG_write: in std_logic;
+    in_REG_write_addr: in std_logic_vector(4 downto 0);
+    REG_write: out std_logic := '0';
+    REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
+
+    EXTRAM_CE : out  STD_LOGIC;
+    EXTRAM_OE : out  STD_LOGIC;
+    EXTRAM_WE : out  STD_LOGIC; -- base ram stores data
+    EXTRAM_addr: out std_logic_vector(19 downto 0);
+    EXTRAM_data: inout std_logic_vector(31 downto 0)
+  ) ;
+end component ; -- Memory
+
     -- reset is '1' if not clicked, that's not what we want
     signal real_reset: std_logic := '0';
     signal real_clk_from_key: std_logic := '0';
@@ -196,7 +222,16 @@ ALUWrapper0: ALUWrapper port map (
     B_MEM_addr_or_data, B_MEM_use_aluout_as_addr,
     B_REG_write, B_REG_write_addr);
 
+Mem0: Memory port map (
+    real_clk_from_key, real_reset,
+    ALU_output, B_MEM_read, B_MEM_write,
+    B_MEM_addr_or_data, B_MEM_use_aluout_as_addr,
+    MEM_output, 
+    B_REG_write, B_REG_write_addr, 
+    C_REG_write, C_REG_write_addr,
+    ExtRamCE, ExtRamOE, ExtRamWE,
+    ExtRamAddr, ExtRamData);
 
-LED(15 downto 8) <= ALU_output(7 downto 0);
+LED(15 downto 8) <= MEM_output(7 downto 0);
 
 end arch;
