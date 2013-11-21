@@ -20,8 +20,7 @@ entity ALUWrapper is
     in_JUMP_addr: in std_logic_vector(31 downto 0); 
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
-    in_MEM_addr_or_data: in std_logic_vector(31 downto 0);
-    in_MEM_use_aluout_as_addr: in std_logic;
+    in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
 
@@ -31,8 +30,7 @@ entity ALUWrapper is
     JUMP_addr: out std_logic_vector(31 downto 0); 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
-    MEM_addr_or_data: out std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: out std_logic;
+    MEM_data: out std_logic_vector(31 downto 0);
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)
   ) ;
@@ -59,8 +57,7 @@ end component;
     signal s_JUMP_addr: std_logic_vector(31 downto 0); 
     signal s_MEM_read: std_logic := '0';
     signal s_MEM_write: std_logic := '0';
-    signal s_MEM_addr_or_data: std_logic_vector(31 downto 0);
-    signal s_MEM_use_aluout_as_addr: std_logic;
+    signal s_MEM_data: std_logic_vector(31 downto 0);
     signal s_REG_write: std_logic := '0';
     signal s_REG_write_addr: std_logic_vector(4 downto 0);
 
@@ -92,8 +89,7 @@ begin
                     s_JUMP_true_if_alu_out_true <= in_JUMP_true_if_alu_out_true;
                     s_MEM_write <= in_MEM_write;
                     s_MEM_read <= in_MEM_read;
-                    s_MEM_addr_or_data <= in_MEM_addr_or_data;
-                    s_MEM_use_aluout_as_addr <= in_MEM_use_aluout_as_addr;
+                    s_MEM_data <= in_MEM_data;
                     s_REG_write <= in_REG_write;
                     s_REG_write_addr <= in_REG_write_addr;
 
@@ -108,8 +104,7 @@ begin
                     JUMP_true_if_alu_out_true <= s_JUMP_true_if_alu_out_true;
                     MEM_write <= s_MEM_write;
                     MEM_read <= s_MEM_read;
-                    MEM_addr_or_data <= s_MEM_addr_or_data;
-                    MEM_use_aluout_as_addr <= s_MEM_use_aluout_as_addr;
+                    MEM_data <= s_MEM_data;
                     REG_write <= s_REG_write;
                     REG_write_addr <= s_REG_write_addr;
 

@@ -77,10 +77,7 @@ component FetcherAndRegister port (
 
     MEM_read: out std_logic;
     MEM_write: out std_logic;
-    MEM_addr_or_data: out std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: out std_logic;
-    -- if it's set to 0: MEM use MEM_addr_or_data as addr, use ALU output as data
-    -- else: MEM use MEM_addr_or_data as data, use ALU output as addr
+    MEM_data: out std_logic_vector(31 downto 0);
 
     REG_write: out std_logic;
     REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
@@ -104,8 +101,7 @@ component ALUWrapper port (
     in_JUMP_addr: in std_logic_vector(31 downto 0); 
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
-    in_MEM_addr_or_data: in std_logic_vector(31 downto 0);
-    in_MEM_use_aluout_as_addr: in std_logic;
+    in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
 
@@ -115,8 +111,7 @@ component ALUWrapper port (
     JUMP_addr: out std_logic_vector(31 downto 0); 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
-    MEM_addr_or_data: out std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: out std_logic;
+    MEM_data: out std_logic_vector(31 downto 0);
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)
   ) ;
@@ -129,10 +124,8 @@ component Memory port (
     ALU_output: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
-    MEM_addr_or_data: in std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: in std_logic;
-    -- if it's set to 0: MEM use MEM_addr_or_data as addr, use ALU output as data
-    -- else: MEM use MEM_addr_or_data as data, use ALU output as addr
+    MEM_data: in std_logic_vector(31 downto 0);
+
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
 
     in_REG_write: in std_logic;
@@ -185,12 +178,10 @@ end component; -- PCdecider
 
     signal A_MEM_read: std_logic := '0'; 
     signal A_MEM_write: std_logic := '0'; 
-    signal A_MEM_addr_or_data: std_logic_vector(31 downto 0) := (others => '0');
-    signal A_MEM_use_aluout_as_addr: std_logic := '0';
+    signal A_MEM_data: std_logic_vector(31 downto 0) := (others => '0');
     signal B_MEM_read: std_logic := '0'; 
     signal B_MEM_write: std_logic := '0'; 
-    signal B_MEM_addr_or_data: std_logic_vector(31 downto 0) := (others => '0');
-    signal B_MEM_use_aluout_as_addr: std_logic := '0';
+    signal B_MEM_data: std_logic_vector(31 downto 0) := (others => '0');
 
     signal MEM_output: std_logic_vector(31 downto 0) := (others => '0');
 
@@ -219,7 +210,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     BaseRamData,  -- data from sw
     ALU_operator, ALU_numA, ALU_numB,
     A_JUMP_true, A_JUMP_use_alu, A_JUMP_true_if_alu_out_true, A_JUMP_addr,
-    A_MEM_read, A_MEM_write, A_MEM_addr_or_data, A_MEM_use_aluout_as_addr,
+    A_MEM_read, A_MEM_write, A_MEM_data,
     A_REG_write, A_REG_write_addr
     );
 
@@ -229,18 +220,18 @@ ALUWrapper0: ALUWrapper port map (
     A_JUMP_true, A_JUMP_use_alu, 
     A_JUMP_true_if_alu_out_true, A_JUMP_addr,
     A_MEM_read, A_MEM_write, 
-    A_MEM_addr_or_data, A_MEM_use_aluout_as_addr,
+    A_MEM_data, 
     A_REG_write, A_REG_write_addr,
     B_JUMP_true, B_JUMP_use_alu, 
     B_JUMP_true_if_alu_out_true, B_JUMP_addr,
     B_MEM_read, B_MEM_write,
-    B_MEM_addr_or_data, B_MEM_use_aluout_as_addr,
+    B_MEM_data, 
     B_REG_write, B_REG_write_addr);
 
 Mem0: Memory port map (
     real_clk_from_key, real_reset,
     ALU_output, B_MEM_read, B_MEM_write,
-    B_MEM_addr_or_data, B_MEM_use_aluout_as_addr,
+    B_MEM_data,
     MEM_output, 
     B_REG_write, B_REG_write_addr, 
     C_REG_write, C_REG_write_addr,

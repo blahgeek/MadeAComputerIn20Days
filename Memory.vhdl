@@ -10,10 +10,8 @@ entity Memory is
     ALU_output: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
-    MEM_addr_or_data: in std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: in std_logic;
-    -- if it's set to 0: MEM use MEM_addr_or_data as addr, use ALU output as data
-    -- else: MEM use MEM_addr_or_data as data, use ALU output as addr
+    MEM_data: in std_logic_vector(31 downto 0);
+
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
 
     in_REG_write: in std_logic;
@@ -30,6 +28,15 @@ entity Memory is
 end entity ; -- Memory
 
 architecture arch of Memory is
+
+
+  component DigitalNumber port (
+      clock: in std_logic;
+      reset: in std_logic;
+      value: in std_logic_vector(3 downto 0);
+      DYP: out std_logic_vector(6 downto 0)) ;
+  end component ; -- DigitalNumber
+
     signal state: std_logic := '0';
     signal s_output: std_logic_vector(31 downto 0);
     signal s_use_me_as_output: std_logic;
@@ -56,29 +63,19 @@ begin
       
         when '0' => -- start
           if MEM_read = '1' then 
-            if MEM_use_aluout_as_addr = '1' then
-              EXTRAM_addr <= ALU_output(19 downto 0);
-            else
-              EXTRAM_addr <= MEM_addr_or_data(19 downto 0);
-            end if;
+            EXTRAM_addr <= ALU_output(19 downto 0);
             EXTRAM_data <= (others => 'Z');
             s_use_me_as_output <= '0'; -- use ram data as output
           elsif MEM_write = '1' then
-            if MEM_use_aluout_as_addr = '1' then
-              EXTRAM_addr <= ALU_output(19 downto 0);
-              EXTRAM_data <= MEM_addr_or_data;
-              s_output <= MEM_addr_or_data;
-            else
-              EXTRAM_addr <= MEM_addr_or_data(19 downto 0);
-              EXTRAM_data <= ALU_output;
-              s_output <= ALU_output;
-            end if;
+            EXTRAM_addr <= ALU_output(19 downto 0);
+            EXTRAM_data <= MEM_data;
+            s_output <= MEM_data;
             s_use_me_as_output <= '1';
             EXTRAM_WE <= '0';
           else
             EXTRAM_data <= (others => 'Z');
-            s_use_me_as_output <= '1';
             s_output <= ALU_output;
+            s_use_me_as_output <= '1';
           end if;
 
           state <= '1';

@@ -45,10 +45,8 @@ component Memory port (
     ALU_output: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
-    MEM_addr_or_data: in std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: in std_logic;
-    -- if it's set to 0: MEM use MEM_addr_or_data as addr, use ALU output as data
-    -- else: MEM use MEM_addr_or_data as data, use ALU output as addr
+    MEM_data: in std_logic_vector(31 downto 0);
+
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
 
     in_REG_write: in std_logic;
@@ -90,7 +88,7 @@ begin
 
     mem0: Memory port map (
         real_clk_from_key, real_reset,
-        data, if_r, if_w, addr, '0', data_out,
+        data, if_r, if_w, addr, data_out,
         '0', "00000", open, open,
         ExtRamCE, ExtRamOE, ExtRamWE,
         ExtRamAddr, ExtRamData);

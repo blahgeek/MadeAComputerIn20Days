@@ -31,10 +31,8 @@ entity FetcherAndRegister is
 
     MEM_read: out std_logic := '0'; -- read memory
     MEM_write: out std_logic := '0'; -- write memory
-    MEM_addr_or_data: out std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: out std_logic;
-    -- if it's set to 0: MEM use MEM_addr_or_data as addr, use ALU output as data
-    -- else: MEM use MEM_addr_or_data as data, use ALU output as addr
+    MEM_data: out std_logic_vector(31 downto 0);
+    -- use ALUout as addr
 
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
@@ -78,8 +76,7 @@ entity FetcherAndRegister is
 
   signal outbuffer_MEM_read: std_logic := '0';
   signal outbuffer_MEM_write: std_logic := '0';
-  signal outbuffer_MEM_addr_or_data: std_logic_vector(31 downto 0);
-  signal outbuffer_MEM_use_aluout_as_addr: std_logic;
+  signal outbuffer_MEM_data: std_logic_vector(31 downto 0);
 
   signal outbuffer_REG_write: std_logic := '0';
   signal outbuffer_REG_write_addr: std_logic_vector(4 downto 0);
@@ -87,7 +84,7 @@ entity FetcherAndRegister is
   signal immediate_sign_extend, immediate_zero_extend: std_logic_vector(31 downto 0);
 
   signal numA_from_reg, numB_from_reg: std_logic; -- if read register for ALU
-  signal mem_addr_or_data_from_reg_B: std_logic;
+  signal mem_data_from_reg_B: std_logic;
 
 begin
 
@@ -138,7 +135,6 @@ begin
               s_REG_read_number_B <= BASERAM_data(20 downto 16); -- rt
               outbuffer_JUMP_true <= '0';
               outbuffer_MEM_read <= '0';
-              outbuffer_MEM_use_aluout_as_addr <= '0'; -- so MEM would forward ALU output as data
               outbuffer_MEM_write <= '0';
               outbuffer_REG_write <= '1';
               outbuffer_REG_write_addr <= BASERAM_data(15 downto 11); -- rd
@@ -152,7 +148,6 @@ begin
                 s_REG_read_number_A <= BASERAM_data(20 downto 16); -- rt
                 outbuffer_JUMP_true <= '0';
                 outbuffer_MEM_read <= '0';
-                outbuffer_MEM_use_aluout_as_addr <= '0'; -- so MEM would forward ALU output as data
                 outbuffer_MEM_write <= '0';
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_addr <= BASERAM_data(15 downto 11); -- rd
@@ -171,7 +166,6 @@ begin
                   outbuffer_ALU_numB(31 downto 5) <= (others => '0');
                   outbuffer_JUMP_true <= '0';
                   outbuffer_MEM_read <= '0';
-                  outbuffer_MEM_use_aluout_as_addr <= '0'; -- so MEM would forward ALU output as data
                   outbuffer_MEM_write <= '0';
                   outbuffer_REG_write <= '1';
                   outbuffer_REG_write_addr <= BASERAM_data(15 downto 11); -- rd
@@ -188,7 +182,6 @@ begin
                   outbuffer_JUMP_true <= '1'; -- jump
                   outbuffer_JUMP_use_alu <= '1';
                   outbuffer_MEM_read <= '0';
-                  outbuffer_MEM_use_aluout_as_addr <= '0'; -- so MEM would forward ALU output as data
                   outbuffer_MEM_write <= '0';
                   outbuffer_REG_write <= '0';
                   outbuffer_ALU_operator <= "1111"; -- do nothing, forward A
@@ -211,7 +204,6 @@ begin
             outbuffer_JUMP_addr(1 downto 0) <= "00";
             outbuffer_MEM_write <= '0';
             outbuffer_MEM_read <= '0';
-            outbuffer_MEM_use_aluout_as_addr <= '0'; -- so MEM would forward ALU output as data
             if BASERAM_data(27 downto 26) = "10" then -- j
               outbuffer_REG_write <= '0';
             else -- jal
@@ -231,14 +223,12 @@ begin
               if BASERAM_data(29 downto 26) = "0011" then  -- lw
                 outbuffer_MEM_read <= '1'; -- read memory!
                 outbuffer_MEM_write <= '0';
-                outbuffer_MEM_use_aluout_as_addr <= '1'; -- use ALU output as addr
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_addr <= BASERAM_data(20 downto 16);
               else  -- sw
                 outbuffer_MEM_read <= '0';
                 outbuffer_MEM_write <= '1'; -- write memory!
-                outbuffer_MEM_use_aluout_as_addr <= '1'; -- use ALU output as addr
-                mem_addr_or_data_from_reg_B <= '1'; -- read reg B to mem_addr_or_data_from_reg_B
+                mem_data_from_reg_B <= '1'; -- read reg B to mem_addr_or_data_from_reg_B
                 s_REG_read_number_B <= BASERAM_data(20 downto 16);
                 outbuffer_REG_write <= '0'; -- not write register
               end if;
@@ -333,10 +323,10 @@ begin
             ALU_numB <= outbuffer_ALU_numB;
           end if;
 
-          if mem_addr_or_data_from_reg_B = '1' then
-            MEM_addr_or_data <= s_REG_read_value_B;
+          if mem_data_from_reg_B = '1' then
+            MEM_data <= s_REG_read_value_B;
           else
-            MEM_addr_or_data <= outbuffer_MEM_addr_or_data;
+            MEM_data <= outbuffer_MEM_data;
           end if;
 
 
@@ -347,7 +337,6 @@ begin
           JUMP_addr <= outbuffer_JUMP_addr;
           MEM_read <= outbuffer_MEM_read;
           MEM_write <= outbuffer_MEM_write;
-          MEM_use_aluout_as_addr <= outbuffer_MEM_use_aluout_as_addr;
           REG_write <= outbuffer_REG_write;
           REG_write_addr <= outbuffer_REG_write_addr;
 

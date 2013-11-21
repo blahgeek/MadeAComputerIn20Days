@@ -35,10 +35,7 @@ component FetcherAndRegister port (
 
     MEM_read: out std_logic;
     MEM_write: out std_logic;
-    MEM_addr_or_data: out std_logic_vector(31 downto 0);
-    MEM_use_aluout_as_addr: out std_logic;
-    -- if it's set to 0: MEM use MEM_addr_or_data as addr, use ALU output as data
-    -- else: MEM use MEM_addr_or_data as data, use ALU output as addr
+    MEM_data: out std_logic_vector(31 downto 0);
 
     REG_write: out std_logic;
     REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
@@ -58,8 +55,7 @@ component FetcherAndRegister port (
 
   signal MEM_read:  std_logic;
   signal MEM_write:  std_logic;
-  signal MEM_addr_or_data:  std_logic_vector(31 downto 0);
-  signal MEM_use_aluout_as_addr:  std_logic;
+  signal MEM_data:  std_logic_vector(31 downto 0);
 
   signal REG_write:  std_logic;
   signal REG_write_addr:  std_logic_vector(4 downto 0);  -- we have 32 registers
@@ -99,8 +95,7 @@ begin
 
         MEM_read => MEM_read,
         MEM_write => MEM_write,
-        MEM_addr_or_data => MEM_addr_or_data,
-        MEM_use_aluout_as_addr => MEM_use_aluout_as_addr,
+        MEM_data => MEM_data,
 
         REG_write => REG_write,
         REG_write_addr => REG_write_addr
