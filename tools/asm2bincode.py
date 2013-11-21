@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 # By i@BlahGeek.com
 
+points = dict()
+count = 0
+
 def extend(n, length):
     while len(n) < length:
         n = '0' + n
@@ -14,9 +17,12 @@ def parse_register(s):
     s = bin(int(s)).split('b')[1]
     return extend(s, 5)
 
-def parse_immediate(s, length, sign=False):
+def parse_immediate(s, length):
     ''' "0x23" -> "00100011" '''
-    s = int(s, 16 if ('x' in s) else 10)
+    if s[0] != '-' and not ('0' <= s[0] <= '9'):
+        s = points[s]
+    else:
+        s = int(s, 16 if ('x' in s) else 10)
     s = bin(s).split('b')[1]
     assert(len(s) <= length)
     return extend(s, length)
@@ -57,8 +63,12 @@ INSTRUCTIONS = {
 }
 
 def parse_line(s):
+    global count
     s = s.partition(';')[0].strip()  # comment
     if not len(s): return '';
+    if s.endswith(':'):  # it's a mark
+        points[s[:-1]] = count
+        return ''
     inst, nouse, s = s.partition(' ')
     s = s.replace(',','').replace('\t','')
     parts = filter(lambda x: len(x), s.split(' '))
@@ -68,10 +78,11 @@ def parse_line(s):
         if x == 'r':
             ret = parse_register(parts[i])
         elif x[0] == 'u':
-            ret = parse_immediate(parts[i], int(x[1:]), False)
+            ret = parse_immediate(parts[i], int(x[1:]))
         elif x[0] == 'i':
-            ret = parse_immediate(parts[i], int(x[1:]), True)
+            ret = parse_immediate(parts[i], int(x[1:]))
         code = code.replace(chr(ord('A')+i), ret)
+    count += 1
     return code
 
 if __name__ == '__main__':
