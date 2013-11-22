@@ -29,8 +29,6 @@ component FetcherAndRegister port (
     ALU_numB: out std_logic_vector(31 downto 0);
 
     JUMP_true: out std_logic;
-    JUMP_use_alu: out std_logic;
-    JUMP_true_if_alu_out_true: out std_logic;
     JUMP_addr: out std_logic_vector(31 downto 0);
 
     MEM_read: out std_logic;
@@ -49,8 +47,6 @@ component FetcherAndRegister port (
   signal ALU_numB:  std_logic_vector(31 downto 0);
 
   signal JUMP_true:  std_logic;
-  signal JUMP_use_alu:  std_logic;
-  signal JUMP_true_if_alu_out_true:  std_logic;
   signal JUMP_addr:  std_logic_vector(31 downto 0);
 
   signal MEM_read:  std_logic;
@@ -89,8 +85,6 @@ begin
         ALU_numB => ALU_numB,
 
         JUMP_true => JUMP_true,
-        JUMP_use_alu => JUMP_use_alu,
-        JUMP_true_if_alu_out_true => JUMP_true_if_alu_out_true,
         JUMP_addr => JUMP_addr,
 
         MEM_read => MEM_read,
@@ -116,10 +110,10 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '0';
-        data(31 downto 26) <= "000101"; -- bne
+        data(31 downto 26) <= "000011"; -- jal
         data(25 downto 21) <= "00010";
-        data(20 downto 16) <= "00011";
-        data(15 downto 0) <= "1111111111111000";
+        data(20 downto 16) <= "00010";
+        data(15 downto 0) <= "1111111111111111";
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

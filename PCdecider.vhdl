@@ -8,11 +8,7 @@ entity PCdecider is
     reset: in std_logic;
 
     JUMP_true: in std_logic;
-    JUMP_use_alu: in std_logic;
-    JUMP_true_if_alu_out_true: in std_logic;
     JUMP_addr: in std_logic_vector(31 downto 0);
-
-    ALU_output: in std_logic_vector(31 downto 0);
 
     PC: out std_logic_vector(31 downto 0)
   ) ;
@@ -36,14 +32,8 @@ begin
       case( state ) is
       
         when '0' =>
-          if JUMP_true = '1' or 
-              (JUMP_true_if_alu_out_true = '1' 
-                and ALU_output(0) = '1') then -- jump!
-            if JUMP_use_alu = '1' then
-              s_pc <= ALU_output;
-            else
-              s_pc <= JUMP_addr;
-            end if;
+          if JUMP_true = '1' then -- jump!
+            s_pc <= JUMP_addr;
           else
             s_pc <= std_logic_vector(unsigned(s_pc)+4);
           end if;

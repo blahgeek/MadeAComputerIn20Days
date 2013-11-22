@@ -71,8 +71,6 @@ component FetcherAndRegister port (
     ALU_numB: out std_logic_vector(31 downto 0);
 
     JUMP_true: out std_logic;
-    JUMP_use_alu: out std_logic;
-    JUMP_true_if_alu_out_true: out std_logic;
     JUMP_addr: out std_logic_vector(31 downto 0);
 
     MEM_read: out std_logic;
@@ -95,20 +93,12 @@ component ALUWrapper port (
     ALU_output: out std_logic_vector(31 downto 0) := (others => '0');
 
     -- forward
-    in_JUMP_true: in std_logic; 
-    in_JUMP_use_alu: in std_logic; 
-    in_JUMP_true_if_alu_out_true: in std_logic; 
-    in_JUMP_addr: in std_logic_vector(31 downto 0); 
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
     in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
 
-    JUMP_true: out std_logic := '0'; 
-    JUMP_use_alu: out std_logic; 
-    JUMP_true_if_alu_out_true: out std_logic := '0'; 
-    JUMP_addr: out std_logic_vector(31 downto 0); 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
     MEM_data: out std_logic_vector(31 downto 0);
@@ -149,11 +139,7 @@ component PCdecider port (
     reset: in std_logic;
 
     JUMP_true: in std_logic;
-    JUMP_use_alu: in std_logic;
-    JUMP_true_if_alu_out_true: in std_logic;
     JUMP_addr: in std_logic_vector(31 downto 0);
-
-    ALU_output: in std_logic_vector(31 downto 0);
 
     PC: out std_logic_vector(31 downto 0)
   ) ;
@@ -170,14 +156,8 @@ end component; -- PCdecider
     signal ALU_numB: std_logic_vector(31 downto 0) := (others => '0');
     signal ALU_output: std_logic_vector(31 downto 0) := (others => '0');
 
-    signal A_JUMP_true: std_logic := '0'; 
-    signal A_JUMP_use_alu: std_logic := '0'; 
-    signal A_JUMP_true_if_alu_out_true: std_logic := '0'; 
-    signal A_JUMP_addr: std_logic_vector(31 downto 0) := (others => '0'); 
-    signal B_JUMP_true: std_logic := '0'; 
-    signal B_JUMP_use_alu: std_logic := '0'; 
-    signal B_JUMP_true_if_alu_out_true: std_logic := '0'; 
-    signal B_JUMP_addr: std_logic_vector(31 downto 0) := (others => '0'); 
+    signal JUMP_true: std_logic := '0'; 
+    signal JUMP_addr: std_logic_vector(31 downto 0) := (others => '0'); 
 
     signal A_MEM_read: std_logic := '0'; 
     signal A_MEM_write: std_logic := '0'; 
@@ -212,7 +192,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     BaseRamAddr, 
     BaseRamData,  -- data from sw
     ALU_operator, ALU_numA, ALU_numB,
-    A_JUMP_true, A_JUMP_use_alu, A_JUMP_true_if_alu_out_true, A_JUMP_addr,
+    JUMP_true, JUMP_addr,
     A_MEM_read, A_MEM_write, A_MEM_data,
     A_REG_write, A_REG_write_addr
     );
@@ -220,13 +200,9 @@ FetcherAndRegister0: FetcherAndRegister port map (
 ALUWrapper0: ALUWrapper port map (
     real_clk_from_key, real_reset,
     ALU_operator, ALU_numA, ALU_numB, ALU_output,
-    A_JUMP_true, A_JUMP_use_alu, 
-    A_JUMP_true_if_alu_out_true, A_JUMP_addr,
     A_MEM_read, A_MEM_write, 
     A_MEM_data, 
     A_REG_write, A_REG_write_addr,
-    B_JUMP_true, B_JUMP_use_alu, 
-    B_JUMP_true_if_alu_out_true, B_JUMP_addr,
     B_MEM_read, B_MEM_write,
     B_MEM_data, 
     B_REG_write, B_REG_write_addr);
@@ -244,8 +220,8 @@ Mem0: Memory port map (
 
 PC0: PCdecider port map(
     real_clk_from_key, real_reset,
-    B_JUMP_true, B_JUMP_use_alu,
-    B_JUMP_true_if_alu_out_true, B_JUMP_addr,
-    ALU_output, PC);
+    JUMP_true,
+    JUMP_addr,
+    PC);
 
 end arch;

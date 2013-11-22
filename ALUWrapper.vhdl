@@ -13,21 +13,12 @@ entity ALUWrapper is
 
     ALU_output: out std_logic_vector(31 downto 0) := (others => '0');
 
-    -- forward
-    in_JUMP_true: in std_logic; 
-    in_JUMP_use_alu: in std_logic; 
-    in_JUMP_true_if_alu_out_true: in std_logic; 
-    in_JUMP_addr: in std_logic_vector(31 downto 0); 
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
     in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
 
-    JUMP_true: out std_logic := '0'; 
-    JUMP_use_alu: out std_logic; 
-    JUMP_true_if_alu_out_true: out std_logic := '0'; 
-    JUMP_addr: out std_logic_vector(31 downto 0); 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
     MEM_data: out std_logic_vector(31 downto 0);
@@ -51,10 +42,6 @@ end component;
 
     signal state: std_logic := '0';
 
-    signal s_JUMP_true: std_logic := '0'; 
-    signal s_JUMP_use_alu: std_logic; 
-    signal s_JUMP_true_if_alu_out_true: std_logic := '0'; 
-    signal s_JUMP_addr: std_logic_vector(31 downto 0); 
     signal s_MEM_read: std_logic := '0';
     signal s_MEM_write: std_logic := '0';
     signal s_MEM_data: std_logic_vector(31 downto 0);
@@ -69,8 +56,6 @@ begin
         if reset = '1' then 
             state <= '0';
 
-            JUMP_true <= '0';
-            JUMP_true_if_alu_out_true <= '0';
             MEM_read <= '0';
             MEM_write <= '0';
             REG_write <= '0';
@@ -83,10 +68,6 @@ begin
                     a <= ALU_numA;
                     b <= ALU_numB;
                     op <= ALU_operator;
-                    s_JUMP_true <= in_JUMP_true;
-                    s_JUMP_addr <= in_JUMP_addr;
-                    s_JUMP_use_alu <= in_JUMP_use_alu;
-                    s_JUMP_true_if_alu_out_true <= in_JUMP_true_if_alu_out_true;
                     s_MEM_write <= in_MEM_write;
                     s_MEM_read <= in_MEM_read;
                     s_MEM_data <= in_MEM_data;
@@ -98,10 +79,6 @@ begin
                 when others =>
 
                     ALU_output <= c;
-                    JUMP_true <= s_JUMP_true;
-                    JUMP_addr <= s_JUMP_addr;
-                    JUMP_use_alu <= s_JUMP_use_alu;
-                    JUMP_true_if_alu_out_true <= s_JUMP_true_if_alu_out_true;
                     MEM_write <= s_MEM_write;
                     MEM_read <= s_MEM_read;
                     MEM_data <= s_MEM_data;
