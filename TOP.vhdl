@@ -56,6 +56,8 @@ component FetcherAndRegister port (
     clock: in std_logic;
     reset: in std_logic;
 
+    hold: buffer std_logic:= '0';
+
     BACK_REG_write: in std_logic;
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
@@ -138,21 +140,25 @@ component PCdecider port (
     clock: in std_logic;
     reset: in std_logic;
 
+    hold: in std_logic;
+
     JUMP_true: in std_logic;
     JUMP_addr: in std_logic_vector(31 downto 0);
 
     BASERAM_addr: inout std_logic_vector(19 downto 0);
     EXTRAM_addr: inout std_logic_vector(19 downto 0);
 
-    PC: out std_logic_vector(31 downto 0)
+    PC: buffer std_logic_vector(31 downto 0)
   ) ;
 end component; -- PCdecider
 
     -- reset is '1' if not clicked, that's not what we want
     signal real_reset: std_logic := '0';
-    signal real_clk_from_key: std_logic := '0';
+    signal real_clock: std_logic := '0';
+    signal clk25M: std_logic := '0';
 
     signal PC: std_logic_vector(31 downto 0) := (others => '0');
+    signal A_HOLD: std_logic := '0';
 
     signal ALU_operator: std_logic_vector(3 downto 0) := "1111";
     signal ALU_numA: std_logic_vector(31 downto 0) := (others => '0');
@@ -182,8 +188,15 @@ end component; -- PCdecider
     
 begin
 
+    divider : process( CLK50M )
+    begin
+        if rising_edge(CLK50M) then
+            clk25M <= not clk25M;
+        end if;
+    end process ; -- divider
+
     real_reset <= not reset;
-    real_clk_from_key <= not CLK11M0592;
+    real_clock <= CLK11M0592;
 
     BaseRamOE <= '0';
     BaseRamCE <= '0';
@@ -191,7 +204,7 @@ begin
     ExtRamOE <= '0';
 
 FetcherAndRegister0: FetcherAndRegister port map (
-    PC, real_clk_from_key, real_reset, 
+    PC, real_clock, real_reset, A_HOLD,
     C_REG_write,
     C_REG_write_addr,
     MEM_output, -- reg write data
@@ -204,7 +217,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     );
 
 ALUWrapper0: ALUWrapper port map (
-    real_clk_from_key, real_reset,
+    real_clock, real_reset,
     ALU_operator, ALU_numA, ALU_numB, ALU_output,
     A_MEM_read, A_MEM_write, 
     A_MEM_data, 
@@ -214,7 +227,7 @@ ALUWrapper0: ALUWrapper port map (
     B_REG_write, B_REG_write_addr);
 
 Mem0: Memory port map (
-    real_clk_from_key, real_reset,
+    real_clock, real_reset,
     ALU_output, B_MEM_read, B_MEM_write,
     B_MEM_data,
     MEM_output, 
@@ -225,7 +238,7 @@ Mem0: Memory port map (
     DYP0, DYP1, LED);
 
 PC0: PCdecider port map(
-    real_clk_from_key, real_reset,
+    real_clock, real_reset, A_HOLD,
     JUMP_true,
     JUMP_addr,
     BaseRamAddr, ExtRamAddr,

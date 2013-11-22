@@ -8,6 +8,8 @@ entity FetcherAndRegister is
     clock: in std_logic;
     reset: in std_logic;
 
+    hold: buffer std_logic := '0';
+
     -- signals from 5th stage, for writing registers
     BACK_REG_write: in std_logic;
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
@@ -86,6 +88,9 @@ entity FetcherAndRegister is
 
   signal s_data : std_logic_vector(31 downto 0):= (others => '0');
 
+  signal s_last_last_write_reg: std_logic_vector(4 downto 0);
+  signal s_last_write_reg: std_logic_vector(4 downto 0);
+
 begin
 
   with PC(22) select
@@ -115,6 +120,9 @@ begin
       MEM_read <= '0';
       MEM_write <= '0';
       REG_write <= '0';
+      hold <= '0';
+      s_last_last_write_reg <= (others => '0');
+      s_last_write_reg <= (others => '0');
 
     elsif rising_edge(clock) then
 
@@ -313,51 +321,82 @@ begin
 
           state <= s1;
 
-        when s1 => state <= s2;
-        when s2 => state <= s3;
+        when s1 =>
+          if s_last_last_write_reg /= "00000" and
+            (s_last_last_write_reg = s_REG_read_number_A 
+              or s_last_last_write_reg = s_REG_read_number_B) then
+            hold <= '1';
+          elsif s_last_write_reg /= "00000" and
+            (s_last_write_reg = s_REG_read_number_A
+              or s_last_write_reg = s_REG_read_number_B) then
+            hold <= '1';
+          else
+            hold <= '0';
+          end if;
+          s_REG_write <= '0'; -- write already done
+          state <= s2;
+
+        when s2 => 
+          s_last_last_write_reg <= s_last_write_reg;
+          state <= s3;
       
         when s3 =>  -- state: now we got data from register
 
-          if numA_from_reg = '1' then 
-            ALU_numA <= s_REG_read_value_A;
+          if hold = '0' and outbuffer_REG_write = '1' then
+            s_last_write_reg <= outbuffer_REG_write_addr;
           else
-            ALU_numA <= outbuffer_ALU_numA;
-          end if;
-          if numB_from_reg = '1' then
-            ALU_numB <= s_REG_read_value_B;
-          else
-            ALU_numB <= outbuffer_ALU_numB;
+            s_last_write_reg <= "00000";
           end if;
 
-          if mem_data_from_reg_B = '1' then
-            MEM_data <= s_REG_read_value_B;
-          else
-            MEM_data <= outbuffer_MEM_data;
-          end if;
-
-          if s_jump_addr_from_reg_a = '1' then
-            JUMP_addr <= s_REG_read_value_A;
-          else
-            JUMP_addr <= outbuffer_JUMP_addr;
-          end if;
-
-          if outbuffer_JUMP_true = '1' then
-            JUMP_true <= '1';
-          elsif s_jump_true_if_eq = '1' and s_REG_read_value_A = s_REG_read_value_B then
-            JUMP_true <= '1';
-          elsif s_jump_true_if_ne = '1' and s_REG_read_value_A /= s_REG_read_value_B then
-            JUMP_true <= '1';
-          else
+          if hold = '1' then
+            ALU_operator <= "1111";
+            ALU_numA <= (others => '0');
+            ALU_numB <= (others => '0');
             JUMP_true <= '0';
+            MEM_read <= '0';
+            MEM_write <= '0';
+            REG_write <= '0';
+          else
+            if numA_from_reg = '1' then 
+              ALU_numA <= s_REG_read_value_A;
+            else
+              ALU_numA <= outbuffer_ALU_numA;
+            end if;
+            if numB_from_reg = '1' then
+              ALU_numB <= s_REG_read_value_B;
+            else
+              ALU_numB <= outbuffer_ALU_numB;
+            end if;
+
+            if mem_data_from_reg_B = '1' then
+              MEM_data <= s_REG_read_value_B;
+            else
+              MEM_data <= outbuffer_MEM_data;
+            end if;
+
+            if s_jump_addr_from_reg_a = '1' then
+              JUMP_addr <= s_REG_read_value_A;
+            else
+              JUMP_addr <= outbuffer_JUMP_addr;
+            end if;
+
+            if outbuffer_JUMP_true = '1' then
+              JUMP_true <= '1';
+            elsif s_jump_true_if_eq = '1' and s_REG_read_value_A = s_REG_read_value_B then
+              JUMP_true <= '1';
+            elsif s_jump_true_if_ne = '1' and s_REG_read_value_A /= s_REG_read_value_B then
+              JUMP_true <= '1';
+            else
+              JUMP_true <= '0';
+            end if;
+
+            ALU_operator <= outbuffer_ALU_operator;
+            MEM_read <= outbuffer_MEM_read;
+            MEM_write <= outbuffer_MEM_write;
+            REG_write <= outbuffer_REG_write;
+            REG_write_addr <= outbuffer_REG_write_addr;
+
           end if;
-
-          ALU_operator <= outbuffer_ALU_operator;
-          MEM_read <= outbuffer_MEM_read;
-          MEM_write <= outbuffer_MEM_write;
-          REG_write <= outbuffer_REG_write;
-          REG_write_addr <= outbuffer_REG_write_addr;
-
-          s_REG_write <= '0'; -- write already done
 
           state <= s0;
       

@@ -13,6 +13,7 @@ component FetcherAndRegister port (
     PC: in std_logic_vector(31 downto 0);
     clock: in std_logic;
     reset: in std_logic;
+    hold: buffer std_logic:= '0';
 
     BACK_REG_write: in std_logic;
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
@@ -66,6 +67,7 @@ begin
         PC => x"0000001c", 
         clock => clock, 
         reset => '0',
+        hold=>open,
 
         BACK_REG_write => BACK_REG_write,
         BACK_REG_write_addr => BACK_REG_write_addr,
@@ -95,7 +97,7 @@ begin
         BACK_REG_write_addr <= "11111"; -- R31
         BACK_REG_write_data <= x"DEADBEEF";
         data(31 downto 26) <= "001000"; -- addi
-        data(25 downto 21) <= "11111";
+        data(25 downto 21) <= "00011";
         data(20 downto 16) <= "00011";
         data(15 downto 0) <= "0000000000001111";
         wait for clk_period/2;
@@ -112,10 +114,50 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '0';
-        data(31 downto 26) <= "000011"; -- jal
-        data(25 downto 21) <= "00010";
-        data(20 downto 16) <= "00010";
+        data(31 downto 26) <= "000100"; -- beq
+        data(25 downto 21) <= "00011";
+        data(20 downto 16) <= "00011";
         data(15 downto 0) <= "1111111111111111";
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

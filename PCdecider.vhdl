@@ -7,13 +7,15 @@ entity PCdecider is
     clock: in std_logic;
     reset: in std_logic;
 
+    hold: in std_logic;
+
     JUMP_true: in std_logic;
     JUMP_addr: in std_logic_vector(31 downto 0);
 
     BASERAM_addr: inout std_logic_vector(19 downto 0);
     EXTRAM_addr: inout std_logic_vector(19 downto 0);
 
-    PC: out std_logic_vector(31 downto 0)
+    PC: buffer std_logic_vector(31 downto 0)
   ) ;
 end entity ; -- PCdecider
 
@@ -40,10 +42,12 @@ begin
       case( state ) is
       
         when s0 =>
-          if JUMP_true = '1' then -- jump!
-            s_pc <= JUMP_addr;
-          else
-            s_pc <= std_logic_vector(unsigned(s_pc)+4);
+          if hold = '0' then 
+            if JUMP_true = '1' then -- jump!
+              s_pc <= JUMP_addr;
+            else
+              s_pc <= std_logic_vector(unsigned(s_pc)+4);
+            end if;
           end if;
 
           state <= s1;
@@ -56,9 +60,14 @@ begin
           state <= s3;
       
         when s3 =>
-          PC <= s_pc;
-          BASERAM_addr <= s_pc(21 downto 2);
-          EXTRAM_addr <= s_pc(21 downto 2);
+          if hold = '1' then
+            BASERAM_addr <= PC(21 downto 2);
+            EXTRAM_addr <= PC(21 downto 2);
+          else
+            PC <= s_pc;
+            BASERAM_addr <= s_pc(21 downto 2);
+            EXTRAM_addr <= s_pc(21 downto 2);
+          end if;
 
           state <= s0;
       
