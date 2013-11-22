@@ -96,7 +96,7 @@ begin
             if ALU_output(20) = '0' then
               BASERAM_addr <= ALU_output(19 downto 0);
             else
-              BASERAM_addr <= ALU_output(19 downto 0);
+              EXTRAM_addr <= ALU_output(19 downto 0);
             end if;
             s_use_me_as_output <= '0'; -- use ram data as output
           elsif MEM_write = '1' then
