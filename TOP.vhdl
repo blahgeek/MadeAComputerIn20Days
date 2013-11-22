@@ -8,7 +8,7 @@ port (
     CLK_From_Key: in std_logic;
     CLK11M0592: in std_logic;
     CLK50M: in std_logic;
-    BaseRamAddr: out std_logic_vector(19 downto 0) := (others => '0');
+    BaseRamAddr: inout std_logic_vector(19 downto 0) := (others => '0');
     BaseRamData: inout std_logic_vector(31 downto 0) := (others => 'Z');
     BaseRamCE: out std_logic := '1';
     BaseRamOE: out std_logic := '1';
@@ -17,7 +17,7 @@ port (
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
 
-    ExtRamAddr: out std_logic_vector(19 downto 0) := (others => '0');
+    ExtRamAddr: inout std_logic_vector(19 downto 0) := (others => '0');
     ExtRamData: inout std_logic_vector(31 downto 0) := (others => 'Z');
     ExtRamCE: out std_logic := '1';
     ExtRamOE: out std_logic := '1';
@@ -60,11 +60,8 @@ component FetcherAndRegister port (
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
 
-    BASERAM_CE : out  STD_LOGIC;
-    BASERAM_OE : out  STD_LOGIC;
-    BASERAM_WE : out  STD_LOGIC; -- base ram stores instructions
-    BASERAM_addr: out std_logic_vector(19 downto 0);
-    BASERAM_data: inout std_logic_vector(31 downto 0);
+    BASERAM_data: in std_logic_vector(31 downto 0);
+    EXTRAM_data: in std_logic_vector(31 downto 0);
 
     ALU_operator: out std_logic_vector(3 downto 0);
     ALU_numA: out std_logic_vector(31 downto 0);
@@ -123,11 +120,14 @@ component Memory port (
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
 
-    EXTRAM_CE : out  STD_LOGIC;
-    EXTRAM_OE : out  STD_LOGIC;
+    BASERAM_WE: out std_logic;
+    BASERAM_addr: inout std_logic_vector(19 downto 0);
+    BASERAM_data: inout std_logic_vector(31 downto 0);
+
     EXTRAM_WE : out  STD_LOGIC; -- base ram stores data
-    EXTRAM_addr: out std_logic_vector(19 downto 0);
+    EXTRAM_addr: inout std_logic_vector(19 downto 0);
     EXTRAM_data: inout std_logic_vector(31 downto 0);
+
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')
@@ -140,6 +140,9 @@ component PCdecider port (
 
     JUMP_true: in std_logic;
     JUMP_addr: in std_logic_vector(31 downto 0);
+
+    BASERAM_addr: inout std_logic_vector(19 downto 0);
+    EXTRAM_addr: inout std_logic_vector(19 downto 0);
 
     PC: out std_logic_vector(31 downto 0)
   ) ;
@@ -175,22 +178,25 @@ end component; -- PCdecider
     signal C_REG_write: std_logic := '0';
     signal C_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
 
-    signal s_data: std_logic_vector(31 downto 0);
+    signal s_state : std_logic_vector(1 downto 0) := "00";
     
 begin
 
     real_reset <= not reset;
-    real_clk_from_key <= CLK11M0592;
-    s_data <= SW_DIP;
+    real_clk_from_key <= not CLK11M0592;
+
+    BaseRamOE <= '0';
+    BaseRamCE <= '0';
+    ExtRamCE <= '0';
+    ExtRamOE <= '0';
 
 FetcherAndRegister0: FetcherAndRegister port map (
     PC, real_clk_from_key, real_reset, 
     C_REG_write,
     C_REG_write_addr,
     MEM_output, -- reg write data
-    BaseRamCE, BaseRamOE, BaseRamWE, 
-    BaseRamAddr, 
     BaseRamData,  -- data from sw
+    ExtRamData,
     ALU_operator, ALU_numA, ALU_numB,
     JUMP_true, JUMP_addr,
     A_MEM_read, A_MEM_write, A_MEM_data,
@@ -214,14 +220,15 @@ Mem0: Memory port map (
     MEM_output, 
     B_REG_write, B_REG_write_addr, 
     C_REG_write, C_REG_write_addr,
-    ExtRamCE, ExtRamOE, ExtRamWE,
-    ExtRamAddr, ExtRamData,
+    BaseRamWE, BaseRamAddr, BaseRamData,
+    ExtRamWE, ExtRamAddr, ExtRamData,
     DYP0, DYP1, LED);
 
 PC0: PCdecider port map(
     real_clk_from_key, real_reset,
     JUMP_true,
     JUMP_addr,
+    BaseRamAddr, ExtRamAddr,
     PC);
 
 end arch;

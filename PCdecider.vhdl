@@ -10,6 +10,9 @@ entity PCdecider is
     JUMP_true: in std_logic;
     JUMP_addr: in std_logic_vector(31 downto 0);
 
+    BASERAM_addr: inout std_logic_vector(19 downto 0);
+    EXTRAM_addr: inout std_logic_vector(19 downto 0);
+
     PC: out std_logic_vector(31 downto 0)
   ) ;
 end entity ; -- PCdecider
@@ -17,7 +20,10 @@ end entity ; -- PCdecider
 architecture arch of PCdecider is
 
     constant BEGIN_PC: std_logic_vector(31 downto 0) := (others => '0');
-    signal state: std_logic := '0';
+
+  type state_type is (s0, s1, s2, s3);
+  signal state: state_type := s0;
+
     signal s_pc: std_logic_vector(31 downto 0) := BEGIN_PC;
 
 begin
@@ -25,25 +31,36 @@ begin
   process(clock, reset)
   begin
     if reset = '1' then
-      state <= '0';
+      state <= s0;
       s_pc <= BEGIN_PC;
       PC <= BEGIN_PC;
+      BASERAM_addr <= (others => '0');
+      EXTRAM_addr <= (others => '0');
     elsif rising_edge(clock) then
       case( state ) is
       
-        when '0' =>
+        when s0 =>
           if JUMP_true = '1' then -- jump!
             s_pc <= JUMP_addr;
           else
             s_pc <= std_logic_vector(unsigned(s_pc)+4);
           end if;
 
-          state <= '1';
-      
-        when others =>
-          PC <= s_pc;
+          state <= s1;
 
-          state <= '0';
+        when s1 =>
+          BASERAM_addr <= (others => 'Z');
+          EXTRAM_addr <= (others => 'Z');
+          state <= s2;
+        when s2 =>
+          state <= s3;
+      
+        when s3 =>
+          PC <= s_pc;
+          BASERAM_addr <= s_pc(21 downto 2);
+          EXTRAM_addr <= s_pc(21 downto 2);
+
+          state <= s0;
       
       end case ;
     end if;

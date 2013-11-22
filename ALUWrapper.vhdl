@@ -40,7 +40,8 @@ end component;
     signal a, b, c: std_logic_vector(31 downto 0) := (others => '0');
     signal op: std_logic_vector(3 downto 0);
 
-    signal state: std_logic := '0';
+    type state_type is (s0, s1, s2, s3);
+    signal state: state_type := s0;
 
     signal s_MEM_read: std_logic := '0';
     signal s_MEM_write: std_logic := '0';
@@ -54,7 +55,7 @@ begin
 
     process(clock, reset) begin
         if reset = '1' then 
-            state <= '0';
+            state <= s0;
 
             MEM_read <= '0';
             MEM_write <= '0';
@@ -64,7 +65,7 @@ begin
         elsif rising_edge(clock) then
             case( state ) is
             
-                when '0' =>
+                when s0 =>
                     a <= ALU_numA;
                     b <= ALU_numB;
                     op <= ALU_operator;
@@ -74,9 +75,12 @@ begin
                     s_REG_write <= in_REG_write;
                     s_REG_write_addr <= in_REG_write_addr;
 
-                    state <= '1';
+                    state <= s1;
+
+                when s1 => state <= s2;
+                when s2 => state <= s3;
             
-                when others =>
+                when s3 =>
 
                     ALU_output <= c;
                     MEM_write <= s_MEM_write;
@@ -85,7 +89,7 @@ begin
                     REG_write <= s_REG_write;
                     REG_write_addr <= s_REG_write_addr;
 
-                    state <= '0';
+                    state <= s0;
             
             end case ;
         end if;

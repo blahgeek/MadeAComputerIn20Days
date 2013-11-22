@@ -19,10 +19,12 @@ entity Memory is
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
 
-    EXTRAM_CE : out  STD_LOGIC;
-    EXTRAM_OE : out  STD_LOGIC;
+    BASERAM_WE: out std_logic;
+    BASERAM_addr: inout std_logic_vector(19 downto 0);
+    BASERAM_data: inout std_logic_vector(31 downto 0);
+
     EXTRAM_WE : out  STD_LOGIC; -- base ram stores data
-    EXTRAM_addr: out std_logic_vector(19 downto 0);
+    EXTRAM_addr: inout std_logic_vector(19 downto 0);
     EXTRAM_data: inout std_logic_vector(31 downto 0);
 
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
@@ -41,7 +43,9 @@ architecture arch of Memory is
       DYP: out std_logic_vector(6 downto 0)) ;
   end component ; -- DigitalNumber
 
-    signal state: std_logic := '0';
+  type state_type is (s0, s1, s2, s3);
+  signal state: state_type := s0;
+
     signal s_output: std_logic_vector(31 downto 0);
     signal s_use_me_as_output: std_logic;
 
@@ -50,21 +54,24 @@ architecture arch of Memory is
 
     signal s_dyp_value0: std_logic_vector(3 downto 0) := (others => '0');
     signal s_dyp_value1: std_logic_vector(3 downto 0) := (others => '0');
+
+    signal ram_choice: std_logic := '0'; -- 0: baseram
 begin
 
   DigitalNumber0: DigitalNumber port map(clock, reset, s_dyp_value0, DYP0);
   DigitalNumber1: DigitalNumber port map(clock, reset, s_dyp_value1, DYP1);
 
-  EXTRAM_CE <= '0';
-  EXTRAM_OE <= '0';
-
   process(clock, reset)
   begin
 
     if reset = '1' then
-      state <= '0';
+      state <= s0;
       EXTRAM_WE <= '1'; -- disable write
+      BASERAM_WE <= '1';
       EXTRAM_data <= (others => 'Z');
+      BASERAM_data <= (others => 'Z');
+      EXTRAM_addr <= (others => 'Z');
+      BASERAM_addr <= (others => 'Z');
       MEM_output <= (others => '0');
       REG_write <= '0';
       REG_write_addr <= (others => '0');
@@ -73,11 +80,24 @@ begin
       LED <= (others => '0');
     elsif rising_edge(clock) then
       case( state ) is
+
+        when s0 =>
+          EXTRAM_WE <= '1'; -- disable write
+          BASERAM_WE <= '1';
+          EXTRAM_data <= (others => 'Z');
+          BASERAM_data <= (others => 'Z');
+          EXTRAM_addr <= (others => 'Z');
+          BASERAM_addr <= (others => 'Z');
+          state <= s1;
       
-        when '0' => -- start
+        when s1 => -- start
           if MEM_read = '1' then 
-            EXTRAM_addr <= ALU_output(19 downto 0);
-            EXTRAM_data <= (others => 'Z');
+            ram_choice <= ALU_output(20);
+            if ALU_output(20) = '0' then
+              BASERAM_addr <= ALU_output(19 downto 0);
+            else
+              BASERAM_addr <= ALU_output(19 downto 0);
+            end if;
             s_use_me_as_output <= '0'; -- use ram data as output
           elsif MEM_write = '1' then
             s_output <= MEM_data;
@@ -87,31 +107,50 @@ begin
               when x"80000001" => s_dyp_value1 <= MEM_data(3 downto 0);
               when x"80000002" => LED <= MEM_data(15 downto 0);
               when others => -- general
-                EXTRAM_addr <= ALU_output(19 downto 0);
-                EXTRAM_data <= MEM_data;
-                EXTRAM_WE <= '0';
+                if ALU_output(20) = '0' then
+                  BASERAM_addr <= ALU_output(19 downto 0);
+                  BASERAM_data <= MEM_data;
+                  BASERAM_WE <= '0';
+                else
+                  EXTRAM_addr <= ALU_output(19 downto 0);
+                  EXTRAM_data <= MEM_data;
+                  EXTRAM_WE <= '0';
+                end if;
             end case ;
           else
-            EXTRAM_data <= (others => 'Z');
             s_output <= ALU_output;
             s_use_me_as_output <= '1';
           end if;
 
-          state <= '1';
+          state <= s2;
           s_REG_write <= in_REG_write;
           s_REG_write_addr <= in_REG_write_addr;
       
-        when others =>
+        when s2 =>
           if s_use_me_as_output = '1' then
             MEM_output <= s_output;
           else
-            MEM_output <= EXTRAM_data;
+            if ram_choice = '0' then
+              MEM_output <= BASERAM_data;
+            else
+              MEM_output <= EXTRAM_data;
+            end if;
           end if;
           EXTRAM_WE <= '1';
+          BASERAM_WE <= '1';
 
-          state <= '0';
+          state <= s3;
           REG_write <= s_REG_write;
           REG_write_addr <= s_REG_write_addr;
+
+        when s3 =>
+          EXTRAM_WE <= '1'; -- disable write
+          BASERAM_WE <= '1';
+          EXTRAM_data <= (others => 'Z');
+          BASERAM_data <= (others => 'Z');
+          EXTRAM_addr <= (others => 'Z');
+          BASERAM_addr <= (others => 'Z');
+          state <= s0;
 
       end case ;
     end if;

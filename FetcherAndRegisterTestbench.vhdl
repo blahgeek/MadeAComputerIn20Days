@@ -18,11 +18,8 @@ component FetcherAndRegister port (
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
 
-    BASERAM_CE : out  STD_LOGIC;
-    BASERAM_OE : out  STD_LOGIC;
-    BASERAM_WE : out  STD_LOGIC; -- base ram stores instructions
-    BASERAM_addr: out std_logic_vector(19 downto 0);
-    BASERAM_data: inout std_logic_vector(31 downto 0);
+    BASERAM_data: in std_logic_vector(31 downto 0);
+    EXTRAM_data: in std_logic_vector(31 downto 0);
 
     ALU_operator: out std_logic_vector(3 downto 0);
     ALU_numA: out std_logic_vector(31 downto 0);
@@ -74,11 +71,8 @@ begin
         BACK_REG_write_addr => BACK_REG_write_addr,
         BACK_REG_write_data => BACK_REG_write_data,
 
-        BASERAM_CE  => open,
-        BASERAM_OE  => open,
-        BASERAM_WE  => open,
-        BASERAM_addr => open,
         BASERAM_data => data, -- instruction
+        EXTRAM_data => x"00000000",
 
         ALU_operator => ALU_operator,
         ALU_numA => ALU_numA,
@@ -109,11 +103,27 @@ begin
         wait for clk_period/2;
         clock <= '0';
         wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
         BACK_REG_write <= '0';
         data(31 downto 26) <= "000011"; -- jal
         data(25 downto 21) <= "00010";
         data(20 downto 16) <= "00010";
         data(15 downto 0) <= "1111111111111111";
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';
