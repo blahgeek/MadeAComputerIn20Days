@@ -1,17 +1,19 @@
-;ori $1 $0 0x23
-;nop
-;nop
-;nop
-;sw $1 0 $0
-;lw $23 0 $0
-;nop
-;nop
-;addi $2 $23 0x34
-ori $1 $0 0x01
+lui $10 0x000f
+ori $2 $0 0x00
+lui $1 0x8000
+ori $3 $0 0xff
+here:
+and $11 $0 $0
+addi $2 $2 0x01
+loop:
+nop
+addi $11 $11 0x01
 nop
 nop
-addi $1 $1 0x01
+bne $11 $10 loop
 nop
 nop
-j 0x01
+sw $2 0 $1
+bne $2 $3 here
+nop
 nop

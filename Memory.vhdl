@@ -23,7 +23,11 @@ entity Memory is
     EXTRAM_OE : out  STD_LOGIC;
     EXTRAM_WE : out  STD_LOGIC; -- base ram stores data
     EXTRAM_addr: out std_logic_vector(19 downto 0);
-    EXTRAM_data: inout std_logic_vector(31 downto 0)
+    EXTRAM_data: inout std_logic_vector(31 downto 0);
+
+    DYP0: out std_logic_vector(6 downto 0) := (others => '0');
+    DYP1: out std_logic_vector(6 downto 0) := (others => '0');
+    LED: out std_logic_vector(15 downto 0) := (others => '0')
   ) ;
 end entity ; -- Memory
 
@@ -43,7 +47,13 @@ architecture arch of Memory is
 
     signal s_REG_write: std_logic:= '0';
     signal s_REG_write_addr: std_logic_vector(4 downto 0):= (others => '0');
+
+    signal s_dyp_value0: std_logic_vector(3 downto 0) := (others => '0');
+    signal s_dyp_value1: std_logic_vector(3 downto 0) := (others => '0');
 begin
+
+  DigitalNumber0: DigitalNumber port map(clock, reset, s_dyp_value0, DYP0);
+  DigitalNumber1: DigitalNumber port map(clock, reset, s_dyp_value1, DYP1);
 
   EXTRAM_CE <= '0';
   EXTRAM_OE <= '0';
@@ -58,6 +68,9 @@ begin
       MEM_output <= (others => '0');
       REG_write <= '0';
       REG_write_addr <= (others => '0');
+      s_dyp_value0 <= (others => '0');
+      s_dyp_value1 <= (others => '0');
+      LED <= (others => '0');
     elsif rising_edge(clock) then
       case( state ) is
       
@@ -67,11 +80,17 @@ begin
             EXTRAM_data <= (others => 'Z');
             s_use_me_as_output <= '0'; -- use ram data as output
           elsif MEM_write = '1' then
-            EXTRAM_addr <= ALU_output(19 downto 0);
-            EXTRAM_data <= MEM_data;
             s_output <= MEM_data;
             s_use_me_as_output <= '1';
-            EXTRAM_WE <= '0';
+            case( ALU_output ) is
+              when x"80000000" => s_dyp_value0 <= MEM_data(3 downto 0);
+              when x"80000001" => s_dyp_value1 <= MEM_data(3 downto 0);
+              when x"80000002" => LED <= MEM_data(15 downto 0);
+              when others => -- general
+                EXTRAM_addr <= ALU_output(19 downto 0);
+                EXTRAM_data <= MEM_data;
+                EXTRAM_WE <= '0';
+            end case ;
           else
             EXTRAM_data <= (others => 'Z');
             s_output <= ALU_output;

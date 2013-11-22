@@ -70,7 +70,7 @@ component FetcherAndRegister port (
 begin
 
     instance: FetcherAndRegister port map (
-        PC => (others => '0'), 
+        PC => x"0000001c", 
         clock => clock, 
         reset => '0',
 
@@ -116,10 +116,10 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '0';
-        data(31 downto 26) <= "101011"; -- sw
-        data(25 downto 21) <= "00000";
-        data(20 downto 16) <= "00001";
-        data(15 downto 0) <= (others => '0');
+        data(31 downto 26) <= "000101"; -- bne
+        data(25 downto 21) <= "00010";
+        data(20 downto 16) <= "00011";
+        data(15 downto 0) <= "1111111111111000";
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

@@ -3,6 +3,12 @@
 
 现在仅使用ghdl仿真，暂未加入到ISE工程中。
 
+## Memory Map
+
+- 0x80000000 : 数码管1
+- 0x80000001 : 数码管2
+- 0x80000002 : LED
+
 ## How to run
 
 - 安装ghdl和gtkwave

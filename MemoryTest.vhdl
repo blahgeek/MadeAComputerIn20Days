@@ -58,7 +58,10 @@ component Memory port (
     EXTRAM_OE : out  STD_LOGIC;
     EXTRAM_WE : out  STD_LOGIC; -- base ram stores data
     EXTRAM_addr: out std_logic_vector(19 downto 0);
-    EXTRAM_data: inout std_logic_vector(31 downto 0)
+    EXTRAM_data: inout std_logic_vector(31 downto 0);
+    DYP0: out std_logic_vector(6 downto 0) := (others => '0');
+    DYP1: out std_logic_vector(6 downto 0) := (others => '0');
+    LED: out std_logic_vector(15 downto 0) := (others => '0')
   ) ;
 end component ; -- Memory
 
@@ -91,6 +94,7 @@ begin
         data, if_r, if_w, addr, data_out,
         '0', "00000", open, open,
         ExtRamCE, ExtRamOE, ExtRamWE,
-        ExtRamAddr, ExtRamData);
+        ExtRamAddr, ExtRamData,
+        DYP0, DYP1, LED);
 
 end architecture ; -- arch

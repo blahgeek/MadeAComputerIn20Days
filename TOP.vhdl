@@ -137,7 +137,10 @@ component Memory port (
     EXTRAM_OE : out  STD_LOGIC;
     EXTRAM_WE : out  STD_LOGIC; -- base ram stores data
     EXTRAM_addr: out std_logic_vector(19 downto 0);
-    EXTRAM_data: inout std_logic_vector(31 downto 0)
+    EXTRAM_data: inout std_logic_vector(31 downto 0);
+    DYP0: out std_logic_vector(6 downto 0) := (others => '0');
+    DYP1: out std_logic_vector(6 downto 0) := (others => '0');
+    LED: out std_logic_vector(15 downto 0) := (others => '0')
   ) ;
 end component ; -- Memory
 
@@ -197,7 +200,7 @@ end component; -- PCdecider
 begin
 
     real_reset <= not reset;
-    real_clk_from_key <= not CLK_From_Key;
+    real_clk_from_key <= CLK11M0592;
     s_data <= SW_DIP;
 
 FetcherAndRegister0: FetcherAndRegister port map (
@@ -236,15 +239,13 @@ Mem0: Memory port map (
     B_REG_write, B_REG_write_addr, 
     C_REG_write, C_REG_write_addr,
     ExtRamCE, ExtRamOE, ExtRamWE,
-    ExtRamAddr, ExtRamData);
+    ExtRamAddr, ExtRamData,
+    DYP0, DYP1, LED);
 
 PC0: PCdecider port map(
     real_clk_from_key, real_reset,
     B_JUMP_true, B_JUMP_use_alu,
     B_JUMP_true_if_alu_out_true, B_JUMP_addr,
     ALU_output, PC);
-
-LED(15 downto 8) <= MEM_output(7 downto 0);
-LED(7 downto 0) <= PC(7 downto 0);
 
 end arch;

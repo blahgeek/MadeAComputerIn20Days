@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # By i@BlahGeek.com
 
+from bitstring import Bits
+
 points = dict()
 count = 0
 
@@ -14,18 +16,18 @@ def parse_register(s):
     ''' "$23" -> "10111" '''
     s = int(s.strip('$'))
     assert(s >= 0 and s < 32)
-    s = bin(int(s)).split('b')[1]
-    return extend(s, 5)
+    return Bits(uint=s, length=5).bin
 
-def parse_immediate(s, length):
+def parse_immediate(s, length, sign, branch=False):
     ''' "0x23" -> "00100011" '''
+    global count
     if s[0] != '-' and not ('0' <= s[0] <= '9'):
-        s = points[s]
-    else:
-        s = int(s, 16 if ('x' in s) else 10)
-    s = bin(s).split('b')[1]
-    assert(len(s) <= length)
-    return extend(s, length)
+        s = points[s] if not branch else (points[s]-1-count)
+        return Bits(int=s, length=length).bin
+    s = int(s, 16 if ('x' in s) else 10)
+    if sign:
+        return Bits(int=s, length=length).bin
+    return Bits(uint=s, length=length).bin
 
 INSTRUCTIONS = {
     'add': ('r r r', '000000 B C A 00000 100000'), 
@@ -78,9 +80,9 @@ def parse_line(s):
         if x == 'r':
             ret = parse_register(parts[i])
         elif x[0] == 'u':
-            ret = parse_immediate(parts[i], int(x[1:]))
+            ret = parse_immediate(parts[i], int(x[1:]), False, inst.startswith('b'))
         elif x[0] == 'i':
-            ret = parse_immediate(parts[i], int(x[1:]))
+            ret = parse_immediate(parts[i], int(x[1:]), True, inst.startswith('b'))
         code = code.replace(chr(ord('A')+i), ret)
     count += 1
     return code

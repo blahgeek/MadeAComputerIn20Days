@@ -41,4 +41,4 @@ if __name__ == '__main__':
     if sys.argv[1] == 'write':
         data = open(sys.argv[2], 'rb').read()
         write(ser, 0x00, data)
-        assert(read(ser, 0x00)[0:len(data)] == data[0:BLOCK_LEN])
+        assert(read(ser, 0x00)[0:len(data)] == data)

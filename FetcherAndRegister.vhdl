@@ -253,8 +253,8 @@ begin
               outbuffer_JUMP_true_if_alu_out_true <= '1';
               outbuffer_JUMP_use_alu <= '0';
               outbuffer_JUMP_addr(31 downto 2) <= std_logic_vector(
-                      unsigned(PC(31 downto 2))+
-                      unsigned(BASERAM_data(15 downto 0))+1);
+                      signed(PC(31 downto 2))+
+                      signed(BASERAM_data(15 downto 0))+1);
               outbuffer_JUMP_addr(1 downto 0) <= "00";
               outbuffer_MEM_read <= '0';
               outbuffer_MEM_write <= '0';
