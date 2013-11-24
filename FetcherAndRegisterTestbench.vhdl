@@ -99,7 +99,7 @@ begin
         data(31 downto 26) <= "001000"; -- addi
         data(25 downto 21) <= "00011";
         data(20 downto 16) <= "00011";
-        data(15 downto 0) <= "0000000000001111";
+        data(15 downto 0) <= "1111111111111111";
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;

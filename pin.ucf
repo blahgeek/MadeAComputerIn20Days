@@ -247,5 +247,5 @@ NET "VGA_Green[2]" LOC = E26;
 NET "VGA_Red[0]" LOC = M24;
 NET "VGA_Red[1]" LOC = N25;
 NET "VGA_Red[2]" LOC = N24;
-NET "VGA_Vhync" LOC = L23;
-NET "VGA_Hhync" LOC = J23;
+NET "VGA_Vhync" LOC = J23;
+NET "VGA_Hhync" LOC = L23;

@@ -27,6 +27,14 @@ entity Memory is
     EXTRAM_addr: inout std_logic_vector(19 downto 0);
     EXTRAM_data: inout std_logic_vector(31 downto 0);
 
+    UART_DATA_SEND: out std_logic_vector(7 downto 0);
+    UART_DATA_SEND_STB: buffer std_logic := '0';
+    UART_DATA_SEND_ACK: in std_logic;
+
+    UART_DATA_RECV: in std_logic_vector(7 downto 0);
+    UART_DATA_RECV_STB: in std_logic;
+    UART_DATA_RECV_ACK: out std_logic := '0';
+
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')
@@ -78,6 +86,8 @@ begin
       s_dyp_value0 <= (others => '0');
       s_dyp_value1 <= (others => '0');
       LED <= (others => '0');
+      UART_DATA_SEND_STB <= '0';
+      UART_DATA_RECV_ACK <= '0';
     elsif rising_edge(clock) then
       case( state ) is
 
@@ -88,31 +98,51 @@ begin
           BASERAM_data <= (others => 'Z');
           EXTRAM_addr <= (others => 'Z');
           BASERAM_addr <= (others => 'Z');
+          if UART_DATA_SEND_ACK = '1' then 
+            UART_DATA_SEND_STB <= '0';
+          end if;
+          UART_DATA_RECV_ACK <= '0';
           state <= s1;
       
         when s1 => -- start
           if MEM_read = '1' then 
-            ram_choice <= ALU_output(20);
-            if ALU_output(20) = '0' then
-              BASERAM_addr <= ALU_output(19 downto 0);
-            else
-              EXTRAM_addr <= ALU_output(19 downto 0);
-            end if;
-            s_use_me_as_output <= '0'; -- use ram data as output
+            case(ALU_output) is
+              when x"80000014" =>
+                s_use_me_as_output <= '1';
+                s_output(31 downto 2) <= (others => '0');
+                s_output(1) <= UART_DATA_RECV_STB; -- can read
+                s_output(0) <= not UART_DATA_SEND_STB; -- can write
+              when x"80000010" =>
+                s_use_me_as_output <= '1';
+                s_output(31 downto 8) <= (others => '0');
+                s_output(7 downto 0) <= UART_DATA_RECV;
+                UART_DATA_RECV_ACK <= '1';
+              when others =>
+                ram_choice <= ALU_output(22);
+                if ALU_output(22) = '0' then
+                  BASERAM_addr <= ALU_output(21 downto 2);
+                else
+                  EXTRAM_addr <= ALU_output(21 downto 2);
+                end if;
+                s_use_me_as_output <= '0'; -- use ram data as output
+              end case;
           elsif MEM_write = '1' then
             s_output <= MEM_data;
             s_use_me_as_output <= '1';
             case( ALU_output ) is
               when x"80000000" => s_dyp_value0 <= MEM_data(3 downto 0);
-              when x"80000001" => s_dyp_value1 <= MEM_data(3 downto 0);
-              when x"80000002" => LED <= MEM_data(15 downto 0);
+              when x"80000004" => s_dyp_value1 <= MEM_data(3 downto 0);
+              when x"80000008" => LED <= MEM_data(15 downto 0);
+              when x"80000010" =>
+                UART_DATA_SEND <= MEM_data(7 downto 0);
+                UART_DATA_SEND_STB <= '1';
               when others => -- general
-                if ALU_output(20) = '0' then
-                  BASERAM_addr <= ALU_output(19 downto 0);
+                if ALU_output(22) = '0' then
+                  BASERAM_addr <= ALU_output(21 downto 2);
                   BASERAM_data <= MEM_data;
                   BASERAM_WE <= '0';
                 else
-                  EXTRAM_addr <= ALU_output(19 downto 0);
+                  EXTRAM_addr <= ALU_output(21 downto 2);
                   EXTRAM_data <= MEM_data;
                   EXTRAM_WE <= '0';
                 end if;
@@ -138,6 +168,9 @@ begin
           end if;
           EXTRAM_WE <= '1';
           BASERAM_WE <= '1';
+          if UART_DATA_SEND_ACK = '1' then 
+            UART_DATA_SEND_STB <= '0';
+          end if;
 
           state <= s3;
           REG_write <= s_REG_write;
@@ -150,6 +183,9 @@ begin
           BASERAM_data <= (others => 'Z');
           EXTRAM_addr <= (others => 'Z');
           BASERAM_addr <= (others => 'Z');
+          if UART_DATA_SEND_ACK = '1' then 
+            UART_DATA_SEND_STB <= '0';
+          end if;
           state <= s0;
 
       end case ;

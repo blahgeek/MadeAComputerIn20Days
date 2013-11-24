@@ -130,6 +130,14 @@ component Memory port (
     EXTRAM_addr: inout std_logic_vector(19 downto 0);
     EXTRAM_data: inout std_logic_vector(31 downto 0);
 
+    UART_DATA_SEND: out std_logic_vector(7 downto 0);
+    UART_DATA_SEND_STB: buffer std_logic := '0';
+    UART_DATA_SEND_ACK: in std_logic;
+
+    UART_DATA_RECV: in std_logic_vector(7 downto 0);
+    UART_DATA_RECV_STB: in std_logic;
+    UART_DATA_RECV_ACK: out std_logic := '0';
+
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')
@@ -151,6 +159,25 @@ component PCdecider port (
     PC: buffer std_logic_vector(31 downto 0)
   ) ;
 end component; -- PCdecider
+
+component UART is
+    Generic (
+            BAUD_RATE           : positive;
+            CLOCK_FREQUENCY     : positive
+        );
+    Port (
+            CLOCK           :   in      std_logic;
+            RESET               :   in      std_logic;
+            DATA_STREAM_IN      :   in      std_logic_vector(7 downto 0);
+            DATA_STREAM_IN_STB  :   in      std_logic;
+            DATA_STREAM_IN_ACK  :   out     std_logic := '0';
+            DATA_STREAM_OUT     :   out     std_logic_vector(7 downto 0);
+            DATA_STREAM_OUT_STB :   out     std_logic;
+            DATA_STREAM_OUT_ACK :   in      std_logic;
+            TX                  :   out     std_logic;
+            RX                  :   in      std_logic  -- Async Receive
+         );
+end component;
 
     -- reset is '1' if not clicked, that's not what we want
     signal real_reset: std_logic := '0';
@@ -185,8 +212,24 @@ end component; -- PCdecider
     signal C_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
 
     signal s_state : std_logic_vector(1 downto 0) := "00";
+
+    signal s_rx, s_tx: std_logic;
+    signal uart_data_in: std_logic_vector(7 downto 0);
+    signal uart_data_in_stb, uart_data_in_ack: std_logic;
+    signal uart_data_out: std_logic_vector(7 downto 0);
+    signal uart_data_out_stb, uart_data_out_ack: std_logic;
     
 begin
+
+    InterConn(0) <= 'Z'; -- in
+    s_rx <= InterConn(0);
+    InterConn(5) <= s_tx;
+
+    uart0: UART generic map (BAUD_RATE => 115200, CLOCK_FREQUENCY => 11059200)
+                port map (CLK11M0592, real_reset, 
+                          uart_data_in, uart_data_in_stb, uart_data_in_ack,
+                          uart_data_out, uart_data_out_stb, uart_data_out_ack,
+                          s_tx, s_rx);
 
     divider : process( CLK50M )
     begin
@@ -196,7 +239,12 @@ begin
     end process ; -- divider
 
     real_reset <= not reset;
-    real_clock <= CLK11M0592;
+
+    with SW_DIP(2 downto 0) select
+        real_clock <= CLK50M when "000",
+                      clk25M when "001",
+                      not CLK_From_Key when "010",
+                      CLK11M0592 when others;
 
     BaseRamOE <= '0';
     BaseRamCE <= '0';
@@ -235,6 +283,8 @@ Mem0: Memory port map (
     C_REG_write, C_REG_write_addr,
     BaseRamWE, BaseRamAddr, BaseRamData,
     ExtRamWE, ExtRamAddr, ExtRamData,
+    uart_data_in, uart_data_in_stb, uart_data_in_ack,
+    uart_data_out, uart_data_out_stb, uart_data_out_ack,
     DYP0, DYP1, LED);
 
 PC0: PCdecider port map(
