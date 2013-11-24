@@ -50,6 +50,13 @@ end entity ; -- VGATest
 architecture arch of VGATest is
 signal real_reset: std_logic:= '0';
 
+component clk_wiz is port (
+    clk_in: in std_logic;
+    clk_out: out std_logic);
+end component;
+
+signal clk_out: std_logic;
+
 component VGA_Controller is
     port (
         VGA_CLK : out std_logic;
@@ -72,14 +79,16 @@ begin
 
     real_reset <= not reset;
 
+    wiz0: clk_wiz port map(CLK11M0592, clk_out);
+
     vga0: VGA_Controller port map (
         open, VGA_Hhync, VGA_Vhync, VGA_Red, VGA_Green, VGA_Blue,
         SW_DIP(31 downto 25), SW_DIP(23 downto 19), SW_DIP(15 downto 9),
-        SW_DIP(7), real_reset, CLK50M);
+        SW_DIP(7), real_reset, clk_out);
 
-    LED(0) <= CLK50M;
-    LED(1) <= CLK11M0592;
-    led(2) <= '1';
+    -- LED(0) <= clk_out;
+    -- LED(1) <= CLK11M0592;
+    -- led(2) <= '1';
 
 end architecture ; -- arch
 

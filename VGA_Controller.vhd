@@ -28,9 +28,9 @@ component font_rom port(
    );
 end component;
 
-    -- type data_type is array(0 to 2439) of std_logic_vector(6 downto 0);
+    type data_type is array(0 to 2439) of std_logic_vector(6 downto 0);
 
-    -- signal data: data_type:= (others => (others => '0'));
+    signal data: data_type:= (others => (others => '0'));
 
 --VGA
     signal CLK25M   : std_logic := '0';
@@ -57,33 +57,33 @@ end component;
 begin
 
 
-    -- x_remain <= x(2 downto 0);
-    -- y_remain <= y(3 downto 0);
-    -- x_div <= x(9 downto 3);
-    -- y_div <= y(8 downto 4);
-    -- y_div_shift_6(5 downto 0) <= (others => '0');
-    -- y_div_shift_6(10 downto 6) <= y_div;
-    -- y_div_shift_4(3 downto 0) <= (others => '0');
-    -- y_div_shift_4(8 downto 4) <= y_div;
-    -- now_char <= data(to_integer(unsigned(x_div)+unsigned(y_div_shift_6)+unsigned(y_div_shift_4)));
+    x_remain <= x(2 downto 0);
+    y_remain <= y(3 downto 0);
+    x_div <= x(9 downto 3);
+    y_div <= y(8 downto 4);
+    y_div_shift_6(5 downto 0) <= (others => '0');
+    y_div_shift_6(10 downto 6) <= y_div;
+    y_div_shift_4(3 downto 0) <= (others => '0');
+    y_div_shift_4(8 downto 4) <= y_div;
+    now_char <= data(to_integer(unsigned(x_div)+unsigned(y_div_shift_6)+unsigned(y_div_shift_4)));
 
-    -- font_addr(3 downto 0) <= y_remain;
-    -- font_addr(10 downto 4) <= now_char(6 downto 0);
+    font_addr(3 downto 0) <= y_remain;
+    font_addr(10 downto 4) <= now_char;
 
-    -- font0: font_rom port map(CLK_in, font_addr, font_data);
+    font0: font_rom port map(CLK_in, font_addr, font_data);
 
-    -- in_y_shift_6(5 downto 0) <= (others => '0');
-    -- in_y_shift_6(10 downto 6) <= in_y;
-    -- in_y_shift_4(3 downto 0) <= (others => '0');
-    -- in_y_shift_4(8 downto 4) <= in_y;
+    in_y_shift_6(5 downto 0) <= (others => '0');
+    in_y_shift_6(10 downto 6) <= in_y;
+    in_y_shift_4(3 downto 0) <= (others => '0');
+    in_y_shift_4(8 downto 4) <= in_y;
 
-    -- process (in_set, reset) begin
-    --     if reset = '1' then
-    --         data <= (others => (others => '0'));
-    --     elsif rising_edge(in_set) then
-    --         data(to_integer(unsigned(in_x)+unsigned(in_y_shift_6)+unsigned(in_y_shift_4))) <= in_data;
-    --     end if;
-    -- end process;
+    process (in_set, reset) begin
+        if reset = '1' then
+            data <= (others => (others => '0'));
+        elsif rising_edge(in_set) then
+            data(to_integer(unsigned(in_x)+unsigned(in_y_shift_6)+unsigned(in_y_shift_4))) <= in_data;
+        end if;
+    end process;
 
     process (CLK_in) begin
         if rising_edge(CLK_in) then
@@ -154,12 +154,20 @@ begin
             gt <= (others=>'0');
             bt <= (others=>'0');
         else
-            -- rt <= (others => font_data(to_integer(unsigned(x_remain))));
-            -- gt <= (others => font_data(to_integer(unsigned(x_remain))));
-            -- bt <= (others => font_data(to_integer(unsigned(x_remain))));
-            rt <= (others => '1');
-            gt <= (others => '0');
-            bt <= (others => '1');
+            rt <= (others => font_data(to_integer(7-unsigned(x_remain))));
+            gt <= (others => font_data(to_integer(7-unsigned(x_remain))));
+            bt <= (others => font_data(to_integer(7-unsigned(x_remain))));
+            -- rt <= (others => '1');
+            -- if unsigned(y) < 10 or unsigned(y) > 470 then
+            --     gt <= (others => '1');
+            -- else
+            --     gt <= (others => '0');
+            -- end if;
+            -- if unsigned(x) < 10 or unsigned(x) > 630 then
+            --     bt <= (others => '1');
+            -- else
+            --     bt <= (others => '0');
+            -- end if;
         end if;
     end process;
 
