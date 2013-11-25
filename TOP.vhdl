@@ -43,13 +43,19 @@ port (
     VGA_Blue: out std_logic_vector(2 downto 0) := (others => '0');
     VGA_Green: out std_logic_vector(2 downto 0) := (others => '0');
     VGA_Red: out std_logic_vector(2 downto 0) := (others => '0');
-    VGA_Vhync: out std_logic := '0';
-    VGA_Hhync: out std_logic := '0' );
+    VGA_Vhync: buffer std_logic := '0';
+    VGA_Hhync: buffer std_logic := '0' );
 
 end TOP;
 
 architecture arch of TOP is
 
+component clk_wiz is port ( -- 11.0592 MHz to 50 MHz
+    clk_in: in std_logic;
+    clk_out: out std_logic);
+end component;
+
+signal s_clk50m: std_logic;
 
 component FetcherAndRegister port (
     PC: in std_logic_vector(31 downto 0);
@@ -138,6 +144,11 @@ component Memory port (
     UART_DATA_RECV_STB: in std_logic;
     UART_DATA_RECV_ACK: out std_logic := '0';
 
+    VGA_x: out std_logic_vector(6 downto 0);
+    VGA_y: out std_logic_vector(4 downto 0);
+    VGA_data: out std_logic_vector(6 downto 0);
+    VGA_set: out std_logic := '0';
+
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')
@@ -178,6 +189,29 @@ component UART is
             RX                  :   in      std_logic  -- Async Receive
          );
 end component;
+
+component VGA_Controller is
+    port (
+        VGA_CLK : out std_logic;
+        hs,vs   : buffer std_logic;
+        oRed    : out std_logic_vector (2 downto 0);
+        oGreen  : out std_logic_vector (2 downto 0);
+        oBlue   : out std_logic_vector (2 downto 0);
+
+        in_x:   in std_logic_vector(6 downto 0);
+        in_y:   in std_logic_vector(4 downto 0);
+        in_data:in std_logic_vector(6 downto 0);
+        in_set: in std_logic;
+
+        reset   : in  std_logic;
+        CLK_in  : in  std_logic -- 50M
+    );      
+end component;
+
+    signal VGA_in_x: std_logic_vector(6 downto 0);
+    signal VGA_in_y: std_logic_vector(4 downto 0);
+    signal VGA_in_data: std_logic_vector(6 downto 0);
+    signal VGA_in_set: std_logic := '0';
 
     -- reset is '1' if not clicked, that's not what we want
     signal real_reset: std_logic := '0';
@@ -221,6 +255,8 @@ end component;
     
 begin
 
+    wiz0: clk_wiz port map (CLK11M0592, s_clk50m);
+
     InterConn(0) <= 'Z'; -- in
     s_rx <= InterConn(0);
     InterConn(5) <= s_tx;
@@ -231,9 +267,13 @@ begin
                           uart_data_out, uart_data_out_stb, uart_data_out_ack,
                           s_tx, s_rx);
 
-    divider : process( CLK50M )
+    vga0: VGA_Controller port map(
+        open, VGA_Hhync, VGA_Vhync, VGA_Red, VGA_Green, VGA_Blue,
+        VGA_in_x, VGA_in_y, VGA_in_data, VGA_in_set, real_reset, s_clk50m);
+
+    divider : process( s_clk50m )
     begin
-        if rising_edge(CLK50M) then
+        if rising_edge(s_clk50m) then
             clk25M <= not clk25M;
         end if;
     end process ; -- divider
@@ -241,10 +281,9 @@ begin
     real_reset <= not reset;
 
     with SW_DIP(2 downto 0) select
-        real_clock <= CLK50M when "000",
-                      clk25M when "001",
+        real_clock <= s_clk50m when "000",
                       not CLK_From_Key when "010",
-                      CLK11M0592 when others;
+                      clk25M when others;
 
     BaseRamOE <= '0';
     BaseRamCE <= '0';
@@ -285,6 +324,7 @@ Mem0: Memory port map (
     ExtRamWE, ExtRamAddr, ExtRamData,
     uart_data_in, uart_data_in_stb, uart_data_in_ack,
     uart_data_out, uart_data_out_stb, uart_data_out_ack,
+    VGA_in_x, VGA_in_y, VGA_in_data, VGA_in_set,
     DYP0, DYP1, LED);
 
 PC0: PCdecider port map(

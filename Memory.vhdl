@@ -35,6 +35,11 @@ entity Memory is
     UART_DATA_RECV_STB: in std_logic;
     UART_DATA_RECV_ACK: out std_logic := '0';
 
+    VGA_x: out std_logic_vector(6 downto 0);
+    VGA_y: out std_logic_vector(4 downto 0);
+    VGA_data: out std_logic_vector(6 downto 0);
+    VGA_set: out std_logic := '0';
+
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')
@@ -88,6 +93,7 @@ begin
       LED <= (others => '0');
       UART_DATA_SEND_STB <= '0';
       UART_DATA_RECV_ACK <= '0';
+      VGA_set <= '0';
     elsif rising_edge(clock) then
       case( state ) is
 
@@ -102,6 +108,7 @@ begin
             UART_DATA_SEND_STB <= '0';
           end if;
           UART_DATA_RECV_ACK <= '0';
+          VGA_set <= '0';
           state <= s1;
       
         when s1 => -- start
@@ -129,24 +136,31 @@ begin
           elsif MEM_write = '1' then
             s_output <= MEM_data;
             s_use_me_as_output <= '1';
-            case( ALU_output ) is
-              when x"80000000" => s_dyp_value0 <= MEM_data(3 downto 0);
-              when x"80000004" => s_dyp_value1 <= MEM_data(3 downto 0);
-              when x"80000008" => LED <= MEM_data(15 downto 0);
-              when x"80000010" =>
-                UART_DATA_SEND <= MEM_data(7 downto 0);
-                UART_DATA_SEND_STB <= '1';
-              when others => -- general
-                if ALU_output(22) = '0' then
-                  BASERAM_addr <= ALU_output(21 downto 2);
-                  BASERAM_data <= MEM_data;
-                  BASERAM_WE <= '0';
-                else
-                  EXTRAM_addr <= ALU_output(21 downto 2);
-                  EXTRAM_data <= MEM_data;
-                  EXTRAM_WE <= '0';
-                end if;
-            end case ;
+            if ALU_output(31 downto 28) = x"9" then
+              VGA_data <= MEM_data(6 downto 0);
+              VGA_x <= ALU_output(14 downto 8);
+              VGA_y <= ALU_output(4 downto 0);
+              VGA_set <= '1';
+            else
+              case( ALU_output ) is
+                when x"80000000" => s_dyp_value0 <= MEM_data(3 downto 0);
+                when x"80000004" => s_dyp_value1 <= MEM_data(3 downto 0);
+                when x"80000008" => LED <= MEM_data(15 downto 0);
+                when x"80000010" =>
+                  UART_DATA_SEND <= MEM_data(7 downto 0);
+                  UART_DATA_SEND_STB <= '1';
+                when others => -- general
+                  if ALU_output(22) = '0' then
+                    BASERAM_addr <= ALU_output(21 downto 2);
+                    BASERAM_data <= MEM_data;
+                    BASERAM_WE <= '0';
+                  else
+                    EXTRAM_addr <= ALU_output(21 downto 2);
+                    EXTRAM_data <= MEM_data;
+                    EXTRAM_WE <= '0';
+                  end if;
+              end case ;
+            end if;
           else
             s_output <= ALU_output;
             s_use_me_as_output <= '1';

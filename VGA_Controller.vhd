@@ -37,17 +37,17 @@ end component;
     signal CLK  : std_logic := '0';
     signal rt,gt,bt : std_logic_vector (2 downto 0);
     signal x        : std_logic_vector (9 downto 0);
-    signal y        : std_logic_vector (8 downto 0);
+    signal y        : std_logic_vector (9 downto 0);
 
     signal in_y_shift_6: std_logic_vector(10 downto 0);
     signal in_y_shift_4: std_logic_vector(8 downto 0);
 
     signal x_div    : std_logic_vector(6 downto 0);
     signal x_remain: std_logic_vector(2 downto 0);
-    signal y_div    : std_logic_vector(4 downto 0);
+    signal y_div    : std_logic_vector(5 downto 0);
     signal y_remain: std_logic_vector(3 downto 0);
-    signal y_div_shift_6: std_logic_vector(10 downto 0);
-    signal y_div_shift_4: std_logic_vector(8 downto 0);
+    signal y_div_shift_6: std_logic_vector(11 downto 0);
+    signal y_div_shift_4: std_logic_vector(9 downto 0);
 
     signal font_addr: std_logic_vector(10 downto 0);
     signal font_data: std_logic_vector(7 downto 0);
@@ -60,11 +60,11 @@ begin
     x_remain <= x(2 downto 0);
     y_remain <= y(3 downto 0);
     x_div <= x(9 downto 3);
-    y_div <= y(8 downto 4);
+    y_div <= y(9 downto 4);
     y_div_shift_6(5 downto 0) <= (others => '0');
-    y_div_shift_6(10 downto 6) <= y_div;
+    y_div_shift_6(11 downto 6) <= y_div;
     y_div_shift_4(3 downto 0) <= (others => '0');
-    y_div_shift_4(8 downto 4) <= y_div;
+    y_div_shift_4(9 downto 4) <= y_div;
     now_char <= data(to_integer(unsigned(x_div)+unsigned(y_div_shift_6)+unsigned(y_div_shift_4)));
 
     font_addr(3 downto 0) <= y_remain;

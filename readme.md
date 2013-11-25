@@ -15,6 +15,8 @@
 - 0x80000010 : UART
 - 0x80000014 : UART control: 可读时第0位为1，可写时第1位为1
 
+- 0x9000xxyy : VGA x行y列
+
 ## How to run
 
 - 安装ghdl和gtkwave
