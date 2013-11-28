@@ -68,6 +68,8 @@ architecture arch of Memory is
     signal s_dyp_value0: std_logic_vector(3 downto 0) := (others => '0');
     signal s_dyp_value1: std_logic_vector(3 downto 0) := (others => '0');
 
+    signal s_VGA_set: std_logic := '0';
+
     signal ram_choice: std_logic := '0'; -- 0: baseram
 begin
 
@@ -94,6 +96,7 @@ begin
       UART_DATA_SEND_STB <= '0';
       UART_DATA_RECV_ACK <= '0';
       VGA_set <= '0';
+      s_VGA_set <= '0';
     elsif rising_edge(clock) then
       case( state ) is
 
@@ -140,8 +143,9 @@ begin
               VGA_data <= MEM_data(6 downto 0);
               VGA_x <= ALU_output(14 downto 8);
               VGA_y <= ALU_output(4 downto 0);
-              VGA_set <= '1';
+              s_VGA_set <= '1';
             else
+              s_VGA_set <= '0';
               case( ALU_output ) is
                 when x"80000000" => s_dyp_value0 <= MEM_data(3 downto 0);
                 when x"80000004" => s_dyp_value1 <= MEM_data(3 downto 0);
@@ -171,6 +175,7 @@ begin
           s_REG_write_addr <= in_REG_write_addr;
       
         when s2 =>
+          VGA_set <= s_VGA_set;
           if s_use_me_as_output = '1' then
             MEM_output <= s_output;
           else

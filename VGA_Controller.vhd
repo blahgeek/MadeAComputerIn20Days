@@ -28,13 +28,12 @@ component font_rom port(
    );
 end component;
 
-    type data_type is array(0 to 2439) of std_logic_vector(6 downto 0);
+    type data_type is array(0 to 2399) of std_logic_vector(6 downto 0);
 
     signal data: data_type:= (others => (others => '0'));
 
 --VGA
-    signal CLK25M   : std_logic := '0';
-    signal CLK  : std_logic := '0';
+    signal not_CLK  : std_logic := '0';
     signal rt,gt,bt : std_logic_vector (2 downto 0);
     signal x        : std_logic_vector (9 downto 0);
     signal y        : std_logic_vector (9 downto 0);
@@ -53,9 +52,12 @@ end component;
     signal font_data: std_logic_vector(7 downto 0);
 
     signal now_char: std_logic_vector(6 downto 0);
+
+    signal state : std_logic := '0';
     
 begin
 
+    not_CLK <= not CLK_in;
 
     x_remain <= x(2 downto 0);
     y_remain <= y(3 downto 0);
@@ -70,7 +72,7 @@ begin
     font_addr(3 downto 0) <= y_remain;
     font_addr(10 downto 4) <= now_char;
 
-    font0: font_rom port map(CLK_in, font_addr, font_data);
+    font0: font_rom port map(not_CLK, font_addr, font_data);
 
     in_y_shift_6(5 downto 0) <= (others => '0');
     in_y_shift_6(10 downto 6) <= in_y;
@@ -85,89 +87,51 @@ begin
         end if;
     end process;
 
-    process (CLK_in) begin
-        if rising_edge(CLK_in) then
-            CLK25M <= not CLK25M;
-        end if;
-    end process;
-
-    VGA_CLK <= CLK25M;
-    CLK <= CLK25M;
-    
-    process (CLK, reset)
-    begin
+    process (CLK_in, reset) begin
         if reset = '1' then
+            state <= '0';
             x <= (others => '0');
-        elsif rising_edge(CLK) then
-            if unsigned(x) = 799 then
-                x <= (others => '0');
-            else
-                x <= std_logic_vector(unsigned(x) + 1);
-            end if;
-        end if;
-    end process;
-
-     process (CLK, reset) begin
-        if reset = '1' then
             y <= (others => '0');
-        elsif rising_edge(CLK) then
-            if unsigned(x) = 799 then
-                if unsigned(y) = 524 then
-                    y <= (others => '0');
-                else
-                    y <= std_logic_vector(unsigned(y) + 1);
-                end if;
-            end if;
-        end if;
-     end process;
- 
-     process (CLK, reset)
-     begin
-          if reset = '1' then
-           hs <= '1';
-          elsif rising_edge(CLK) then
-            if unsigned(x) >= 662 and unsigned(x) < 755 then
-                hs <= '0';
-            else
-                hs <= '1';
-            end if;
-          end if;
-     end process;
- 
-     process (CLK, reset)
-     begin
-        if reset = '1' then
+            hs <= '1';
             vs <= '1';
-        elsif rising_edge(CLK) then
-            if unsigned(y) >= 491 and unsigned(y) < 493 then
-                vs <= '0';
-            else
-                vs <= '1';
-            end if;
-        end if;
-     end process;
+        elsif rising_edge(CLK_in) then
+            case( state ) is
+                when '0' =>
+                    if unsigned(x) = 799 then
+                        x <= (others => '0');
+                        if unsigned(y) = 524 then
+                            y <= (others => '0');
+                        else
+                            y <= std_logic_vector(unsigned(y) + 1);
+                        end if;
+                    else
+                        x <= std_logic_vector(unsigned(x) + 1);
+                    end if;
+                    state <= '1';
 
-    process(x,y)
-    begin
-        if unsigned(x) > 640 or unsigned(y) > 480 then
-            rt <= (others=>'0');
-            gt <= (others=>'0');
-            bt <= (others=>'0');
-        else
-            rt <= (others => font_data(to_integer(7-unsigned(x_remain))));
-            gt <= (others => font_data(to_integer(7-unsigned(x_remain))));
-            bt <= (others => font_data(to_integer(7-unsigned(x_remain))));
-            -- rt <= (others => '1');
-            -- if unsigned(y) < 10 or unsigned(y) > 470 then
-            --     gt <= (others => '1');
-            -- else
-            --     gt <= (others => '0');
-            -- end if;
-            -- if unsigned(x) < 10 or unsigned(x) > 630 then
-            --     bt <= (others => '1');
-            -- else
-            --     bt <= (others => '0');
-            -- end if;
+                when others =>
+                    if unsigned(x) >= 662 and unsigned(x) < 755 then
+                        hs <= '0';
+                    else
+                        hs <= '1';
+                    end if;
+                    if unsigned(y) >= 491 and unsigned(y) < 493 then
+                        vs <= '0';
+                    else
+                        vs <= '1';
+                    end if;
+                    if unsigned(x) > 640 or unsigned(y) > 480 then
+                        rt <= (others=>'0');
+                        gt <= (others=>'0');
+                        bt <= (others=>'0');
+                    else
+                        rt <= (others => font_data(to_integer(7-unsigned(x_remain))));
+                        gt <= (others => font_data(to_integer(7-unsigned(x_remain))));
+                        -- bt <= (others => font_data(to_integer(7-unsigned(x_remain))));
+                        bt <= (others => '1');  -- so that it's not black... = =
+                    end if;
+                    state <= '0';
+            end case ;
         end if;
     end process;
 
