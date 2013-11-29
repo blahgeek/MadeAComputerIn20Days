@@ -38,20 +38,8 @@ end component;
     signal x        : std_logic_vector (9 downto 0);
     signal y        : std_logic_vector (9 downto 0);
 
-    signal in_y_shift_6: std_logic_vector(10 downto 0);
-    signal in_y_shift_4: std_logic_vector(8 downto 0);
-
-    signal x_div    : std_logic_vector(6 downto 0);
-    signal x_remain: std_logic_vector(2 downto 0);
-    signal y_div    : std_logic_vector(5 downto 0);
-    signal y_remain: std_logic_vector(3 downto 0);
-    signal y_div_shift_6: std_logic_vector(11 downto 0);
-    signal y_div_shift_4: std_logic_vector(9 downto 0);
-
     signal font_addr: std_logic_vector(10 downto 0);
     signal font_data: std_logic_vector(7 downto 0);
-
-    signal now_char: std_logic_vector(6 downto 0);
 
     signal state : std_logic := '0';
     
@@ -59,31 +47,16 @@ begin
 
     not_CLK <= not CLK_in;
 
-    x_remain <= x(2 downto 0);
-    y_remain <= y(3 downto 0);
-    x_div <= x(9 downto 3);
-    y_div <= y(9 downto 4);
-    y_div_shift_6(5 downto 0) <= (others => '0');
-    y_div_shift_6(11 downto 6) <= y_div;
-    y_div_shift_4(3 downto 0) <= (others => '0');
-    y_div_shift_4(9 downto 4) <= y_div;
-    now_char <= data(to_integer(unsigned(x_div)+unsigned(y_div_shift_6)+unsigned(y_div_shift_4)));
-
-    font_addr(3 downto 0) <= y_remain;
-    font_addr(10 downto 4) <= now_char;
+    font_addr(3 downto 0) <= y(3 downto 0);
+    font_addr(10 downto 4) <= data(to_integer(unsigned(x(9 downto 3))+unsigned(y(9 downto 4))*80));
 
     font0: font_rom port map(not_CLK, font_addr, font_data);
-
-    in_y_shift_6(5 downto 0) <= (others => '0');
-    in_y_shift_6(10 downto 6) <= in_y;
-    in_y_shift_4(3 downto 0) <= (others => '0');
-    in_y_shift_4(8 downto 4) <= in_y;
 
     process (in_set, reset) begin
         if reset = '1' then
             data <= (others => (others => '0'));
         elsif rising_edge(in_set) then
-            data(to_integer(unsigned(in_x)+unsigned(in_y_shift_6)+unsigned(in_y_shift_4))) <= in_data;
+            data(to_integer(unsigned(in_x)+unsigned(in_y)*80)) <= in_data;
         end if;
     end process;
 
@@ -125,9 +98,8 @@ begin
                         gt <= (others=>'0');
                         bt <= (others=>'0');
                     else
-                        rt <= (others => font_data(to_integer(7-unsigned(x_remain))));
-                        gt <= (others => font_data(to_integer(7-unsigned(x_remain))));
-                        -- bt <= (others => font_data(to_integer(7-unsigned(x_remain))));
+                        rt <= (others => font_data(to_integer(7-unsigned(x(2 downto 0)))));
+                        gt <= (others => font_data(to_integer(7-unsigned(x(2 downto 0)))));
                         bt <= (others => '1');  -- so that it's not black... = =
                     end if;
                     state <= '0';
