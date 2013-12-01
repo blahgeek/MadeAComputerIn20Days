@@ -55,6 +55,12 @@ entity FetcherAndRegister is
   type state_type is (s0, s1, s2, s3);
   signal state: state_type := s0;
 
+  type regs is array (0 to 31) of STD_LOGIC_VECTOR(31 downto 0);
+  signal REGS_C0: regs:= (others => (others => '0'));
+
+  signal s_numA_to_c0: std_logic := '0';
+  signal s_numA_to_c0_addr: std_logic_vector(4 downto 0);
+
   signal s_REG_clock: std_logic := '0';
   signal s_REG_write: std_logic;
   signal s_REG_read_number_B: std_logic_vector(4 downto 0) := (others => '0');
@@ -120,6 +126,8 @@ begin
       MEM_read <= '0';
       MEM_write <= '0';
       REG_write <= '0';
+      s_numA_to_c0 <= '0';
+      REGS_C0 <= (others => (others => '0'));
       hold <= '0';
       s_last_last_write_reg <= (others => '0');
       s_last_write_reg <= (others => '0');
@@ -129,12 +137,57 @@ begin
       case( state ) is
       
         when s0 => -- state: read instruction
-          
-          if s_data(31 downto 26) = "000000" then -- R type
+
+          if s_data(31 downto 26) = "010000" then -- super command!
             s_jump_true_if_ne <= '0';
             s_jump_true_if_eq <= '0';
+            outbuffer_MEM_read <= '0';
+            outbuffer_MEM_write <= '0';
+            if s_data(5 downto 0) = "011000" then -- eret
+              s_numA_to_c0 <= '0';
+              numA_from_reg <= '0';
+              numB_from_reg <= '0';
+              outbuffer_ALU_operator <= "1111";
+              outbuffer_REG_write <= '0';
+              REGS_C0(12)(1) <= '0';
+              outbuffer_JUMP_true <= '1';
+              outbuffer_JUMP_addr <= REGS_C0(14); -- EPC
+            elsif s_data(5 downto 0) = "000000" then --mfc0/mtc0
+              numB_from_reg <= '0';
+              outbuffer_ALU_operator <= "1111";
+              outbuffer_JUMP_true <= '0';
+              if s_data(25 downto 21) = "00000" then --mfc0
+                numA_from_reg <= '0';
+                outbuffer_ALU_numA <= REGS_C0(to_integer(unsigned(s_data(15 downto 11))));
+                outbuffer_REG_write <= '1';
+                outbuffer_REG_write_addr <= s_data(20 downto 16);
+              else  -- mtc0
+                s_numA_to_c0 <= '1';
+                s_numA_to_c0_addr <= s_data(15 downto 11);
+                s_REG_read_number_A <= s_data(20 downto 16);
+                outbuffer_REG_write <= '0';
+              end if;
+            end if;
 
-            if s_data(5) = '1' then -- 3 reg type
+          elsif s_data(31 downto 26) = "000000" then -- R type
+            s_jump_true_if_ne <= '0';
+            s_jump_true_if_eq <= '0';
+            s_numA_to_c0 <= '0';
+
+            if s_data(5 downto 0) = "001100" then  -- SYSCALL!
+              numA_from_reg <= '0';
+              numB_from_reg <= '0';
+              outbuffer_ALU_operator <= "1111";
+              outbuffer_MEM_read <= '0';
+              outbuffer_MEM_write <= '0';
+              outbuffer_REG_write <= '0';
+              REGS_C0(14) <= PC; -- eret
+              REGS_C0(13)(6 downto 2) <= "01000";
+              REGS_C0(12)(1) <= '1';
+              outbuffer_JUMP_true <= '1'; --jump!
+              outbuffer_JUMP_addr <= std_logic_vector(unsigned(REGS_C0(15))+384);  -- dont ask me why
+
+            elsif s_data(5) = '1' then -- 3 reg type
               numA_from_reg <= '1';
               s_REG_read_number_A <= s_data(25 downto 21); -- rs
               numB_from_reg <= '1';
@@ -196,6 +249,7 @@ begin
             end if;
 
           elsif s_data(31 downto 28) = "0000" then -- J type
+            s_numA_to_c0 <= '0';
             s_jump_true_if_ne <= '0';
             s_jump_true_if_eq <= '0';
             s_jump_addr_from_reg_a <= '0';
@@ -218,6 +272,7 @@ begin
             end if;
 
           else -- I type
+            s_numA_to_c0 <= '0';
             if s_data(31 downto 30) = "10" then -- lw or sw
               numA_from_reg <= '1';
               s_REG_read_number_A <= s_data(25 downto 21);
@@ -372,6 +427,10 @@ begin
               MEM_data <= s_REG_read_value_B;
             else
               MEM_data <= outbuffer_MEM_data;
+            end if;
+
+            if s_numA_to_c0 = '1' then
+              REGS_C0(to_integer(unsigned(s_numA_to_c0_addr))) <= s_REG_read_value_A;
             end if;
 
             if s_jump_addr_from_reg_a = '1' then

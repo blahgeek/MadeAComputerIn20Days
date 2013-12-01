@@ -1,5 +1,4 @@
 NET "reset" LOC = T1;
-PIN "wiz0/clkout1_buf.O" CLOCK_DEDICATED_ROUTE = FALSE;
 NET "CLK_From_Key" LOC = T3;
 NET "CLK11M0592" LOC = U25;
 NET "CLK50M" LOC = U26;
