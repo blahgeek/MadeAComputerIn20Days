@@ -97,6 +97,9 @@ entity FetcherAndRegister is
   signal s_last_last_write_reg: std_logic_vector(4 downto 0);
   signal s_last_write_reg: std_logic_vector(4 downto 0);
 
+  -- skip one instruction, used after syscall, exception etc
+  signal s_skip_next, s_skip_this: std_logic:= '0';
+
 begin
 
   with PC(22) select
@@ -131,6 +134,8 @@ begin
       hold <= '0';
       s_last_last_write_reg <= (others => '0');
       s_last_write_reg <= (others => '0');
+      s_skip_this <= '0';
+      s_skip_next <= '0';
 
     elsif rising_edge(clock) then
 
@@ -186,6 +191,7 @@ begin
               REGS_C0(12)(1) <= '1';
               outbuffer_JUMP_true <= '1'; --jump!
               outbuffer_JUMP_addr <= std_logic_vector(unsigned(REGS_C0(15))+384);  -- dont ask me why
+              s_skip_next <= '1'; -- there's no delay slot for syscall
 
             elsif s_data(5) = '1' then -- 3 reg type
               numA_from_reg <= '1';
@@ -403,7 +409,7 @@ begin
             s_last_write_reg <= "00000";
           end if;
 
-          if hold = '1' then
+          if hold = '1' or s_skip_this = '1' then
             ALU_operator <= "1111";
             ALU_numA <= (others => '0');
             ALU_numB <= (others => '0');
@@ -411,7 +417,13 @@ begin
             MEM_read <= '0';
             MEM_write <= '0';
             REG_write <= '0';
+            s_skip_next <= '0';
+            s_skip_this <= '0';
           else
+            if s_skip_next = '1' then
+              s_skip_next <= '0';
+              s_skip_this <= '1';
+            end if;
             if numA_from_reg = '1' then 
               ALU_numA <= s_REG_read_value_A;
             else

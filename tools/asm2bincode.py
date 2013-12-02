@@ -70,13 +70,13 @@ INSTRUCTIONS = {
 
 def parse_line(s):
     global count
-    s = s.partition(';')[0].strip()  # comment
+    s = s.partition('#')[0].strip()  # comment
     if not len(s): return '';
     if s.endswith(':'):  # it's a mark
         points[s[:-1]] = count
         return ''
     inst, nouse, s = s.partition(' ')
-    s = s.replace(',','').replace('\t','')
+    s = s.replace(',',' ').replace('\t',' ').replace('(', ' ').replace(')', ' ')
     parts = filter(lambda x: len(x), s.split(' '))
     format, code = INSTRUCTIONS[inst]
     for i, x in enumerate(filter(lambda t: len(t), format.split(' '))):
