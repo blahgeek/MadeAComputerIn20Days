@@ -5,6 +5,7 @@ use ieee.numeric_std.all;
 entity FetcherAndRegister is
   port (
     PC: in std_logic_vector(31 downto 0);
+    RAM_select: in std_logic;
     clock: in std_logic;
     reset: in std_logic;
 
@@ -104,7 +105,7 @@ entity FetcherAndRegister is
 
 begin
 
-  with PC(22) select
+  with RAM_select select
     s_data <= BASERAM_data when '0',
               EXTRAM_data when others;
 

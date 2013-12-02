@@ -1,11 +1,13 @@
 nop
-ori $1 $0 24
-mtc0 $1 $15
-here:
-syscall
+lui $1 0xbfd0
+ori $10 $0 0x3
+begin:
+ori $11 $0 0
+loop:
+addiu $11 $11 1
+bne $11 $10 loop
 nop
-j here
-syscall_here:
 addi $2 $2 1
-eret
+sw $2 0($1)
+j begin
 nop

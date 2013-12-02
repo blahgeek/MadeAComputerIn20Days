@@ -11,6 +11,7 @@ architecture arch of FetcherAndRegisterTestbench is
 
 component FetcherAndRegister port (
     PC: in std_logic_vector(31 downto 0);
+    RAM_select: in std_logic;
     clock: in std_logic;
     reset: in std_logic;
     hold: buffer std_logic:= '0';
@@ -65,6 +66,7 @@ begin
 
     instance: FetcherAndRegister port map (
         PC => x"0000001c", 
+        RAM_select => '0',
         clock => clock, 
         reset => '0',
         hold=>open,
@@ -94,7 +96,7 @@ begin
 
     process begin
         BACK_REG_write <= '1';
-        BACK_REG_write_addr <= "00001"; -- R31
+        BACK_REG_write_addr <= "01010"; -- 10
         BACK_REG_write_data <= x"DEADBEEF";
         data <= "01000000100000010111100000000000"; -- mtc
         wait for clk_period/2;
@@ -111,7 +113,7 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '0';
-        data(31 downto 0) <= "00000000000000000000000000001100"; -- syscall
+        data(31 downto 0) <= "00010101011010101111111111111110"; -- bne 10 11
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

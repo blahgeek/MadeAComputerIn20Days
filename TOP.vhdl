@@ -52,6 +52,7 @@ architecture arch of TOP is
 
 component FetcherAndRegister port (
     PC: in std_logic_vector(31 downto 0);
+    RAM_select: in std_logic;
     clock: in std_logic;
     reset: in std_logic;
 
@@ -160,9 +161,15 @@ component PCdecider port (
     BASERAM_addr: inout std_logic_vector(19 downto 0);
     EXTRAM_addr: inout std_logic_vector(19 downto 0);
 
+    TLB_virt: out std_logic_vector(19 downto 0);
+    TLB_real: in std_logic_vector(19 downto 0);
+    RAM_select: out std_logic;
+
     PC: buffer std_logic_vector(31 downto 0)
   ) ;
 end component; -- PCdecider
+
+signal A_RAM_SELECT : std_logic;
 
 component UART is
     Generic (
@@ -182,6 +189,33 @@ component UART is
             RX                  :   in      std_logic  -- Async Receive
          );
 end component;
+
+component TLB is
+  port (
+    clock: in std_logic;
+    reset: in std_logic;
+
+    instruction_virt_addr: in std_logic_vector(19 downto 0);
+    instruction_real_addr: out std_logic_vector(19 downto 0);
+    instruction_bad: out std_logic:= '0';
+
+    data_virt_addr: in std_logic_vector(19 downto 0);
+    data_real_addr: out std_logic_vector(19 downto 0);
+    data_bad: out std_logic:= '0';
+
+    set_do: in std_logic;
+    set_index: in std_logic_vector(2 downto 0);
+    set_entry: in std_logic_vector(63 downto 0)
+  ) ;
+end component ; -- TLB
+
+    signal TLB_clock: std_logic;
+    signal instruction_virt_addr, instruction_real_addr: std_logic_vector(19 downto 0);
+    signal data_virt_addr, data_real_addr: std_logic_vector(19 downto 0);
+    signal instruction_bad, data_bad: std_logic;
+    signal TLB_set_do: std_logic;
+    signal TLB_set_index: std_logic_vector(2 downto 0);
+    signal TLB_set_entry: std_logic_vector(63 downto 0);
 
 -- component VGA_Controller is
 --     port (
@@ -276,13 +310,21 @@ begin
                       not CLK_From_Key when "010",
                       clk25M when others;
 
+    TLB_clock <= not real_clock;
+
     BaseRamOE <= '0';
     BaseRamCE <= '0';
     ExtRamCE <= '0';
     ExtRamOE <= '0';
 
+tlb0: TLB port map (
+    TLB_clock, real_reset,
+    instruction_virt_addr, instruction_real_addr, instruction_bad,
+    data_virt_addr, data_real_addr, data_bad,
+    TLB_set_do, TLB_set_index, TLB_set_entry);
+
 FetcherAndRegister0: FetcherAndRegister port map (
-    PC, real_clock, real_reset, A_HOLD,
+    PC, A_RAM_SELECT, real_clock, real_reset, A_HOLD,
     C_REG_write,
     C_REG_write_addr,
     MEM_output, -- reg write data
@@ -324,6 +366,8 @@ PC0: PCdecider port map(
     JUMP_true,
     JUMP_addr,
     BaseRamAddr, ExtRamAddr,
+    instruction_virt_addr, instruction_real_addr,
+    A_RAM_SELECT,
     PC);
 
 end arch;

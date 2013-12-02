@@ -116,13 +116,13 @@ begin
       
         when s1 => -- start
           if MEM_read = '1' then 
-            case(ALU_output) is
-              when x"80000014" =>
+            case(ALU_output(27 downto 0)) is
+              when x"FD003FC" => -- uart control
                 s_use_me_as_output <= '1';
                 s_output(31 downto 2) <= (others => '0');
                 s_output(1) <= UART_DATA_RECV_STB; -- can read
                 s_output(0) <= not UART_DATA_SEND_STB; -- can write
-              when x"80000010" =>
+              when x"FD003F8" => -- uart
                 s_use_me_as_output <= '1';
                 s_output(31 downto 8) <= (others => '0');
                 s_output(7 downto 0) <= UART_DATA_RECV;
@@ -139,18 +139,18 @@ begin
           elsif MEM_write = '1' then
             s_output <= MEM_data;
             s_use_me_as_output <= '1';
-            if ALU_output(31 downto 28) = x"9" then
+            if ALU_output(31 downto 28) = x"f" then
               VGA_data <= MEM_data(6 downto 0);
               VGA_x <= ALU_output(14 downto 8);
               VGA_y <= ALU_output(4 downto 0);
               s_VGA_set <= '1';
             else
               s_VGA_set <= '0';
-              case( ALU_output ) is
-                when x"80000000" => s_dyp_value0 <= MEM_data(3 downto 0);
-                when x"80000004" => s_dyp_value1 <= MEM_data(3 downto 0);
-                when x"80000008" => LED <= MEM_data(15 downto 0);
-                when x"80000010" =>
+              case( ALU_output(27 downto 0) ) is
+                when x"FD00000" => s_dyp_value0 <= MEM_data(3 downto 0);
+                when x"FD00004" => s_dyp_value1 <= MEM_data(3 downto 0);
+                when x"FD00008" => LED <= MEM_data(15 downto 0);
+                when x"FD003F8" =>
                   UART_DATA_SEND <= MEM_data(7 downto 0);
                   UART_DATA_SEND_STB <= '1';
                 when others => -- general

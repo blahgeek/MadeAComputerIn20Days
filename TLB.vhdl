@@ -46,7 +46,15 @@ begin
             instruction_bad <= '0';
             instruction_real_addr <= (others => '0');
         elsif rising_edge(clock) then
-            if instruction_virt_addr(0) = '0' then
+            if instruction_virt_addr(19 downto 17) = "100" then --kseg0
+                instruction_real_addr(18 downto 0) <= instruction_virt_addr(18 downto 0);
+                instruction_real_addr(19) <= '0';
+                instruction_bad <= '0';
+            elsif instruction_virt_addr(19 downto 17) = "101" then --kseg1
+                instruction_real_addr(16 downto 0) <= instruction_virt_addr(16 downto 0);
+                instruction_real_addr(19 downto 17) <= "000";
+                instruction_bad <= '0';
+            elsif instruction_virt_addr(0) = '0' then
                 if instruction_virt_addr(19 downto 1) = data(0)(62 downto 44) and data(0)(23) = '1' then
                     instruction_real_addr <= data(0)(43 downto 24);
                     instruction_bad <= '0';
@@ -114,7 +122,15 @@ begin
             data_bad <= '0';
             data_real_addr <= (others => '0');
         elsif rising_edge(clock) then
-            if data_virt_addr(0) = '0' then
+            if data_virt_addr(19 downto 17) = "100" then --kseg0
+                data_real_addr(18 downto 0) <= data_virt_addr(18 downto 0);
+                data_real_addr(19) <= '0';
+                data_bad <= '0';
+            elsif data_virt_addr(19 downto 17) = "101" then --kseg1
+                data_real_addr(16 downto 0) <= data_virt_addr(16 downto 0);
+                data_real_addr(19 downto 17) <= "000";
+                data_bad <= '0';
+            elsif data_virt_addr(0) = '0' then
                 if data_virt_addr(19 downto 1) = data(0)(62 downto 44) and data(0)(23) = '1' then
                     data_real_addr <= data(0)(43 downto 24);
                     data_bad <= '0';
