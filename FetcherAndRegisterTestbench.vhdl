@@ -94,12 +94,9 @@ begin
 
     process begin
         BACK_REG_write <= '1';
-        BACK_REG_write_addr <= "11111"; -- R31
+        BACK_REG_write_addr <= "00001"; -- R31
         BACK_REG_write_data <= x"DEADBEEF";
-        data(31 downto 26) <= "001000"; -- addi
-        data(25 downto 21) <= "00011";
-        data(20 downto 16) <= "00011";
-        data(15 downto 0) <= "1111111111111111";
+        data <= "01000000100000010111100000000000"; -- mtc
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;
@@ -114,10 +111,7 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '0';
-        data(31 downto 26) <= "000100"; -- beq
-        data(25 downto 21) <= "00011";
-        data(20 downto 16) <= "00011";
-        data(15 downto 0) <= "1111111111111111";
+        data(31 downto 0) <= "00000000000000000000000000001100"; -- syscall
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

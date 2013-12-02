@@ -175,6 +175,12 @@ begin
                 s_REG_read_number_A <= s_data(20 downto 16);
                 outbuffer_REG_write <= '0';
               end if;
+            else  -- tlbwi  TODO
+              numA_from_reg <= '0';
+              numB_from_reg <= '0';
+              outbuffer_ALU_operator <= "1111";
+              outbuffer_REG_write <= '0';
+              outbuffer_JUMP_true <= '0';
             end if;
 
           elsif s_data(31 downto 26) = "000000" then -- R type
@@ -183,6 +189,8 @@ begin
             s_numA_to_c0 <= '0';
 
             if s_data(5 downto 0) = "001100" then  -- SYSCALL!
+              numA_from_reg <= '0';
+              numB_from_reg <= '0';
               s_exception_cause <= "01000"; -- syscall only
               s_exception <= '1';
 
@@ -289,7 +297,7 @@ begin
               else  -- sw
                 outbuffer_MEM_read <= '0';
                 outbuffer_MEM_write <= '1'; -- write memory!
-                mem_data_from_reg_B <= '1'; -- read reg B to mem_addr_or_data_from_reg_B
+                mem_data_from_reg_B <= '1'; -- read reg B to mem_data_from_reg_B
                 s_REG_read_number_B <= s_data(20 downto 16);
                 outbuffer_REG_write <= '0'; -- not write register
               end if;
@@ -389,11 +397,16 @@ begin
           end if;
           s_REG_write <= '0'; -- write already done
 
+          state <= s2;
+
+        when s2 => 
+          s_last_last_write_reg <= s_last_write_reg;
+
           if s_exception = '1' then
 
             s_exception <= '0';
 
-            REGS_C0(14) <= PC; -- eret
+            REGS_C0(14) <= std_logic_vector(unsigned(PC)+4); -- eret
             REGS_C0(13)(6 downto 2) <= s_exception_cause;
             REGS_C0(12)(1) <= '1';
             numA_from_reg <= '0';
@@ -405,16 +418,12 @@ begin
             outbuffer_MEM_write <= '0';
             outbuffer_REG_write <= '0';
             outbuffer_JUMP_true <= '1'; --jump!
-            outbuffer_JUMP_addr <= std_logic_vector(unsigned(REGS_C0(15))+384);  -- dont ask me why
+            outbuffer_JUMP_addr <= std_logic_vector(unsigned(REGS_C0(15))+0);  -- dont ask me why
 
             s_skip_next <= '1'; -- there's no delay slot for exception
 
           end if;
 
-          state <= s2;
-
-        when s2 => 
-          s_last_last_write_reg <= s_last_write_reg;
           state <= s3;
       
         when s3 =>  -- state: now we got data from register
@@ -482,6 +491,9 @@ begin
             MEM_write <= outbuffer_MEM_write;
             REG_write <= outbuffer_REG_write;
             REG_write_addr <= outbuffer_REG_write_addr;
+
+            s_REG_read_number_A <= (others => '0');
+            s_REG_read_number_B <= (others => '0');
 
           end if;
 
