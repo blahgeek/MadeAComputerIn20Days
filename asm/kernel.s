@@ -311,32 +311,13 @@ addtlb:
 
 	nop
 	jal reads1
-	sll $s1, $s1, 13
 	mtc0 $s1, $10	#CPR EntryHi
 
 	jal reads1
-	sll $s1, $s1, 6
-
-	jal rtest
-	lui $s0, 0xBFD0
-	lw $s3, 0x3F8($s0)
-	li $s2, 0xFF
-	and $s3, $s3, $s2
-	sll $s3, $s3, 1
-	or $s1, $s1, $s3
-	mtc0 $s1, $2 	#CPR EntryLo0
+	mtc0 $s1, $2  # lo1
 
 	jal reads1
-	sll $s1, $s1, 6
-
-	jal rtest
-	lui $s0, 0xBFD0
-	lw $s3, 0x3F8($s0)
-	li $s2, 0xFF
-	and $s3, $s3, $s2
-	sll $s3, $s3, 1
-	or $s1, $s1, $s3
-	mtc0 $s1, $3	#CPR EntryLo1
+	mtc0 $s1, $3  # lo2
 
 	tlbwi
 
