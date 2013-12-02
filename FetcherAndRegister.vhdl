@@ -275,6 +275,7 @@ begin
             s_jump_true_if_ne <= '0';
             s_jump_true_if_eq <= '0';
             s_jump_addr_from_reg_a <= '0';
+            numA_from_reg <= '0';
             outbuffer_ALU_numA <= PC;
             numB_from_reg <= '0';
             outbuffer_ALU_numB(3 downto 0) <= "1000"; -- 8
