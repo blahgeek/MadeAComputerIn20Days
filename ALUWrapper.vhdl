@@ -12,6 +12,10 @@ entity ALUWrapper is
     ALU_numB: in std_logic_vector(31 downto 0) ;
 
     ALU_output: out std_logic_vector(31 downto 0) := (others => '0');
+    ALU_output_after_TLB: out std_logic_vector(31 downto 0) := (others => '0');
+
+    TLB_virt: out std_logic_vector(19 downto 0);
+    TLB_real: in std_logic_vector(19 downto 0);
 
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
@@ -77,12 +81,17 @@ begin
 
                     state <= s1;
 
-                when s1 => state <= s2;
+                when s1 =>
+                    TLB_virt <= c(31 downto 12);
+                    state <= s2;
+
                 when s2 => state <= s3;
             
                 when s3 =>
 
                     ALU_output <= c;
+                    ALU_output_after_TLB(31 downto 12) <= TLB_real;
+                    ALU_output_after_TLB(11 downto 0) <= c(11 downto 0);
                     MEM_write <= s_MEM_write;
                     MEM_read <= s_MEM_read;
                     MEM_data <= s_MEM_data;

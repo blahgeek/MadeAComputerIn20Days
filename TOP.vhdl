@@ -90,6 +90,10 @@ component ALUWrapper port (
     ALU_numB: in std_logic_vector(31 downto 0) ;
 
     ALU_output: out std_logic_vector(31 downto 0) := (others => '0');
+    ALU_output_after_TLB: out std_logic_vector(31 downto 0) := (others => '0');
+
+    TLB_virt: out std_logic_vector(19 downto 0);
+    TLB_real: in std_logic_vector(19 downto 0);
 
     -- forward
     in_MEM_read: in std_logic ;
@@ -111,6 +115,7 @@ component Memory port (
     reset: in std_logic;
 
     ALU_output: in std_logic_vector(31 downto 0);
+    ALU_output_after_TLB: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
     MEM_data: in std_logic_vector(31 downto 0);
@@ -252,6 +257,7 @@ end component ; -- TLB
     signal ALU_numA: std_logic_vector(31 downto 0) := (others => '0');
     signal ALU_numB: std_logic_vector(31 downto 0) := (others => '0');
     signal ALU_output: std_logic_vector(31 downto 0) := (others => '0');
+    signal ALU_output_after_TLB: std_logic_vector(31 downto 0) := (others => '0');
 
     signal JUMP_true: std_logic := '0'; 
     signal JUMP_addr: std_logic_vector(31 downto 0) := (others => '0'); 
@@ -338,7 +344,8 @@ FetcherAndRegister0: FetcherAndRegister port map (
 
 ALUWrapper0: ALUWrapper port map (
     real_clock, real_reset,
-    ALU_operator, ALU_numA, ALU_numB, ALU_output,
+    ALU_operator, ALU_numA, ALU_numB, ALU_output, ALU_output_after_TLB,
+    data_virt_addr, data_real_addr,
     A_MEM_read, A_MEM_write, 
     A_MEM_data, 
     A_REG_write, A_REG_write_addr,
@@ -348,7 +355,7 @@ ALUWrapper0: ALUWrapper port map (
 
 Mem0: Memory port map (
     real_clock, real_reset,
-    ALU_output, B_MEM_read, B_MEM_write,
+    ALU_output, ALU_output_after_TLB, B_MEM_read, B_MEM_write,
     B_MEM_data,
     MEM_output, 
     B_REG_write, B_REG_write_addr, 

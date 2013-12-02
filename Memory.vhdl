@@ -8,6 +8,7 @@ entity Memory is
     reset: in std_logic;
 
     ALU_output: in std_logic_vector(31 downto 0);
+    ALU_output_after_TLB: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
     MEM_data: in std_logic_vector(31 downto 0);
@@ -116,7 +117,7 @@ begin
       
         when s1 => -- start
           if MEM_read = '1' then 
-            case(ALU_output(27 downto 0)) is
+            case(ALU_output_after_TLB(27 downto 0)) is
               when x"FD003FC" => -- uart control
                 s_use_me_as_output <= '1';
                 s_output(31 downto 2) <= (others => '0');
@@ -128,25 +129,25 @@ begin
                 s_output(7 downto 0) <= UART_DATA_RECV;
                 UART_DATA_RECV_ACK <= '1';
               when others =>
-                ram_choice <= ALU_output(22);
-                if ALU_output(22) = '0' then
-                  BASERAM_addr <= ALU_output(21 downto 2);
+                ram_choice <= ALU_output_after_TLB(22);
+                if ALU_output_after_TLB(22) = '0' then
+                  BASERAM_addr <= ALU_output_after_TLB(21 downto 2);
                 else
-                  EXTRAM_addr <= ALU_output(21 downto 2);
+                  EXTRAM_addr <= ALU_output_after_TLB(21 downto 2);
                 end if;
                 s_use_me_as_output <= '0'; -- use ram data as output
               end case;
           elsif MEM_write = '1' then
             s_output <= MEM_data;
             s_use_me_as_output <= '1';
-            if ALU_output(31 downto 28) = x"f" then
+            if ALU_output_after_TLB(31 downto 28) = x"f" then
               VGA_data <= MEM_data(6 downto 0);
-              VGA_x <= ALU_output(14 downto 8);
-              VGA_y <= ALU_output(4 downto 0);
+              VGA_x <= ALU_output_after_TLB(14 downto 8);
+              VGA_y <= ALU_output_after_TLB(4 downto 0);
               s_VGA_set <= '1';
             else
               s_VGA_set <= '0';
-              case( ALU_output(27 downto 0) ) is
+              case( ALU_output_after_TLB(27 downto 0) ) is
                 when x"FD00000" => s_dyp_value0 <= MEM_data(3 downto 0);
                 when x"FD00004" => s_dyp_value1 <= MEM_data(3 downto 0);
                 when x"FD00008" => LED <= MEM_data(15 downto 0);
@@ -155,11 +156,11 @@ begin
                   UART_DATA_SEND_STB <= '1';
                 when others => -- general
                   if ALU_output(22) = '0' then
-                    BASERAM_addr <= ALU_output(21 downto 2);
+                    BASERAM_addr <= ALU_output_after_TLB(21 downto 2);
                     BASERAM_data <= MEM_data;
                     BASERAM_WE <= '0';
                   else
-                    EXTRAM_addr <= ALU_output(21 downto 2);
+                    EXTRAM_addr <= ALU_output_after_TLB(21 downto 2);
                     EXTRAM_data <= MEM_data;
                     EXTRAM_WE <= '0';
                   end if;
