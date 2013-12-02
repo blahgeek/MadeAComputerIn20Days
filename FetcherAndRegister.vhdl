@@ -99,6 +99,8 @@ entity FetcherAndRegister is
 
   -- skip one instruction, used after syscall, exception etc
   signal s_skip_next, s_skip_this: std_logic:= '0';
+  signal s_exception: std_logic := '0';
+  signal s_exception_cause: std_logic_vector(4 downto 0):= (others => '0');
 
 begin
 
@@ -136,6 +138,7 @@ begin
       s_last_write_reg <= (others => '0');
       s_skip_this <= '0';
       s_skip_next <= '0';
+      s_exception <= '0';
 
     elsif rising_edge(clock) then
 
@@ -180,18 +183,8 @@ begin
             s_numA_to_c0 <= '0';
 
             if s_data(5 downto 0) = "001100" then  -- SYSCALL!
-              numA_from_reg <= '0';
-              numB_from_reg <= '0';
-              outbuffer_ALU_operator <= "1111";
-              outbuffer_MEM_read <= '0';
-              outbuffer_MEM_write <= '0';
-              outbuffer_REG_write <= '0';
-              REGS_C0(14) <= PC; -- eret
-              REGS_C0(13)(6 downto 2) <= "01000";
-              REGS_C0(12)(1) <= '1';
-              outbuffer_JUMP_true <= '1'; --jump!
-              outbuffer_JUMP_addr <= std_logic_vector(unsigned(REGS_C0(15))+384);  -- dont ask me why
-              s_skip_next <= '1'; -- there's no delay slot for syscall
+              s_exception_cause <= "01000"; -- syscall only
+              s_exception <= '1';
 
             elsif s_data(5) = '1' then -- 3 reg type
               numA_from_reg <= '1';
@@ -395,6 +388,29 @@ begin
             hold <= '0';
           end if;
           s_REG_write <= '0'; -- write already done
+
+          if s_exception = '1' then
+
+            s_exception <= '0';
+
+            REGS_C0(14) <= PC; -- eret
+            REGS_C0(13)(6 downto 2) <= s_exception_cause;
+            REGS_C0(12)(1) <= '1';
+            numA_from_reg <= '0';
+            numB_from_reg <= '0';
+            s_jump_true_if_eq <= '0';
+            s_jump_true_if_ne <= '0';
+            outbuffer_ALU_operator <= "1111";
+            outbuffer_MEM_read <= '0';
+            outbuffer_MEM_write <= '0';
+            outbuffer_REG_write <= '0';
+            outbuffer_JUMP_true <= '1'; --jump!
+            outbuffer_JUMP_addr <= std_logic_vector(unsigned(REGS_C0(15))+384);  -- dont ask me why
+
+            s_skip_next <= '1'; -- there's no delay slot for exception
+
+          end if;
+
           state <= s2;
 
         when s2 => 
