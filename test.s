@@ -1,13 +1,10 @@
 nop
-lui $1 0xbfd0
-ori $10 $0 0x3
-begin:
-ori $11 $0 0
-loop:
-addiu $11 $11 1
-bne $11 $10 loop
-nop
-addi $2 $2 1
-sw $2 0($1)
-j begin
+mtc0 $0 $0
+mtc0 $0 $10
+ori $1 $0 0xffff
+mtc0 $1 $2
+tlbwi
+sw $0 32($0)
+lui $2 0xbfd0
+sw $1 0($2)
 nop

@@ -9,6 +9,10 @@ entity FetcherAndRegister is
     clock: in std_logic;
     reset: in std_logic;
 
+    TLB_set_do: out std_logic := '0';
+    TLB_set_index: out std_logic_vector(2 downto 0);
+    TLB_set_entry: out std_logic_vector(63 downto 0);
+
     hold: buffer std_logic := '0';
 
     -- signals from 5th stage, for writing registers
@@ -103,6 +107,8 @@ entity FetcherAndRegister is
   signal s_exception: std_logic := '0';
   signal s_exception_cause: std_logic_vector(4 downto 0):= (others => '0');
 
+  signal s_TLB_set_do: std_logic := '0';
+
 begin
 
   with RAM_select select
@@ -140,6 +146,8 @@ begin
       s_skip_this <= '0';
       s_skip_next <= '0';
       s_exception <= '0';
+      s_TLB_set_do <= '0';
+      TLB_set_do <= '0';
 
     elsif rising_edge(clock) then
 
@@ -182,6 +190,12 @@ begin
               outbuffer_ALU_operator <= "1111";
               outbuffer_REG_write <= '0';
               outbuffer_JUMP_true <= '0';
+              TLB_set_index <= REGS_C0(0)(2 downto 0);
+              TLB_set_entry(63) <= '0';
+              TLB_set_entry(63 downto 44) <= REGS_C0(10)(19 downto 0);
+              TLB_set_entry(43 downto 22) <= REGS_C0(2)(21 downto 0);
+              TLB_set_entry(21 downto 0) <= REGS_C0(3)(21 downto 0);
+              s_TLB_set_do <= '1';
             end if;
 
           elsif s_data(31 downto 26) = "000000" then -- R type
@@ -398,6 +412,11 @@ begin
           end if;
           s_REG_write <= '0'; -- write already done
 
+          if s_TLB_set_do = '1' then
+            s_TLB_set_do <= '0';
+            TLB_set_do <= '1';
+          end if;
+
           state <= s2;
 
         when s2 => 
@@ -497,6 +516,8 @@ begin
             s_REG_read_number_B <= (others => '0');
 
           end if;
+
+          TLB_set_do <= '0';
 
           state <= s0;
       
