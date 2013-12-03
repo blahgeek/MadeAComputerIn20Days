@@ -1,23 +1,23 @@
 
 # 奋战20天，造台计算机
 
-现在仅使用ghdl仿真，暂未加入到ISE工程中。
+- MIPS32指令集（未支持浮点运算相关指令）
+- 支持中断、Syscall
+- 支持TLB（指令仅支持tlbwi）
 
 ## Memory Map
 
-- $sp(11101): start from 0x003f0000 
-(begin with `lui $sp 0x3f`(001111 00000 11101 00000000 0011 1111, 0x3c1d003f))
+- SRAM物理可用地址至 0x7fffff (8M)
+- Kernel在0x80000000（物理地址0x000000）
+- 中断处理代码在0x80004000（物理地址0x004000）
+- 用户代码一般放在物理地址0x400000以上（使用TLB）
+- $sp初始化至0x807FFFFF（物理地址0x7fffff）
 
-- SRAM: 0x00000000 ~ 0x003fffff
-- 0xBFD00000 (0x0FD): 数码管1
-- 0xBFD00004 : 数码管2
-- 0xBFD00008 : LED
-- 0xBFD003F8 : UART
-- 0xBFD003FC : UART control: 可读时第0位为1，可写时第1位为1
+- UART数据地址：0xBFD003F8（TLB转化后为0x1FD003F8）
+- UART控制地址：0xBFD003FC（TLB转化后为0x1FD003FC）
+- 数码管0、数码管1、LED地址分别为：0xBFD00000, 0xBFD00004, 0xBFD00008
 
-- 0x9000xxyy : VGA x行y列
-
-## How to run
+## How to simulate
 
 - 安装ghdl和gtkwave
 - make -f Registers.makefile （仿真RegistersTestbench，或者其他几个makefile)

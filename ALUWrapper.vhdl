@@ -16,6 +16,10 @@ entity ALUWrapper is
 
     TLB_virt: out std_logic_vector(19 downto 0);
     TLB_real: in std_logic_vector(19 downto 0);
+    TLB_bad: in std_logic;
+
+    TLB_exception: out std_logic:= '0';
+    TLB_exception_read_or_write: out std_logic:= '0'; -- 0 for read
 
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
@@ -52,6 +56,7 @@ end component;
     signal s_MEM_data: std_logic_vector(31 downto 0);
     signal s_REG_write: std_logic := '0';
     signal s_REG_write_addr: std_logic_vector(4 downto 0);
+    signal s_skip_one: std_logic:= '0';
 
 begin
 
@@ -65,6 +70,8 @@ begin
             MEM_write <= '0';
             REG_write <= '0';
             ALU_output <= (others => '0');
+            s_skip_one <= '0';
+            TLB_exception <= '0';
 
         elsif rising_edge(clock) then
             case( state ) is
@@ -89,14 +96,38 @@ begin
             
                 when s3 =>
 
-                    ALU_output <= c;
-                    ALU_output_after_TLB(31 downto 12) <= TLB_real;
-                    ALU_output_after_TLB(11 downto 0) <= c(11 downto 0);
-                    MEM_write <= s_MEM_write;
-                    MEM_read <= s_MEM_read;
-                    MEM_data <= s_MEM_data;
-                    REG_write <= s_REG_write;
-                    REG_write_addr <= s_REG_write_addr;
+                    if s_skip_one = '1' then
+                        MEM_read <= '0';
+                        MEM_write <= '0';
+                        REG_write <= '0';
+                        ALU_output <= (others => '0');
+                        TLB_exception <= '0';
+                        s_skip_one <= '0';
+                    else
+                        if TLB_bad = '1' and (s_MEM_write = '1' or s_MEM_read = '1') then
+                            MEM_read <= '0';
+                            MEM_write <= '0';
+                            REG_write <= '0';
+                            ALU_output <= (others => '0');
+                            s_skip_one <= '1'; -- skip next
+                            TLB_exception <= '1';
+                            if s_MEM_read = '1' then 
+                                TLB_exception_read_or_write <= '0';
+                            else
+                                TLB_exception_read_or_write <= '1';
+                            end if;
+                        else
+                            ALU_output <= c;
+                            ALU_output_after_TLB(31 downto 12) <= TLB_real;
+                            ALU_output_after_TLB(11 downto 0) <= c(11 downto 0);
+                            MEM_write <= s_MEM_write;
+                            MEM_read <= s_MEM_read;
+                            MEM_data <= s_MEM_data;
+                            REG_write <= s_REG_write;
+                            REG_write_addr <= s_REG_write_addr;
+                            TLB_exception <= '0';
+                        end if;
+                    end if;
 
                     state <= s0;
             

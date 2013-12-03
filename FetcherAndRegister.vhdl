@@ -13,6 +13,11 @@ entity FetcherAndRegister is
     TLB_set_index: out std_logic_vector(2 downto 0);
     TLB_set_entry: out std_logic_vector(63 downto 0);
 
+    TLB_data_exception: in std_logic;
+    TLB_data_exception_read_or_write: in std_logic;
+
+    TLB_instruction_bad: in std_logic;
+
     hold: buffer std_logic := '0';
 
     -- signals from 5th stage, for writing registers
@@ -155,96 +160,94 @@ begin
       
         when s0 => -- state: read instruction
 
-          if s_data(31 downto 26) = "010000" then -- super command!
-            s_jump_true_if_ne <= '0';
-            s_jump_true_if_eq <= '0';
-            outbuffer_MEM_read <= '0';
-            outbuffer_MEM_write <= '0';
-            if s_data(5 downto 0) = "011000" then -- eret
-              s_numA_to_c0 <= '0';
-              numA_from_reg <= '0';
-              numB_from_reg <= '0';
-              outbuffer_ALU_operator <= "1111";
-              outbuffer_REG_write <= '0';
-              REGS_C0(12)(1) <= '0';
-              outbuffer_JUMP_true <= '1';
-              outbuffer_JUMP_addr <= REGS_C0(14); -- EPC
-            elsif s_data(5 downto 0) = "000000" then --mfc0/mtc0
-              numB_from_reg <= '0';
-              outbuffer_ALU_operator <= "1111";
-              outbuffer_JUMP_true <= '0';
-              if s_data(25 downto 21) = "00000" then --mfc0
-                numA_from_reg <= '0';
-                outbuffer_ALU_numA <= REGS_C0(to_integer(unsigned(s_data(15 downto 11))));
-                outbuffer_REG_write <= '1';
-                outbuffer_REG_write_addr <= s_data(20 downto 16);
-              else  -- mtc0
-                s_numA_to_c0 <= '1';
-                s_numA_to_c0_addr <= s_data(15 downto 11);
-                s_REG_read_number_A <= s_data(20 downto 16);
-                outbuffer_REG_write <= '0';
-              end if;
-            else  -- tlbwi  TODO
-              numA_from_reg <= '0';
-              numB_from_reg <= '0';
-              outbuffer_ALU_operator <= "1111";
-              outbuffer_REG_write <= '0';
-              outbuffer_JUMP_true <= '0';
-              TLB_set_index <= REGS_C0(0)(2 downto 0);
-              TLB_set_entry(63) <= '0';
-              TLB_set_entry(63 downto 44) <= REGS_C0(10)(19 downto 0);
-              TLB_set_entry(43 downto 22) <= REGS_C0(2)(21 downto 0);
-              TLB_set_entry(21 downto 0) <= REGS_C0(3)(21 downto 0);
-              s_TLB_set_do <= '1';
+          if TLB_data_exception = '1' then 
+
+            s_exception <= '1';
+            if TLB_data_exception_read_or_write = '0' then --read
+              s_exception_cause <= "00010";  -- FIXME
+            else
+              s_exception_cause <= "00011"; -- FIXME
             end if;
 
-          elsif s_data(31 downto 26) = "000000" then -- R type
-            s_jump_true_if_ne <= '0';
-            s_jump_true_if_eq <= '0';
-            s_numA_to_c0 <= '0';
+          elsif TLB_instruction_bad = '1' then
 
-            if s_data(5 downto 0) = "001100" then  -- SYSCALL!
-              numA_from_reg <= '0';
-              numB_from_reg <= '0';
-              s_exception_cause <= "01000"; -- syscall only
-              s_exception <= '1';
+            s_exception <= '1';
+            s_exception_cause <= "00001";  -- FIXME
 
-            elsif s_data(5) = '1' then -- 3 reg type
-              numA_from_reg <= '1';
-              s_REG_read_number_A <= s_data(25 downto 21); -- rs
-              numB_from_reg <= '1';
-              s_REG_read_number_B <= s_data(20 downto 16); -- rt
-              outbuffer_JUMP_true <= '0';
+          else
+
+            if s_data(31 downto 26) = "010000" then -- super command!
+              s_jump_true_if_ne <= '0';
+              s_jump_true_if_eq <= '0';
               outbuffer_MEM_read <= '0';
               outbuffer_MEM_write <= '0';
-              outbuffer_REG_write <= '1';
-              outbuffer_REG_write_addr <= s_data(15 downto 11); -- rd
-              outbuffer_ALU_operator <= s_data(3 downto 0);
-            else
-              if s_data(2) = '1' then -- also 3 reg type
-                -- yes, rs and rt is swapped
-                numB_from_reg <= '1';
-                s_REG_read_number_B <= s_data(25 downto 21); -- rs
+              if s_data(5 downto 0) = "011000" then -- eret
+                s_numA_to_c0 <= '0';
+                numA_from_reg <= '0';
+                numB_from_reg <= '0';
+                outbuffer_ALU_operator <= "1111";
+                outbuffer_REG_write <= '0';
+                REGS_C0(12)(1) <= '0';
+                outbuffer_JUMP_true <= '1';
+                outbuffer_JUMP_addr <= REGS_C0(14); -- EPC
+              elsif s_data(5 downto 0) = "000000" then --mfc0/mtc0
+                numB_from_reg <= '0';
+                outbuffer_ALU_operator <= "1111";
+                outbuffer_JUMP_true <= '0';
+                if s_data(25 downto 21) = "00000" then --mfc0
+                  numA_from_reg <= '0';
+                  outbuffer_ALU_numA <= REGS_C0(to_integer(unsigned(s_data(15 downto 11))));
+                  outbuffer_REG_write <= '1';
+                  outbuffer_REG_write_addr <= s_data(20 downto 16);
+                else  -- mtc0
+                  s_numA_to_c0 <= '1';
+                  s_numA_to_c0_addr <= s_data(15 downto 11);
+                  s_REG_read_number_A <= s_data(20 downto 16);
+                  outbuffer_REG_write <= '0';
+                end if;
+              else  -- tlbwi  TODO
+                numA_from_reg <= '0';
+                numB_from_reg <= '0';
+                outbuffer_ALU_operator <= "1111";
+                outbuffer_REG_write <= '0';
+                outbuffer_JUMP_true <= '0';
+                TLB_set_index <= REGS_C0(0)(2 downto 0);
+                TLB_set_entry(63) <= '0';
+                TLB_set_entry(63 downto 44) <= REGS_C0(10)(19 downto 0);
+                TLB_set_entry(43 downto 22) <= REGS_C0(2)(21 downto 0);
+                TLB_set_entry(21 downto 0) <= REGS_C0(3)(21 downto 0);
+                s_TLB_set_do <= '1';
+              end if;
+
+            elsif s_data(31 downto 26) = "000000" then -- R type
+              s_jump_true_if_ne <= '0';
+              s_jump_true_if_eq <= '0';
+              s_numA_to_c0 <= '0';
+
+              if s_data(5 downto 0) = "001100" then  -- SYSCALL!
+                numA_from_reg <= '0';
+                numB_from_reg <= '0';
+                s_exception_cause <= "01000"; -- syscall only
+                s_exception <= '1';
+
+              elsif s_data(5) = '1' then -- 3 reg type
                 numA_from_reg <= '1';
-                s_REG_read_number_A <= s_data(20 downto 16); -- rt
+                s_REG_read_number_A <= s_data(25 downto 21); -- rs
+                numB_from_reg <= '1';
+                s_REG_read_number_B <= s_data(20 downto 16); -- rt
                 outbuffer_JUMP_true <= '0';
                 outbuffer_MEM_read <= '0';
                 outbuffer_MEM_write <= '0';
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_addr <= s_data(15 downto 11); -- rd
-                case( s_data(1 downto 0) ) is
-                  when "00" => outbuffer_ALU_operator <= "1100"; -- C, "<<"
-                  when "10" => outbuffer_ALU_operator <= "1101"; -- D, >>, logical
-                  when "11" => outbuffer_ALU_operator <= "1110"; -- E, >>, arithmetic
-                  when others => outbuffer_ALU_operator <= "1111"; -- do nothing
-                end case ;
+                outbuffer_ALU_operator <= s_data(3 downto 0);
               else
-                if s_data(3) = '0' then  -- not jr
+                if s_data(2) = '1' then -- also 3 reg type
+                  -- yes, rs and rt is swapped
+                  numB_from_reg <= '1';
+                  s_REG_read_number_B <= s_data(25 downto 21); -- rs
                   numA_from_reg <= '1';
                   s_REG_read_number_A <= s_data(20 downto 16); -- rt
-                  numB_from_reg <= '0'; -- B is immediate
-                  outbuffer_ALU_numB(4 downto 0) <= s_data(10 downto 6);
-                  outbuffer_ALU_numB(31 downto 5) <= (others => '0');
                   outbuffer_JUMP_true <= '0';
                   outbuffer_MEM_read <= '0';
                   outbuffer_MEM_write <= '0';
@@ -256,139 +259,159 @@ begin
                     when "11" => outbuffer_ALU_operator <= "1110"; -- E, >>, arithmetic
                     when others => outbuffer_ALU_operator <= "1111"; -- do nothing
                   end case ;
-                else -- jr
-                  numA_from_reg <= '1';
-                  s_REG_read_number_A <= s_data(25 downto 21); -- rs
-                  numB_from_reg <= '0';
-                  outbuffer_JUMP_true <= '1'; -- jump
-                  s_jump_addr_from_reg_a <= '1';
-                  outbuffer_MEM_read <= '0';
-                  outbuffer_MEM_write <= '0';
-                  outbuffer_REG_write <= '0';
-                  outbuffer_ALU_operator <= "1111"; -- do nothing, forward A
+                else
+                  if s_data(3) = '0' then  -- not jr
+                    numA_from_reg <= '1';
+                    s_REG_read_number_A <= s_data(20 downto 16); -- rt
+                    numB_from_reg <= '0'; -- B is immediate
+                    outbuffer_ALU_numB(4 downto 0) <= s_data(10 downto 6);
+                    outbuffer_ALU_numB(31 downto 5) <= (others => '0');
+                    outbuffer_JUMP_true <= '0';
+                    outbuffer_MEM_read <= '0';
+                    outbuffer_MEM_write <= '0';
+                    outbuffer_REG_write <= '1';
+                    outbuffer_REG_write_addr <= s_data(15 downto 11); -- rd
+                    case( s_data(1 downto 0) ) is
+                      when "00" => outbuffer_ALU_operator <= "1100"; -- C, "<<"
+                      when "10" => outbuffer_ALU_operator <= "1101"; -- D, >>, logical
+                      when "11" => outbuffer_ALU_operator <= "1110"; -- E, >>, arithmetic
+                      when others => outbuffer_ALU_operator <= "1111"; -- do nothing
+                    end case ;
+                  else -- jr
+                    numA_from_reg <= '1';
+                    s_REG_read_number_A <= s_data(25 downto 21); -- rs
+                    numB_from_reg <= '0';
+                    outbuffer_JUMP_true <= '1'; -- jump
+                    s_jump_addr_from_reg_a <= '1';
+                    outbuffer_MEM_read <= '0';
+                    outbuffer_MEM_write <= '0';
+                    outbuffer_REG_write <= '0';
+                    outbuffer_ALU_operator <= "1111"; -- do nothing, forward A
+                  end if;
                 end if;
               end if;
-            end if;
 
-          elsif s_data(31 downto 28) = "0000" then -- J type
-            s_numA_to_c0 <= '0';
-            s_jump_true_if_ne <= '0';
-            s_jump_true_if_eq <= '0';
-            s_jump_addr_from_reg_a <= '0';
-            numA_from_reg <= '0';
-            outbuffer_ALU_numA <= PC;
-            numB_from_reg <= '0';
-            outbuffer_ALU_numB(3 downto 0) <= "1000"; -- 8
-            outbuffer_ALU_numB(31 downto 4) <= (others=>'0');
-            outbuffer_ALU_operator <= "0001"; -- output PC+8
-            outbuffer_JUMP_true <= '1'; -- jump
-            outbuffer_JUMP_addr(31 downto 28) <= PC(31 downto 28); -- this is wrong but it should be OK in our machine
-            outbuffer_JUMP_addr(27 downto 2) <= s_data(25 downto 0);
-            outbuffer_JUMP_addr(1 downto 0) <= "00";
-            outbuffer_MEM_write <= '0';
-            outbuffer_MEM_read <= '0';
-            if s_data(27 downto 26) = "10" then -- j
-              outbuffer_REG_write <= '0';
-            else -- jal
-              outbuffer_REG_write <= '1';
-              outbuffer_REG_write_addr <= "11111"; -- write to R31
-            end if;
-
-          else -- I type
-            s_numA_to_c0 <= '0';
-            if s_data(31 downto 30) = "10" then -- lw or sw
-              numA_from_reg <= '1';
-              s_REG_read_number_A <= s_data(25 downto 21);
-              numB_from_reg <= '0';
-              outbuffer_ALU_numB <= immediate_sign_extend;
-              outbuffer_ALU_operator <= "0001"; -- add
-              outbuffer_JUMP_true <= '0';
-              s_jump_true_if_eq <= '0';
+            elsif s_data(31 downto 28) = "0000" then -- J type
+              s_numA_to_c0 <= '0';
               s_jump_true_if_ne <= '0';
-              if s_data(29 downto 26) = "0011" then  -- lw
-                outbuffer_MEM_read <= '1'; -- read memory!
+              s_jump_true_if_eq <= '0';
+              s_jump_addr_from_reg_a <= '0';
+              numA_from_reg <= '0';
+              outbuffer_ALU_numA <= PC;
+              numB_from_reg <= '0';
+              outbuffer_ALU_numB(3 downto 0) <= "1000"; -- 8
+              outbuffer_ALU_numB(31 downto 4) <= (others=>'0');
+              outbuffer_ALU_operator <= "0001"; -- output PC+8
+              outbuffer_JUMP_true <= '1'; -- jump
+              outbuffer_JUMP_addr(31 downto 28) <= PC(31 downto 28); -- this is wrong but it should be OK in our machine
+              outbuffer_JUMP_addr(27 downto 2) <= s_data(25 downto 0);
+              outbuffer_JUMP_addr(1 downto 0) <= "00";
+              outbuffer_MEM_write <= '0';
+              outbuffer_MEM_read <= '0';
+              if s_data(27 downto 26) = "10" then -- j
+                outbuffer_REG_write <= '0';
+              else -- jal
+                outbuffer_REG_write <= '1';
+                outbuffer_REG_write_addr <= "11111"; -- write to R31
+              end if;
+
+            else -- I type
+              s_numA_to_c0 <= '0';
+              if s_data(31 downto 30) = "10" then -- lw or sw
+                numA_from_reg <= '1';
+                s_REG_read_number_A <= s_data(25 downto 21);
+                numB_from_reg <= '0';
+                outbuffer_ALU_numB <= immediate_sign_extend;
+                outbuffer_ALU_operator <= "0001"; -- add
+                outbuffer_JUMP_true <= '0';
+                s_jump_true_if_eq <= '0';
+                s_jump_true_if_ne <= '0';
+                if s_data(29 downto 26) = "0011" then  -- lw
+                  outbuffer_MEM_read <= '1'; -- read memory!
+                  outbuffer_MEM_write <= '0';
+                  outbuffer_REG_write <= '1';
+                  outbuffer_REG_write_addr <= s_data(20 downto 16);
+                else  -- sw
+                  outbuffer_MEM_read <= '0';
+                  outbuffer_MEM_write <= '1'; -- write memory!
+                  mem_data_from_reg_B <= '1'; -- read reg B to mem_data_from_reg_B
+                  s_REG_read_number_B <= s_data(20 downto 16);
+                  outbuffer_REG_write <= '0'; -- not write register
+                end if;
+              elsif s_data(31 downto 26) = "001111" then -- lui
+                numA_from_reg <= '0';
+                outbuffer_ALU_numA(31 downto 16) <= s_data(15 downto 0);
+                outbuffer_ALU_numA(15 downto 0) <= (others => '0');
+                numB_from_reg <= '0';
+                outbuffer_ALU_operator <= "1111"; -- forward A
+                outbuffer_JUMP_true <= '0';
+                s_jump_true_if_ne <= '0';
+                s_jump_true_if_eq <= '0';
                 outbuffer_MEM_write <= '0';
+                outbuffer_MEM_read <= '0';
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_addr <= s_data(20 downto 16);
-              else  -- sw
-                outbuffer_MEM_read <= '0';
-                outbuffer_MEM_write <= '1'; -- write memory!
-                mem_data_from_reg_B <= '1'; -- read reg B to mem_data_from_reg_B
+              elsif s_data(31 downto 29) = "000" then -- branch
+                numA_from_reg <= '1';
+                s_REG_read_number_A <= s_data(25 downto 21);
+                numB_from_reg <= '1';
                 s_REG_read_number_B <= s_data(20 downto 16);
-                outbuffer_REG_write <= '0'; -- not write register
-              end if;
-            elsif s_data(31 downto 26) = "001111" then -- lui
-              numA_from_reg <= '0';
-              outbuffer_ALU_numA(31 downto 16) <= s_data(15 downto 0);
-              outbuffer_ALU_numA(15 downto 0) <= (others => '0');
-              numB_from_reg <= '0';
-              outbuffer_ALU_operator <= "1111"; -- forward A
-              outbuffer_JUMP_true <= '0';
-              s_jump_true_if_ne <= '0';
-              s_jump_true_if_eq <= '0';
-              outbuffer_MEM_write <= '0';
-              outbuffer_MEM_read <= '0';
-              outbuffer_REG_write <= '1';
-              outbuffer_REG_write_addr <= s_data(20 downto 16);
-            elsif s_data(31 downto 29) = "000" then -- branch
-              numA_from_reg <= '1';
-              s_REG_read_number_A <= s_data(25 downto 21);
-              numB_from_reg <= '1';
-              s_REG_read_number_B <= s_data(20 downto 16);
-              outbuffer_ALU_operator <= "1111";
-              outbuffer_JUMP_true <= '0';
-              s_jump_addr_from_reg_a <= '0';
-              outbuffer_JUMP_addr(31 downto 2) <= std_logic_vector(
-                      signed(PC(31 downto 2))+
-                      signed(s_data(15 downto 0))+1);
-              outbuffer_JUMP_addr(1 downto 0) <= "00";
-              outbuffer_MEM_read <= '0';
-              outbuffer_MEM_write <= '0';
-              outbuffer_REG_write <= '0';
-              if s_data(28 downto 26) = "100" then -- beq
-                s_jump_true_if_eq <= '1';
+                outbuffer_ALU_operator <= "1111";
+                outbuffer_JUMP_true <= '0';
+                s_jump_addr_from_reg_a <= '0';
+                outbuffer_JUMP_addr(31 downto 2) <= std_logic_vector(
+                        signed(PC(31 downto 2))+
+                        signed(s_data(15 downto 0))+1);
+                outbuffer_JUMP_addr(1 downto 0) <= "00";
+                outbuffer_MEM_read <= '0';
+                outbuffer_MEM_write <= '0';
+                outbuffer_REG_write <= '0';
+                if s_data(28 downto 26) = "100" then -- beq
+                  s_jump_true_if_eq <= '1';
+                  s_jump_true_if_ne <= '0';
+                else -- bne
+                  s_jump_true_if_eq <= '0';
+                  s_jump_true_if_ne <= '1';
+                end if;
+              else -- other I type
+                numA_from_reg <= '1';
+                s_REG_read_number_A <= s_data(25 downto 21);
+                numB_from_reg <= '0';
+                outbuffer_JUMP_true <= '0';
                 s_jump_true_if_ne <= '0';
-              else -- bne
                 s_jump_true_if_eq <= '0';
-                s_jump_true_if_ne <= '1';
+                outbuffer_MEM_write <= '0';
+                outbuffer_MEM_read <= '0';
+                outbuffer_REG_write <= '1';
+                outbuffer_REG_write_addr <= s_data(20 downto 16);
+                case( s_data(29 downto 26) ) is
+                  when "1000" => -- addi
+                    outbuffer_ALU_numB <= immediate_sign_extend;
+                    outbuffer_ALU_operator <= "0000";
+                  when "1001" => -- addiu
+                    outbuffer_ALU_numB <= immediate_zero_extend;
+                    outbuffer_ALU_operator <= "0001";
+                  when "1100" => -- andi
+                    outbuffer_ALU_numB <= immediate_zero_extend;
+                    outbuffer_ALU_operator <= "0100";
+                  when "1101" => --ori
+                    outbuffer_ALU_numB <= immediate_zero_extend;
+                    outbuffer_ALU_operator <= "0101";
+                  when "1110" => -- xori
+                    outbuffer_ALU_numB <= immediate_zero_extend;
+                    outbuffer_ALU_operator <= "0110";
+                  when "1010" => --slti
+                    outbuffer_ALU_numB <= immediate_sign_extend;
+                    outbuffer_ALU_operator <= "1010";
+                  when "1011" => -- sltiu
+                    outbuffer_ALU_numB <= immediate_zero_extend;
+                    outbuffer_ALU_operator <= "1011";
+                  when others => -- wtf
+                    outbuffer_ALU_numB <= immediate_zero_extend;
+                    outbuffer_ALU_operator <= "1111";
+                end case ;
               end if;
-            else -- other I type
-              numA_from_reg <= '1';
-              s_REG_read_number_A <= s_data(25 downto 21);
-              numB_from_reg <= '0';
-              outbuffer_JUMP_true <= '0';
-              s_jump_true_if_ne <= '0';
-              s_jump_true_if_eq <= '0';
-              outbuffer_MEM_write <= '0';
-              outbuffer_MEM_read <= '0';
-              outbuffer_REG_write <= '1';
-              outbuffer_REG_write_addr <= s_data(20 downto 16);
-              case( s_data(29 downto 26) ) is
-                when "1000" => -- addi
-                  outbuffer_ALU_numB <= immediate_sign_extend;
-                  outbuffer_ALU_operator <= "0000";
-                when "1001" => -- addiu
-                  outbuffer_ALU_numB <= immediate_zero_extend;
-                  outbuffer_ALU_operator <= "0001";
-                when "1100" => -- andi
-                  outbuffer_ALU_numB <= immediate_zero_extend;
-                  outbuffer_ALU_operator <= "0100";
-                when "1101" => --ori
-                  outbuffer_ALU_numB <= immediate_zero_extend;
-                  outbuffer_ALU_operator <= "0101";
-                when "1110" => -- xori
-                  outbuffer_ALU_numB <= immediate_zero_extend;
-                  outbuffer_ALU_operator <= "0110";
-                when "1010" => --slti
-                  outbuffer_ALU_numB <= immediate_sign_extend;
-                  outbuffer_ALU_operator <= "1010";
-                when "1011" => -- sltiu
-                  outbuffer_ALU_numB <= immediate_zero_extend;
-                  outbuffer_ALU_operator <= "1011";
-                when others => -- wtf
-                  outbuffer_ALU_numB <= immediate_zero_extend;
-                  outbuffer_ALU_operator <= "1111";
-              end case ;
+
             end if;
 
           end if;
@@ -423,11 +446,15 @@ begin
         when s2 => 
           s_last_last_write_reg <= s_last_write_reg;
 
-          if s_exception = '1' then
+          if s_exception = '1' and s_skip_this = '0' then
 
             s_exception <= '0';
 
-            REGS_C0(14) <= std_logic_vector(unsigned(PC)+4); -- eret
+            if s_exception_cause = "00010" or s_exception_cause = "00011" then -- FIXME its TLB data exception
+              REGS_C0(14) <= std_logic_vector(unsigned(PC)-4); -- eret
+            else
+              REGS_C0(14) <= std_logic_vector(unsigned(PC)+4);
+            end if;
             REGS_C0(13)(6 downto 2) <= s_exception_cause;
             REGS_C0(12)(1) <= '1';
             numA_from_reg <= '0';

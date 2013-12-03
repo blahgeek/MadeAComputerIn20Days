@@ -60,6 +60,11 @@ component FetcherAndRegister port (
     TLB_set_index: out std_logic_vector(2 downto 0);
     TLB_set_entry: out std_logic_vector(63 downto 0);
 
+    TLB_data_exception: in std_logic;
+    TLB_data_exception_read_or_write: in std_logic;
+
+    TLB_instruction_bad: in std_logic;
+
     hold: buffer std_logic:= '0';
 
     BACK_REG_write: in std_logic;
@@ -98,6 +103,10 @@ component ALUWrapper port (
 
     TLB_virt: out std_logic_vector(19 downto 0);
     TLB_real: in std_logic_vector(19 downto 0);
+    TLB_bad: in std_logic;
+
+    TLB_exception: out std_logic:= '0';
+    TLB_exception_read_or_write: out std_logic:= '0'; -- 0 for read
 
     -- forward
     in_MEM_read: in std_logic ;
@@ -113,6 +122,9 @@ component ALUWrapper port (
     REG_write_addr: out std_logic_vector(4 downto 0)
   ) ;
 end component; -- ALUWrapper
+
+    signal TLB_data_exception: std_logic := '0';
+    signal TLB_data_exception_read_or_write: std_logic; -- 0 for read
 
 component Memory port (
     clock: in std_logic;
@@ -336,6 +348,8 @@ tlb0: TLB port map (
 FetcherAndRegister0: FetcherAndRegister port map (
     PC, A_RAM_SELECT, real_clock, real_reset, 
     TLB_set_do, TLB_set_index, TLB_set_entry,
+    TLB_data_exception, TLB_data_exception_read_or_write,
+    instruction_bad,
     A_HOLD,
     C_REG_write,
     C_REG_write_addr,
@@ -351,7 +365,8 @@ FetcherAndRegister0: FetcherAndRegister port map (
 ALUWrapper0: ALUWrapper port map (
     real_clock, real_reset,
     ALU_operator, ALU_numA, ALU_numB, ALU_output, ALU_output_after_TLB,
-    data_virt_addr, data_real_addr,
+    data_virt_addr, data_real_addr, data_bad, 
+    TLB_data_exception, TLB_data_exception_read_or_write,
     A_MEM_read, A_MEM_write, 
     A_MEM_data, 
     A_REG_write, A_REG_write_addr,
