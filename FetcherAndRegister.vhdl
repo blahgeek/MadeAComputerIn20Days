@@ -295,13 +295,14 @@ begin
                     else
                       outbuffer_REG_write <= '0';
                     end if;
-                    numA_from_reg <= '1';
-                    s_REG_read_number_A <= s_data(25 downto 21); -- rs
+                    numA_from_reg <= '0';
+                    outbuffer_ALU_numA <= PC;
                     numB_from_reg <= '0';
                     outbuffer_ALU_numB(3 downto 0) <= "1000";
                     outbuffer_ALU_numB(31 downto 4) <= (others => '0');
                     outbuffer_ALU_operator <= "0001";  -- output PC+8
                     outbuffer_JUMP_true <= '1'; -- jump
+                    s_REG_read_number_A <= s_data(25 downto 21); -- rs
                     s_jump_addr_from_reg_a <= '1';
                     outbuffer_MEM_read <= '0';
                     outbuffer_MEM_write <= '0';

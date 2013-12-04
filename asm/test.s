@@ -14,3 +14,4 @@ loop:
     bne $t2, $t3, begin
     nop
     jr $ra
+    nop
