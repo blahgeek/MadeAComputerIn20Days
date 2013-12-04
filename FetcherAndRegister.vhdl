@@ -271,7 +271,7 @@ begin
                     when others => outbuffer_ALU_operator <= "1111"; -- do nothing
                   end case ;
                 else
-                  if s_data(3) = '0' then  -- not jr
+                  if s_data(3) = '0' then  -- not jr/jalr
                     numA_from_reg <= '1';
                     s_REG_read_number_A <= s_data(20 downto 16); -- rt
                     numB_from_reg <= '0'; -- B is immediate
@@ -288,16 +288,23 @@ begin
                       when "11" => outbuffer_ALU_operator <= "1110"; -- E, >>, arithmetic
                       when others => outbuffer_ALU_operator <= "1111"; -- do nothing
                     end case ;
-                  else -- jr
+                  else -- jr or jalr
+                    if s_data(0) = '1' then -- jalr
+                      outbuffer_REG_write_addr <= "11111"; -- write to $31
+                      outbuffer_REG_write <= '1';
+                    else
+                      outbuffer_REG_write <= '0';
+                    end if;
                     numA_from_reg <= '1';
                     s_REG_read_number_A <= s_data(25 downto 21); -- rs
                     numB_from_reg <= '0';
+                    outbuffer_ALU_numB(3 downto 0) <= "1000";
+                    outbuffer_ALU_numB(31 downto 4) <= (others => '0');
+                    outbuffer_ALU_operator <= "0001";  -- output PC+8
                     outbuffer_JUMP_true <= '1'; -- jump
                     s_jump_addr_from_reg_a <= '1';
                     outbuffer_MEM_read <= '0';
                     outbuffer_MEM_write <= '0';
-                    outbuffer_REG_write <= '0';
-                    outbuffer_ALU_operator <= "1111"; -- do nothing, forward A
                   end if;
                 end if;
               end if;
