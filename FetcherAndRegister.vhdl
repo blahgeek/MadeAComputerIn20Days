@@ -188,6 +188,7 @@ begin
           else
 
             if s_data(31 downto 26) = "010000" then -- super command!
+              -- TODO: check C0(12) here
               s_jump_true_if_ne <= '0';
               s_jump_true_if_eq <= '0';
               outbuffer_MEM_read <= '0';
@@ -481,6 +482,10 @@ begin
             numB_from_reg <= '0';
             s_jump_true_if_eq <= '0';
             s_jump_true_if_ne <= '0';
+            s_jump_addr_from_reg_a <= '0';  -- 尼玛不会真的加了这行就能用了吧…我TMD就是个傻逼……
+                                            -- 还有两分钟就编译完了…一定是这样的！
+                                            -- 好激动 > <
+                                            -- 卧槽真的过了！！！！！！！！！！！！！！！！！！！
             outbuffer_ALU_operator <= "1111";
             outbuffer_MEM_read <= '0';
             outbuffer_MEM_write <= '0';
@@ -534,16 +539,19 @@ begin
 
             if mem_data_from_reg_B = '1' then
               MEM_data <= s_REG_read_value_B;
+              mem_data_from_reg_B <= '0';
             else
               MEM_data <= outbuffer_MEM_data;
             end if;
 
             if s_numA_to_c0 = '1' then
               REGS_C0(to_integer(unsigned(s_numA_to_c0_addr))) <= s_REG_read_value_A;
+              s_numA_to_c0 <= '0';
             end if;
 
             if s_jump_addr_from_reg_a = '1' then
               JUMP_addr <= s_REG_read_value_A;
+              s_jump_addr_from_reg_a <= '0';
             else
               JUMP_addr <= outbuffer_JUMP_addr;
             end if;
