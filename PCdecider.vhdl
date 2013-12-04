@@ -41,7 +41,7 @@ begin
     if reset = '1' then
       state <= s0;
       s_pc <= BEGIN_PC;
-      PC <= (others => '0');
+      PC <= BEGIN_PC;
       BASERAM_addr <= (others => '0');
       EXTRAM_addr <= (others => '0');
       RAM_select <= '0';

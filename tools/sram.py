@@ -4,7 +4,6 @@
 
 import serial
 import time
-from ihex import IHex
 
 BLOCK_ADDR_LEN = 13
 BLOCK_LEN = 2**BLOCK_ADDR_LEN * 4;
@@ -33,19 +32,15 @@ def read(f, addr):
     print 'Read done, time = %s s' % str(time.time() - start)
     return ans
 
-def write_hex_file(ser, filename):
-    ihex = IHex().read_file(filename)
-    data = '\x3c\x1d\x00\x3f' + ihex.areas[0]
-    write(ser, 0, data)
-    readback = read(ser, 0x00)
-    assert(readback[:len(data)] == data)
-
 if __name__ == '__main__':
     ser = serial.Serial('/dev/cu.usbserial-ftDWBKKD',  115200)
     import sys
     if sys.argv[1] == 'write':
         data = open(sys.argv[2], 'rb').read()
-        write(ser, 0x00, data)
-        assert(read(ser, 0x00)[0:len(data)] == data)
-    elif sys.argv[1] == 'writehex':
-        write_hex_file(ser, sys.argv[2])
+        try:
+            addr = int(sys.argv[3], 16)
+            addr >>= (BLOCK_ADDR_LEN+2)
+        except IndexError:
+            addr = 0x00
+        write(ser, addr, data)
+        assert(read(ser, addr)[0:len(data)] == data)

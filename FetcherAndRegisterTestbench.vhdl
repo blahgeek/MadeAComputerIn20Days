@@ -10,10 +10,23 @@ end entity ; -- FetcherAndRegisterTestbench
 architecture arch of FetcherAndRegisterTestbench is
 
 component FetcherAndRegister port (
+
+    debug: out std_logic_vector(7 downto 0) := (others => '0');
+
     PC: in std_logic_vector(31 downto 0);
     RAM_select: in std_logic;
     clock: in std_logic;
     reset: in std_logic;
+
+    TLB_set_do: out std_logic := '0';
+    TLB_set_index: out std_logic_vector(2 downto 0);
+    TLB_set_entry: out std_logic_vector(63 downto 0);
+
+    TLB_data_exception: in std_logic;
+    TLB_data_exception_read_or_write: in std_logic;
+
+    TLB_instruction_bad: in std_logic;
+
     hold: buffer std_logic:= '0';
 
     BACK_REG_write: in std_logic;
@@ -65,10 +78,19 @@ component FetcherAndRegister port (
 begin
 
     instance: FetcherAndRegister port map (
-        PC => x"8000001c", 
+        open,
+        PC => x"80000000", 
         RAM_select => '0',
         clock => clock, 
         reset => '0',
+
+        TLB_set_do => open, 
+        TLB_set_index => open, 
+        TLB_set_entry => open,
+        TLB_data_exception => '0', 
+        TLB_data_exception_read_or_write => '0', 
+        TLB_instruction_bad => '0',
+
         hold=>open,
 
         BACK_REG_write => BACK_REG_write,
@@ -98,7 +120,7 @@ begin
         BACK_REG_write <= '1';
         BACK_REG_write_addr <= "11111"; -- 10
         BACK_REG_write_data <= x"DEADBEEF";
-        data <= x"02d7b024"; -- and
+        data <= x"10000002"; -- b +2
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;

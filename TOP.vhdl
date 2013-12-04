@@ -51,6 +51,9 @@ end TOP;
 architecture arch of TOP is
 
 component FetcherAndRegister port (
+
+    debug: out std_logic_vector(7 downto 0) := (others => '0');
+
     PC: in std_logic_vector(31 downto 0);
     RAM_select: in std_logic;
     clock: in std_logic;
@@ -346,6 +349,7 @@ tlb0: TLB port map (
     TLB_set_do, TLB_set_index, TLB_set_entry);
 
 FetcherAndRegister0: FetcherAndRegister port map (
+    LED(15 downto 8),
     PC, A_RAM_SELECT, real_clock, real_reset, 
     TLB_set_do, TLB_set_index, TLB_set_entry,
     TLB_data_exception, TLB_data_exception_read_or_write,
@@ -361,6 +365,10 @@ FetcherAndRegister0: FetcherAndRegister port map (
     A_MEM_read, A_MEM_write, A_MEM_data,
     A_REG_write, A_REG_write_addr
     );
+
+LED(0) <= instruction_bad;
+LED(1) <= data_bad;
+LED(7 downto 2) <= instruction_virt_addr(19 downto 14);
 
 ALUWrapper0: ALUWrapper port map (
     real_clock, real_reset,
@@ -387,7 +395,7 @@ Mem0: Memory port map (
     uart_data_out, uart_data_out_stb, uart_data_out_ack,
     open, open, open, open, -- no VGA
     -- VGA_in_x, VGA_in_y, VGA_in_data, VGA_in_set,
-    DYP0, DYP1, LED);
+    DYP0, DYP1, open);
 
 PC0: PCdecider port map(
     real_clock, real_reset, A_HOLD,

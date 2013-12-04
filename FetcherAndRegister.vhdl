@@ -4,6 +4,9 @@ use ieee.numeric_std.all;
 
 entity FetcherAndRegister is
   port (
+
+    debug: out std_logic_vector(7 downto 0) := (others => '0');
+
     PC: in std_logic_vector(31 downto 0);
     RAM_select: in std_logic;
     clock: in std_logic;
@@ -153,25 +156,33 @@ begin
       s_exception <= '0';
       s_TLB_set_do <= '0';
       TLB_set_do <= '0';
+      debug <= (others => '0');
 
     elsif rising_edge(clock) then
+
+      debug(3) <= TLB_data_exception;
 
       case( state ) is
       
         when s0 => -- state: read instruction
 
+          debug(7 downto 4) <= PC(5 downto 2);
+
           if TLB_data_exception = '1' then 
 
             s_exception <= '1';
             if TLB_data_exception_read_or_write = '0' then --read
+              debug(1 downto 0) <= "10";
               s_exception_cause <= "00010";  -- FIXME
             else
+              debug(1 downto 0) <= "11";
               s_exception_cause <= "00011"; -- FIXME
             end if;
 
           elsif TLB_instruction_bad = '1' then
 
             s_exception <= '1';
+            debug(1 downto 0) <= "01";
             s_exception_cause <= "00001";  -- FIXME
 
           else
@@ -359,9 +370,10 @@ begin
                 outbuffer_ALU_operator <= "1111";
                 outbuffer_JUMP_true <= '0';
                 s_jump_addr_from_reg_a <= '0';
-                outbuffer_JUMP_addr(31 downto 2) <= std_logic_vector(
-                        signed(PC(31 downto 2))+
+                outbuffer_JUMP_addr(27 downto 2) <= std_logic_vector(
+                        signed(PC(27 downto 2))+
                         signed(s_data(15 downto 0))+1);
+                outbuffer_JUMP_addr(31 downto 28) <= PC(31 downto 28);
                 outbuffer_JUMP_addr(1 downto 0) <= "00";
                 outbuffer_MEM_read <= '0';
                 outbuffer_MEM_write <= '0';
@@ -491,7 +503,11 @@ begin
             MEM_write <= '0';
             REG_write <= '0';
             s_skip_next <= '0';
-            s_skip_this <= '0';
+            if hold = '1' and s_skip_this = '1' then -- F**K
+              s_skip_this <= '1';
+            else
+              s_skip_this <= '0';
+            end if;
           else
             if s_skip_next = '1' then
               s_skip_next <= '0';
