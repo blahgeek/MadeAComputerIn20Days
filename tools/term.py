@@ -109,6 +109,21 @@ def writebin(ser, s, addr):
         addr += 4
 
 if __name__ == '__main__':
+    import sys
+    parseint = lambda x: int(x, 16) if 'x' in x else int(x)
     ser = serial.Serial('/dev/cu.usbserial-ftDWBKKD',  115200)
-    writemem(ser, 0x80004000, 0xDEADBEEF)
-    showmem(ser, 0x80004000, 10)
+    if len(sys.argv) < 2:
+        print 'Usage: ', sys.argv[0], 'showregs|showmem|addtlb|writebin|execute'
+    elif sys.argv[1] == 'showregs':
+        showregs(ser)
+    elif sys.argv[1] == 'showmem':
+        showmem(ser, parseint(sys.argv[2]), parseint(sys.argv[3]))
+    elif sys.argv[1] == 'addtlb':
+        addtlb(ser, parseint(sys.argv[2]), parseint(sys.argv[3]), 
+               parseint(sys.argv[4]), parseint(sys.argv[5]))
+    elif sys.argv[1] == 'writebin':
+        writebin(ser, open(sys.argv[2], 'rb').read(), parseint(sys.argv[3]))
+    elif sys.argv[1] == 'execute':
+        execute(ser, parseint(sys.argv[2]))
+    else:
+        print 'Unknown command'
