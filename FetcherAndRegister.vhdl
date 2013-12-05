@@ -410,7 +410,7 @@ begin
                     outbuffer_ALU_numB <= immediate_sign_extend;
                     outbuffer_ALU_operator <= "0000";
                   when "1001" => -- addiu
-                    outbuffer_ALU_numB <= immediate_zero_extend;
+                    outbuffer_ALU_numB <= immediate_sign_extend;
                     outbuffer_ALU_operator <= "0001";
                   when "1100" => -- andi
                     outbuffer_ALU_numB <= immediate_zero_extend;
@@ -472,9 +472,9 @@ begin
             s_exception <= '0';
 
             if s_exception_cause = "00010" or s_exception_cause = "00011" then -- FIXME its TLB data exception
-              REGS_C0(14) <= std_logic_vector(unsigned(PC)-4); -- eret
+              REGS_C0(14) <= std_logic_vector(unsigned(PC)-8); -- eret
             else
-              REGS_C0(14) <= std_logic_vector(unsigned(PC)+4);
+              REGS_C0(14) <= PC;  -- don't +4
             end if;
             REGS_C0(13)(6 downto 2) <= s_exception_cause;
             REGS_C0(12)(1) <= '1';
@@ -491,7 +491,7 @@ begin
             outbuffer_MEM_write <= '0';
             outbuffer_REG_write <= '0';
             outbuffer_JUMP_true <= '1'; --jump!
-            outbuffer_JUMP_addr <= std_logic_vector(unsigned(REGS_C0(15))+0);  -- dont ask me why
+            outbuffer_JUMP_addr <= REGS_C0(15);  -- 我知道这不标准，你来打我啊
 
             s_skip_next <= '1'; -- there's no delay slot for exception
 
