@@ -9,7 +9,7 @@
 
 ## 流水线结构
 
-![](arch.jpg)
+![](images/arch.jpg)
 
 ### PCDecider
 
