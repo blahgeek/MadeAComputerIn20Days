@@ -10,12 +10,14 @@ initial:
 
 	#设置 Base
 	lui $s1, 0x8000
-	addiu $s1, $s1, 0x8000
+	ori $s1, $s1, 0x8000
 	mtc0 $s1, $15
 
 	#关中断
 	li $s1, 0x2
 	mtc0 $s1, $12
+
+begin:
 
 	#输出23到数码管
 	lui $s0, 0xBFD0
@@ -24,7 +26,6 @@ initial:
 	li $s1, 0x3
 	sw $s1, 0($s0)
 
-begin:
 	jal rtest
 	lui $s0, 0xBFD0
 	lw $s1, 0x3F8($s0)

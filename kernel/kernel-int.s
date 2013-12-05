@@ -13,6 +13,11 @@ int:
     sw $s6, 28($sp)
     sw $s7, 32($sp)
 
+    lui $s1, 0xBFD0
+    li $s2, 0xE
+    sw $s2, 0($s1)
+    sw $s2, 4($s1)  # display "EE"
+
     mfc0 $s1, $14
     addiu $s1, $s1, 4
     mtc0 $s1, $14

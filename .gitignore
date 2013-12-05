@@ -1,2 +1,7 @@
 *.vcd
 work-obj93.cf
+*.o
+*.out
+*.bin
+mips-gcc-4.7.2
+*.pyc

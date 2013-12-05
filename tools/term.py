@@ -33,7 +33,7 @@ def showmem(ser, addr, count):
     send4bit(ser, addr)
     send4bit(ser, count)
     for i in xrange(count):
-        print '0x'+Bits(length=32, uint=addr+i).hex, ':',
+        print '0x'+Bits(length=32, uint=addr+i*4).hex, ':',
         print '0x'+Bits(bytes=recv4bit(ser)).hex
 
 def writemem(ser, addr, value):
@@ -51,7 +51,7 @@ def addtlb(ser, index, hi, lo1, lo2):
 def syscall(ser):
     global ALLOC_NOW
     code = ord(ser.read(1))
-    print 'Syscall code: %d' % code
+    print 'Syscall code: %d' % code,
     if code == 1:  # alloc
         size = Bits(bytes=recv4bit(ser)).uint
         if size + ALLOC_NOW < ALLOC_END:
@@ -59,8 +59,18 @@ def syscall(ser):
             ALLOC_NOW += size
         else:
             send4bit(ser, 0x80000000)
-    elif code == 2: # readline
-        pass  # TODO
+        print 'Allocated %s byts, now at %s' % (hex(size), hex(ALLOC_NOW))
+    elif code == 3: # read int
+        print 'Enter a integer: ',
+        value = int(raw_input())
+        send4bit(ser, value)
+    elif code == 5:
+        print 'Print a integer: ',
+        value = Bits(bytes=recv4bit(ser)).uint
+        print value
+    elif code == 8:
+        print 'Halt'
+        return True
 
 def interrupt(ser):
     reason = {
@@ -72,6 +82,7 @@ def interrupt(ser):
     cause = Bits(bytes=recv4bit(ser)).uint
     cause = (cause >> 2) & 0x1f
     print 'Cause: %d: %s' % (cause, reason.get(cause, 'Unknown'))
+    ser.write(chr(4))
 
 def execute(ser, addr):
     ser.write(chr(0x47))
@@ -86,7 +97,8 @@ def execute(ser, addr):
             return interrupt(ser)
         elif code == 2:
             print 'Syscall...'
-            syscall(ser)
+            if syscall(ser):
+                break
         else:
             print 'Recieved unknown code: %d' % code
 

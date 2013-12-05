@@ -3,14 +3,14 @@ BIN_DIR = ../mips-gcc-4.7.2/mips-elf/bin/
 FLAGS = -mips32
 LDFLAGS = -Ttext 0x80400000
 
-ASMSOURCE = $(shell find . -name "*.s")
-TARGETS = $(ASMSOURCE:.s=.bin)
+ASMSOURCE = $(shell find . -name "*.c")
+TARGETS = $(ASMSOURCE:.c=.bin)
 
 all: $(TARGETS)
 
 
-%.o: %.s
-	$(BIN_DIR)/as $(FLAGS) $< -o $@
+%.o: %.c
+	$(BIN_DIR)/gcc $(FLAGS) $< -c -o $@
 	
 
 %.out: %.o
