@@ -217,7 +217,7 @@ begin
                   s_REG_read_number_A <= s_data(20 downto 16);
                   outbuffer_REG_write <= '0';
                 end if;
-              else  -- tlbwi  TODO
+              else  -- tlbwi 
                 numA_from_reg <= '0';
                 numB_from_reg <= '0';
                 outbuffer_ALU_operator <= "1111";
@@ -225,9 +225,11 @@ begin
                 outbuffer_JUMP_true <= '0';
                 TLB_set_index <= REGS_C0(0)(2 downto 0);
                 TLB_set_entry(63) <= '0';
-                TLB_set_entry(63 downto 44) <= REGS_C0(10)(19 downto 0);
-                TLB_set_entry(43 downto 22) <= REGS_C0(2)(21 downto 0);
-                TLB_set_entry(21 downto 0) <= REGS_C0(3)(21 downto 0);
+                TLB_set_entry(62 downto 44) <= REGS_C0(10)(31 downto 13);
+                TLB_set_entry(43 downto 24) <= REGS_C0(2)(25 downto 6);
+                TLB_set_entry(23 downto 22) <= REGS_C0(2)(1 downto 0);
+                TLB_set_entry(21 downto 2) <= REGS_C0(3)(25 downto 6);
+                TLB_set_entry(1 downto 0) <= REGS_C0(3)(1 downto 0);
                 s_TLB_set_do <= '1';
               end if;
 

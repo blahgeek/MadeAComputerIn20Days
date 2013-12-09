@@ -12,7 +12,7 @@ Console::Console(){
 	comlist = (char **)malloc(sizeof(char *)*sizecom);
 	mode = 0;
 
-	//可分配内存的起始位置
+	//驴脡路脰脜盲脛脷麓忙碌脛脝冒脢录脦禄脰脙
 	dataSeg = 0x80001000;
 
 	hstdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -220,12 +220,12 @@ int Console::getInput()
 				break;
 			}
 		}
-		else if (ch == 13)  //回车换行
+		else if (ch == 13)  //禄脴鲁碌禄禄脨脨
 		{
 			printf("%c",ch);
 			return len;
 		}
-		else if (ch == 27)   //单引号
+		else if (ch == 27)   //碌楼脪媒潞脜
 		{
 			for (int i=0;i<len;i++)
 				buffer[i] = ' ';
@@ -345,11 +345,11 @@ void Console::workSim(){
 	char ch = 'o';
 	send(client,&ch,1,0);
 
-	/*unsigned long ul = 1;	//非阻塞
-	unsigned long ul = 0; //阻塞
+	/*unsigned long ul = 1;	//路脟脳猫脠没
+	unsigned long ul = 0; //脳猫脠没
 	ioctlsocket(client,FIONBIO,(unsigned long *)&ul);*/
 
-	int flag=0; //标志是否是刚进入kernekl
+	int flag=0; //卤锚脰戮脢脟路帽脢脟赂脮陆酶脠毛kernekl
 	while (true)
 	{		
 		int k=4;
@@ -375,10 +375,10 @@ void Console::workSim(){
 		}*/
 
 		cout<<">> ";
-		int order_len = getInput();  //输入命令
+		int order_len = getInput();  //脢盲脠毛脙眉脕卯
 		int ret;
 		cout<<endl;
-		if((ret = kernelRun(buffer,order_len))!=0) //调用kernel
+		if((ret = kernelRun(buffer,order_len))!=0) //碌梅脫脙kernel
 			outputErrorMsg(ret);
 		cout<<endl;
 		flag=1;
@@ -400,13 +400,12 @@ void Console::workCom(){
 		return ;
 	}
 	GetCommState(comHandle,&dcb);
-	dcb.BaudRate = 9600;
+	dcb.BaudRate = 115200;
 	dcb.ByteSize = 8;
 	dcb.StopBits = ONESTOPBIT;
 	//SetCommState(comHandle,&dcb);
 	dcb.ByteSize = 8;
-	dcb.Parity = ODDPARITY;
-	dcb.StopBits = ONESTOPBIT;
+	dcb.Parity = NOPARITY;
 	dcb.fBinary = TRUE;
 	dcb.fParity = TRUE;
 	SetCommState(comHandle,&dcb);
@@ -414,7 +413,7 @@ void Console::workCom(){
 	DWORD size;
 	printf("\n   Ok..  Connected with com...\n");
 
-	int flag=0; //标志是否是刚进入kernel
+	int flag=0; //卤锚脰戮脢脟路帽脢脟赂脮陆酶脠毛kernel
 	while (true)
 	{		
 		if (comHandle == INVALID_HANDLE_VALUE)
@@ -434,10 +433,10 @@ void Console::workCom(){
 		}		
 
 		cout<<"  >> ";
-		int order_len = getInput();  //输入命令
+		int order_len = getInput();  //脢盲脠毛脙眉脕卯
 		cout<<endl;
 		int ret;
-		if ((ret = kernelRun(buffer,order_len))!=0){  //调用kernel
+		if ((ret = kernelRun(buffer,order_len))!=0){  //碌梅脫脙kernel
 			outputErrorMsg(ret); 
 			break;
 		}
@@ -499,8 +498,8 @@ int Console::runR()
 	int count = 0; 
 	word reg;
  	char ch = 0x52;
-	sendChar(ch);	       //发送命令R
-	while(count<21){       //接收t0-t9
+	sendChar(ch);	       //路垄脣脥脙眉脕卯R
+	while(count<21){       //陆脫脢脮t0-t9
 		switch(recvWord(reg))
 		{
 			case 0:			
@@ -553,12 +552,12 @@ int Console::runD(int argc, char* argv[64])
 		return ConsoleCommandError;
 	}
 	char ch = 0x44;
-	if (sendChar(ch)!=1) return SendError;	        //发送命令D
+	if (sendChar(ch)!=1) return SendError;	        //路垄脣脥脙眉脕卯D
 	if (sendWord(addr)!=1) return SendError;
 	if (sendWord(num)!=1) return SendError;
 
 	int count = 0;
-	while(count<num){								//接收返回数据
+	while(count<num){								//陆脫脢脮路碌禄脴脢媒戮脻
 		switch(recvWord(data))
 		{
 			case 1:	
@@ -601,7 +600,7 @@ int Console::runA(int argc, char* argv[64])
 			continue;
 		}
 		char ch = 0x41;
-		if (sendChar(ch)!=1) return SendError;	        //发送命令A
+		if (sendChar(ch)!=1) return SendError;	        //路垄脣脥脙眉脕卯A
 		if (sendWord(addr)!=1) return SendError;
 		if (sendWord(bin)!=1) return SendError;
 		if (recvChar(ch)!=1 || ch!=0) return RecvError;
@@ -631,12 +630,12 @@ int Console::runU(int argc, char* argv[64])
 		return ConsoleCommandError;
 	}
 	char ch = 0x55;
-	if (sendChar(ch)!=1) return SendError;	        //发送命令U
+	if (sendChar(ch)!=1) return SendError;	        //路垄脣脥脙眉脕卯U
 	if (sendWord(addr)!=1) return SendError;
 	if (sendWord(num)!=1) return SendError;
 
 	int count = 0;
-	while(count<num){								//接收返回数据
+	while(count<num){								//陆脫脢脮路碌禄脴脢媒戮脻
 		switch(recvWord(data))
 		{
 			case 1:	
@@ -665,7 +664,7 @@ int Console::runG(int argc, char* argv[64]){
 	else
 		return ConsoleCommandError;
 	char ch = 0x47;
-	if (sendChar(ch)!=1) return SendError;	        //发送命令G
+	if (sendChar(ch)!=1) return SendError;	        //路垄脣脥脙眉脕卯G
 	if (sendWord(addr)!=1) return SendError;
 
 	while (true){
@@ -885,7 +884,7 @@ int Console::runLoadFile(int argc, char *argv[]){
 		//return NoJrRaError;
 	for (unsigned int i=0;i<prog.size();i++){
 		char ch = 0x41;
-		if (sendChar(ch)!=1) return SendError;	        //发送命令A
+		if (sendChar(ch)!=1) return SendError;	        //路垄脣脥脙眉脕卯A
 		if (sendWord(addr)!=1) return SendError;
 		if (sendWord(prog.at(i))!=1) return SendError;
 		if (recvChar(ch)!=1 || ch != 0) return RecvError;

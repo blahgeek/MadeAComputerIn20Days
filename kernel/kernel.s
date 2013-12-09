@@ -17,6 +17,25 @@ initial:
 	li $s1, 0x2
 	mtc0 $s1, $12
 
+	#输出ok到终端
+	lui $s0, 0xBFD0
+
+	li $s1, 0x4F					#send 'o'
+	jal wtest
+	sw $s1, 0x3F8($s0)
+
+	li $s1, 0x4B					#send 'k'
+	jal wtest
+	sw $s1, 0x3F8($s0)
+
+	li $s1, 0x0A					#send '\r'
+	jal wtest
+	sw $s1, 0x3F8($s0)
+
+	li $s1, 0x0D					#send '\n'
+	jal wtest
+	sw $s1, 0x3F8($s0)
+
 begin:
 
 	#输出23到数码管
