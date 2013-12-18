@@ -540,10 +540,14 @@ int Console::runD(int argc, char* argv[64])
 	int num = 10;
 	word addr,data;
 	if (argc==2){
-		if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr))
+		// if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr))
+		if (!string2addr(argv[1],addr))
+			// nimabi
 			return InvalidMemAddress;
 	}else if(argc==3){
-		if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr))
+		// if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr))
+		if (!string2addr(argv[1],addr))
+			// fuck
 			return InvalidMemAddress;
 		if (!string2num(argv[2],num) || num<=0)
 			return ConsoleCommandError;
@@ -581,7 +585,7 @@ int Console::runA(int argc, char* argv[64])
 {
 	word addr;
 	if (argc>=2){
-		if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr)){
+		if (!string2addr(argv[1],addr)){
 			return InvalidMemAddress;
 		}
 	}
@@ -618,10 +622,10 @@ int Console::runU(int argc, char* argv[64])
 	int num = 10;
 	word addr,data;
 	if (argc==2){
-		if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr))
+		if (!string2addr(argv[1],addr))
 			return InvalidMemAddress;
 	}else if(argc==3){
-		if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr))
+		if (!string2addr(argv[1],addr))
 			return InvalidMemAddress;
 		if (!string2num(argv[2],num) || num<=0)
 			return ConsoleCommandError;
@@ -657,7 +661,7 @@ int Console::runU(int argc, char* argv[64])
 int Console::runG(int argc, char* argv[64]){
 	word addr;
 	if (argc>=2){
-		if (!string2addr(argv[1],addr) || !controller.mem.visitable(addr)){
+		if (!string2addr(argv[1],addr)){
 			return InvalidMemAddress;
 		}
 	}
