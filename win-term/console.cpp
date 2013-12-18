@@ -892,7 +892,7 @@ int Console::runLoadFile(int argc, char *argv[]){
 		char ch = 0x41;
 		if (sendChar(ch)!=1) return SendError;	        //·¢ËÍÃüÁîA
 		if (sendWord(addr)!=1) return SendError;
-		if (sendWord(prog.at(i))!=1) return SendError;
+		if (sendReverseWord(prog.at(i))!=1) return SendError;
 		if (recvChar(ch)!=1 || ch != 0) return RecvError;
 		addr += 4;
 	}
@@ -932,6 +932,20 @@ int Console::sendWord(word data){
 				data >>= 8;
 				break;
 			case 0:				
+			default:
+				return 0;
+		}
+	}
+	return 1;
+}
+
+int Console::sendReverseWord(word data){
+	for (int i=0;i<4;i++){
+		char c = (data & (0xff << (i * 8))) >> (i*8);
+		switch(sendChar(c)){
+			case 1:
+				return 1;
+			case 0:
 			default:
 				return 0;
 		}

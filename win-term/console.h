@@ -51,6 +51,7 @@ private:
 	int sendChar(char);
 	int recvChar(char&);
 	int sendWord(word);
+	int sendReverseWord(word);
 	int recvWord(word&);
 	int kernelRun(char [],int order_len);
 	int runR();
