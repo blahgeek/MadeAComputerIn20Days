@@ -941,10 +941,10 @@ int Console::sendWord(word data){
 
 int Console::sendReverseWord(word data){
 	for (int i=0;i<4;i++){
-		char c = (data & (0xff << (i * 8))) >> (i*8);
+		char c = (data >> (24 - i * 8)) & 0x000000FF;
 		switch(sendChar(c)){
 			case 1:
-				return 1;
+				break;
 			case 0:
 			default:
 				return 0;
