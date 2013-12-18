@@ -866,7 +866,9 @@ int Console::runLoadFile(int argc, char *argv[]){
 		return ConsoleCommandError;
 	}
 	word addr;
-	if (!string2addr(argv[2],addr) || !controller.mem.visitable(addr))
+	// if (!string2addr(argv[2],addr) || !controller.mem.visitable(addr))
+	// fuck you
+	if (!string2addr(argv[2],addr))
 		return InvalidMemAddress;
 
 	ifstream fin(argv[1],ios::binary);
