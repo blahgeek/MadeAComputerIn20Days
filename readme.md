@@ -13,34 +13,41 @@
 
 ### PCDecider
 
-该模块FecherAndRegister相连，并与SRAM的地址总线相连，
-根据输入的信号判断跳转、等待（气泡）、顺序执行等，并给RAM以地址信号，输出现在的PC值。
+- 主要输入信号：hold，JUMP_true，JUMP_addr
+- 主要输出信号：PC
+- 相连模块：TLB
+- 相连外部接口：两片SRAM的地址总线
+
+若hold为真时不改变PC值，否则根据JUMP_true判断是否跳转产生新的PC值，通过TLB模块获得该指令地址的物理地址，
+并给SRAM以地址，输出新的PC值。
 
 ### FetcherAndRegister
 
-该模块与PCDecider、ALUWrapper相连，包含一个Register子模块，并与SRAM数据总线相连，完成：
+- 主要输入信号：PC，寄存器写回相关
+- 主要输出信号：hold，JUMP_true，JUMP_addr，ALU信号，内存信号，寄存器写信号
+- 相连模块：Registers
+- 相连外部接口：SRAM数据总线
 
-- 从RAM的数据线得到指令并译码
-- 读取指令需要的寄存器的值
-- 从Memory模块得到写寄存器信号并执行
-- 判断跳转、等待、PC异常、TLB异常等并给出信号
-- 将信号传给下一级
+该模块从SRAM的数据总线获得指令并译码，相应的给出指令需要的ALU、内存、寄存器读写信号。对于读寄存器的操作，通过Registers读取数据并将数据输出。
+
+另外，该模块还会判断跳转、hold（气泡）、PC异常、TLB异常的情况并给出JUMP_addr、hold等。
 
 ### ALUWrapper
 
-该模块与前一级FetcherAndRegister以及后一级Memory相连，包含一个ALU子模块，完成：
+- 主要输入信号：ALU信号，内存信号，寄存器写信号
+- 主要输出信号：ALU输出，内存信号，寄存器写信号
+- 相连模块：TLB
 
-- 根据前一级的信号完成算术逻辑运算
-- 将其他信号继续传递给下一级
-- 将为内存地址的计算结果通过TLB转换后得到物理内存地址，若TLB未找到则传递信号给FecherAndRegister以产生异常
+该模块根据前一级的信号完成算术逻辑运算，将其他信号继续传递给下一级。并且将为内存地址的计算结果通过TLB转换后得到物理内存地址，若TLB未找到则传递信号给FecherAndRegister由它产生异常。
 
 ### Memory
 
-该模块与前一级ALUWrapper以及FetcherAndRegister相连，与SRAM的地址、内存总线、UART模块相连，完成：
+- 主要输入信号：ALU输出，内存信号，寄存器写信号
+- 主要输出信号：内存读取输出，寄存器写信号
+- 主要相连模块：UART，数码管
+- 相连外部接口：SRAM的地址、数据总线
 
-- 根据前一级的信号完成内存读写
-- 读写特定地址时改为从UART模块读写
-- 将写寄存器信号传回至FetcherAndRegister
+该模块与前一级ALUWrapper以及FetcherAndRegister相连，根据前一级的信号完成内存读写，读写特定地址时改为从UART模块、数码管模块读写，并将写寄存器信号传回至FetcherAndRegister。
 
 ## 寄存器数据冲突的处理
 
@@ -63,7 +70,10 @@
 
 ## TLB missing
 
-当取值、访存的地址发生TLB未找到异常时，信号会传递给译码模块，其根据不同情况暂停流水并跳到中断处理地址。
+当取指、访存的地址发生TLB未找到异常时，信号会传递给译码模块，其根据不同情况暂停流水并跳到中断处理地址：
+
+- 若取指时发生异常：产生一个周期的气泡后跳转至异常处理地址，EPC值为当前PC值
+- 若数据访存时发生异常：产生一个周期的气泡后跳转至异常处理地址，EPC值为两个周期前的PC值
 
 # Memory Map
 
