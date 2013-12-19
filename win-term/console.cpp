@@ -832,7 +832,7 @@ int Console::runAddTLB(int argc, char *argv[]){
 		return InvalidMemAddress;
 	}
 
-	if (pfn/4>=controller.mem.MemSize || pfn%4!=0){
+	if (pfn%4!=0){
 		return InvalidMemAddress;
 	}
 
