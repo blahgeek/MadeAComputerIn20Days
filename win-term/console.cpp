@@ -613,6 +613,13 @@ int Console::runA(int argc, char* argv[64])
 		if (bin==0x03E00008) break;
 		addr += 4;
 	}
+	// append a nop
+	word bin = controller.assemble("nop");
+	char ch = 0x41;
+	if (sendChar(ch)!=1) return SendError;
+	if (sendWord(addr)!=1) return SendError;
+	if (sendWord(bin)!=1) return SendError;
+	if (recvChar(ch)!=1 || ch!=0) return RecvError;
 	return 0;
 
 }
