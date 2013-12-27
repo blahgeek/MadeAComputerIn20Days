@@ -741,7 +741,7 @@ int Console::runG(int argc, char* argv[64]){
 				//cout<<"syscall pritnInt"<<endl;
 				word data;
 				if (recvWord(data)!=1) return RecvError;
-				cout<<(int)data;
+				cout<<(int)data<< " ";
 				continue;
 			}
 			if (ch==6){    //printstring
