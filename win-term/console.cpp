@@ -610,8 +610,8 @@ int Console::runA(int argc, char* argv[64])
 		if (recvChar(ch)!=1 || ch!=0) return RecvError;
 		//coutHexNum(addr);
 		//cout<<endl;
-		if (bin==0x03E00008) break;
 		addr += 4;
+		if (bin==0x03E00008) break;
 	}
 	// append a nop
 	word bin = controller.assemble("nop");
@@ -793,6 +793,12 @@ int Console::runInt()
 			cout<<"Unknown exception"<<endl;
 	}
 	sendChar(4);
+	int i = 0 ;
+	char ch;
+	for(i = 0 ; i < 4 ; i += 1){
+		recvChar(ch);
+		printf("%c", ch);
+	}
 	return 0;
 }
 
