@@ -610,9 +610,16 @@ int Console::runA(int argc, char* argv[64])
 		if (recvChar(ch)!=1 || ch!=0) return RecvError;
 		//coutHexNum(addr);
 		//cout<<endl;
-		if (bin==0x03E00008) break;
 		addr += 4;
+		if (bin==0x03E00008) break;
 	}
+	// append a nop
+	word bin = controller.assemble("nop");
+	char ch = 0x41;
+	if (sendChar(ch)!=1) return SendError;
+	if (sendWord(addr)!=1) return SendError;
+	if (sendWord(bin)!=1) return SendError;
+	if (recvChar(ch)!=1 || ch!=0) return RecvError;
 	return 0;
 
 }
@@ -734,7 +741,7 @@ int Console::runG(int argc, char* argv[64]){
 				//cout<<"syscall pritnInt"<<endl;
 				word data;
 				if (recvWord(data)!=1) return RecvError;
-				cout<<(int)data;
+				cout<<(int)data<< " ";
 				continue;
 			}
 			if (ch==6){    //printstring
@@ -786,6 +793,12 @@ int Console::runInt()
 			cout<<"Unknown exception"<<endl;
 	}
 	sendChar(4);
+	int i = 0 ;
+	char ch;
+	for(i = 0 ; i < 4 ; i += 1){
+		recvChar(ch);
+		printf("%c", ch);
+	}
 	return 0;
 }
 
