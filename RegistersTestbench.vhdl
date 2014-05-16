@@ -34,7 +34,7 @@ begin
         s_write_value, s_read_value_a, s_read_value_b);
 
     process begin
-        s_read_a_num <= "00011";
+        s_read_a_num <= "11101";
         s_read_b_num <= "00000";
         s_write <= '1';
         s_write_num <= "00011";

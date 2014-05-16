@@ -20,7 +20,9 @@ end Registers;
 
 architecture Behavioral of Registers is
 	type regs is array (0 to 31) of STD_LOGIC_VECTOR(31 downto 0);
-	signal GPR : regs := (others => (others => '0'));
+	-- signal GPR : regs := (others => (others => '0'));
+	signal GPR : regs := (29 => x"807fff00",  -- $sp
+						  others => (others => '0'));
 	begin
 		process(clk, reset)
 		begin

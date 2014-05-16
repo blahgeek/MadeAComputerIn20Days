@@ -484,16 +484,13 @@ begin
             numB_from_reg <= '0';
             s_jump_true_if_eq <= '0';
             s_jump_true_if_ne <= '0';
-            s_jump_addr_from_reg_a <= '0';  -- 尼玛不会真的加了这行就能用了吧…我TMD就是个傻逼……
-                                            -- 还有两分钟就编译完了…一定是这样的！
-                                            -- 好激动 > <
-                                            -- 卧槽真的过了！！！！！！！！！！！！！！！！！！！
+            s_jump_addr_from_reg_a <= '0'; -- shit
             outbuffer_ALU_operator <= "1111";
             outbuffer_MEM_read <= '0';
             outbuffer_MEM_write <= '0';
             outbuffer_REG_write <= '0';
             outbuffer_JUMP_true <= '1'; --jump!
-            outbuffer_JUMP_addr <= REGS_C0(15);  -- 我知道这不标准，你来打我啊
+            outbuffer_JUMP_addr <= REGS_C0(15);  -- not standard
 
             s_skip_next <= '1'; -- there's no delay slot for exception
 
