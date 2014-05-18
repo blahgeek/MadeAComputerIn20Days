@@ -41,6 +41,11 @@ entity Memory is
     VGA_data: out std_logic_vector(6 downto 0);
     VGA_set: out std_logic := '0';
 
+    ENET_D: inout std_logic_vector(15 downto 0) := (others => 'Z');
+    ENET_CMD: out std_logic := '0';
+    ENET_IOR : out std_logic := '1';
+    ENET_IOW : out std_logic := '1';
+
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')
@@ -62,6 +67,8 @@ architecture arch of Memory is
 
     signal s_output: std_logic_vector(31 downto 0);
     signal s_use_me_as_output: std_logic;
+
+    signal s_use_ethernet_output: std_logic := '0';
 
     signal s_REG_write: std_logic:= '0';
     signal s_REG_write_addr: std_logic_vector(4 downto 0):= (others => '0');
@@ -98,6 +105,11 @@ begin
       UART_DATA_RECV_ACK <= '0';
       VGA_set <= '0';
       s_VGA_set <= '0';
+      ENET_D <= (others => 'Z');
+      ENET_CMD <= '0';
+      ENET_IOR <= '1';
+      ENET_IOW <= '1';
+      s_use_ethernet_output <= '0';
     elsif rising_edge(clock) then
       case( state ) is
 
@@ -113,6 +125,10 @@ begin
           end if;
           UART_DATA_RECV_ACK <= '0';
           VGA_set <= '0';
+          ENET_D <= (others => 'Z');
+          ENET_IOR <= '1';
+          ENET_IOW <= '1';
+          s_use_ethernet_output <= '0';
           state <= s1;
       
         when s1 => -- start
@@ -128,6 +144,11 @@ begin
                 s_output(31 downto 8) <= (others => '0');
                 s_output(7 downto 0) <= UART_DATA_RECV;
                 UART_DATA_RECV_ACK <= '1';
+              when x"FD00018" | x"FD0001C" => -- ethernet!
+                ENET_CMD <= ALU_output_after_TLB(2); -- CMD = 1 if FD0000C which is data
+                ENET_IOR <= '0'; -- read!
+                s_use_me_as_output <= '0';
+                s_use_ethernet_output <= '1';
               when others =>
                 ram_choice <= ALU_output_after_TLB(22);
                 if ALU_output_after_TLB(22) = '0' then
@@ -154,6 +175,10 @@ begin
                 when x"FD003F8" =>
                   UART_DATA_SEND <= MEM_data(7 downto 0);
                   UART_DATA_SEND_STB <= '1';
+                when x"FD00018" | x"FD0001C" => -- ethernet!
+                  ENET_CMD <= ALU_output_after_TLB(2); -- CMD = 1 if FD0000C which is data
+                  ENET_IOW <= '0'; -- write!
+                  ENET_D <= MEM_data(15 downto 0);
                 when others => -- general
                   if ALU_output(22) = '0' then
                     BASERAM_addr <= ALU_output_after_TLB(21 downto 2);
@@ -179,6 +204,9 @@ begin
           VGA_set <= s_VGA_set;
           if s_use_me_as_output = '1' then
             MEM_output <= s_output;
+          elsif s_use_ethernet_output = '1' then
+            MEM_output(31 downto 16) <= (others => '0');
+            MEM_output(15 downto 0) <= ENET_D;
           else
             if ram_choice = '0' then
               MEM_output <= BASERAM_data;
@@ -191,6 +219,8 @@ begin
           if UART_DATA_SEND_ACK = '1' then 
             UART_DATA_SEND_STB <= '0';
           end if;
+          ENET_IOR <= '1';
+          ENET_IOW <= '1';
 
           state <= s3;
           REG_write <= s_REG_write;
@@ -206,6 +236,7 @@ begin
           if UART_DATA_SEND_ACK = '1' then 
             UART_DATA_SEND_STB <= '0';
           end if;
+          ENET_D <= (others => 'Z');
           state <= s0;
 
       end case ;

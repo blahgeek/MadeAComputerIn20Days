@@ -33,7 +33,8 @@ def read(f, addr):
     return ans
 
 if __name__ == '__main__':
-    ser = serial.Serial('/dev/cu.usbserial-ftDWBKKD',  115200)
+    ser = serial.Serial('/dev/ttyAMA0', 115200)
+    print 'Now reset the FPGA please...', raw_input()
     import sys
     if sys.argv[1] == 'write':
         data = open(sys.argv[2], 'rb').read()
@@ -43,4 +44,7 @@ if __name__ == '__main__':
         except IndexError:
             addr = 0x00
         write(ser, addr, data)
-        assert(read(ser, addr)[0:len(data)] == data)
+        read_back = read(ser, addr)[0:len(data)]
+        # with open('readback.bin', 'wb') as f:
+        #     f.write(read_back)
+        assert(read_back == data)

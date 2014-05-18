@@ -1,5 +1,4 @@
-
-BIN_DIR = ../mips-gcc-4.7.2/mips-elf/bin/
+BIN_DIR = ../../mips-gcc-4.7.2/mips-elf/bin/
 FLAGS = -mips32
 LDFLAGS = -Ttext 0x80400000
 
@@ -22,4 +21,7 @@ all: $(TARGETS)
 
 
 clean:
-	rm -rf *.o *.out
+	rm -rf *.bin
+
+.PHONY: clean all
+

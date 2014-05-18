@@ -100,6 +100,9 @@
 - UART数据地址：0xBFD003F8（TLB转化后为0x1FD003F8）
 - UART控制地址：0xBFD003FC（TLB转化后为0x1FD003FC），可写时最低位置1，可读时第二低位置1
 - 数码管0、数码管1分别为：0xBFD00000, 0xBFD00004
+- LED: 0x8FD00008
+- Ethernet IOAddr: 0xBFD00018
+- Ethernet DataAddr: 0xBFD0001C
 
 # 监控程序
 

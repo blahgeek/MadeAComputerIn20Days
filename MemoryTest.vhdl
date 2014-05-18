@@ -28,11 +28,10 @@ port (
     InterConn: inout std_logic_vector(9 downto 0) := (others => 'Z');
     SW_DIP: in std_logic_vector(31 downto 0);
 
-    VGA_Blue: out std_logic_vector(2 downto 0) := (others => '0');
-    VGA_Green: out std_logic_vector(2 downto 0) := (others => '0');
-    VGA_Red: out std_logic_vector(2 downto 0) := (others => '0');
-    VGA_Vhync: out std_logic := '0';
-    VGA_Hhync: out std_logic := '0' );
+    ENET_D: inout std_logic_vector(15 downto 0) := (others => 'Z');
+    ENET_CMD: out std_logic := '0';
+    ENET_IOR : out std_logic := '1';
+    ENET_IOW : out std_logic := '1');
 
 end entity ; -- MemoryTest
 
@@ -59,6 +58,24 @@ component Memory port (
     EXTRAM_WE : out  STD_LOGIC; -- base ram stores data
     EXTRAM_addr: out std_logic_vector(19 downto 0);
     EXTRAM_data: inout std_logic_vector(31 downto 0);
+
+    UART_DATA_SEND: out std_logic_vector(7 downto 0);
+    UART_DATA_SEND_STB: buffer std_logic := '0';
+    UART_DATA_SEND_ACK: in std_logic;
+
+    UART_DATA_RECV: in std_logic_vector(7 downto 0);
+    UART_DATA_RECV_STB: in std_logic;
+    UART_DATA_RECV_ACK: out std_logic := '0';
+
+    VGA_x: out std_logic_vector(6 downto 0);
+    VGA_y: out std_logic_vector(4 downto 0);
+    VGA_data: out std_logic_vector(6 downto 0);
+    VGA_set: out std_logic := '0';
+
+    ENET_D: inout std_logic_vector(15 downto 0) := (others => 'Z');
+    ENET_CMD: out std_logic := '0';
+    ENET_IOR : out std_logic := '1';
+    ENET_IOW : out std_logic := '1';
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')

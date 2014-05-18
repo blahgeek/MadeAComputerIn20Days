@@ -30,6 +30,8 @@ architecture Behavioral of Registers is
 				RegReadValueA <= (others => '0');
 				RegReadValueB <= (others => '0');
 				GPR <= (others => (others => '0'));
+				GPR <= (29 => x"807fff00",  -- $sp
+ 					    others => (others => '0'));
 			elsif ( clk'event and clk = '1' ) then
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") then
 					GPR(to_integer(unsigned(RegWriteNumber))) <= RegWriteValue;

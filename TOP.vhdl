@@ -40,6 +40,14 @@ port (
     InterConn: inout std_logic_vector(9 downto 0) := (others => 'Z');
     SW_DIP: in std_logic_vector(31 downto 0);
 
+    ENET_D: inout std_logic_vector(15 downto 0) := (others => 'Z');
+    ENET_CMD: out std_logic := '0';
+    ENET_CS : out std_logic := '0'; -- always selected
+    ENET_INT : in std_logic;
+    ENET_IOR : out std_logic := '1';
+    ENET_IOW : out std_logic := '1';
+    ENET_RESET : out std_logic := '1'; -- reset on 0
+
     VGA_Blue: out std_logic_vector(2 downto 0) := (others => '0');
     VGA_Green: out std_logic_vector(2 downto 0) := (others => '0');
     VGA_Red: out std_logic_vector(2 downto 0) := (others => '0');
@@ -166,6 +174,11 @@ component Memory port (
     VGA_y: out std_logic_vector(4 downto 0);
     VGA_data: out std_logic_vector(6 downto 0);
     VGA_set: out std_logic := '0';
+
+    ENET_D: inout std_logic_vector(15 downto 0) := (others => 'Z');
+    ENET_CMD: out std_logic := '0';
+    ENET_IOR : out std_logic := '1';
+    ENET_IOW : out std_logic := '1';
 
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
@@ -330,6 +343,8 @@ begin
 
     real_reset <= not reset;
 
+    ENET_RESET <= reset; -- ENET_RESET is valid on '0'
+
     with SW_DIP(2 downto 0) select
         real_clock <= CLK50M when "000",
                       not CLK_From_Key when "010",
@@ -349,7 +364,7 @@ tlb0: TLB port map (
     TLB_set_do, TLB_set_index, TLB_set_entry);
 
 FetcherAndRegister0: FetcherAndRegister port map (
-    LED(15 downto 8),
+    open,
     PC, A_RAM_SELECT, real_clock, real_reset, 
     TLB_set_do, TLB_set_index, TLB_set_entry,
     TLB_data_exception, TLB_data_exception_read_or_write,
@@ -366,9 +381,9 @@ FetcherAndRegister0: FetcherAndRegister port map (
     A_REG_write, A_REG_write_addr
     );
 
-LED(0) <= instruction_bad;
-LED(1) <= data_bad;
-LED(7 downto 2) <= instruction_virt_addr(19 downto 14);
+-- LED(0) <= instruction_bad;
+-- LED(1) <= data_bad;
+-- LED(7 downto 2) <= instruction_virt_addr(19 downto 14);
 
 ALUWrapper0: ALUWrapper port map (
     real_clock, real_reset,
@@ -395,7 +410,8 @@ Mem0: Memory port map (
     uart_data_out, uart_data_out_stb, uart_data_out_ack,
     open, open, open, open, -- no VGA
     -- VGA_in_x, VGA_in_y, VGA_in_data, VGA_in_set,
-    DYP0, DYP1, open);
+    ENET_D, ENET_CMD, ENET_IOR, ENET_IOW, -- ethernet
+    DYP0, DYP1, LED);
 
 PC0: PCdecider port map(
     real_clock, real_reset, A_HOLD,
