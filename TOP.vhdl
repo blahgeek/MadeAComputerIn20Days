@@ -46,6 +46,7 @@ port (
     ENET_INT : in std_logic;
     ENET_IOR : out std_logic := '1';
     ENET_IOW : out std_logic := '1';
+    ENET_25M : out std_logic;
     ENET_RESET : out std_logic := '1'; -- reset on 0
 
     VGA_Blue: out std_logic_vector(2 downto 0) := (others => '0');
@@ -348,9 +349,11 @@ begin
     with SW_DIP(2 downto 0) select
         real_clock <= CLK50M when "000",
                       not CLK_From_Key when "010",
+                      CLK11M0592 when "101",
                       clk25M when others;
 
     TLB_clock <= not real_clock;
+    ENET_25M <= clk25M;
 
     BaseRamOE <= '0';
     BaseRamCE <= '0';

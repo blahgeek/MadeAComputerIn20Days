@@ -5,6 +5,12 @@
 import serial
 from bitstring import Bits
 
+import sys
+from os import path
+sys.path.append(path.abspath(path.dirname(__file__)))
+
+from ihex import IHex
+
 ALLOC_NOW = 0x10000
 ALLOC_END = 0x400000
 
@@ -37,10 +43,13 @@ def showmem(ser, addr, count):
         print '0x'+Bits(bytes=recv4bit(ser)).hex
 
 def writemem(ser, addr, value):
+    print 'Writing memory: Addr:', hex(addr), 'Data:', repr(value)
     ser.write(chr(0x41))
     send4bit(ser, addr)
     send4bit(ser, value)
-    assert(ser.read(1) == chr(0))
+    if ser.read(1) != chr(0):
+        print '[ERROR] retry...'
+        writemem(ser, addr, value)
 
 def addtlb(ser, index, hi, lo1, lo2):
     ''' lo can be None'''
@@ -109,10 +118,17 @@ def writebin(ser, s, addr):
         writemem(ser, addr, s[i*4:i*4+4])
         addr += 4
 
+def writeihex(ser, filename):
+    h = IHex.read_file(filename)
+    for addr in h.areas:
+        data = h.areas[addr]
+        for i in xrange(len(data)/4):
+            writemem(ser, addr + i * 4 + 0x80000000, data[i*4:i*4+4])
+
 if __name__ == '__main__':
     import sys
     parseint = lambda x: int(x, 16) if 'x' in x else int(x)
-    ser = serial.Serial('/dev/ttyAMA0',  115200)
+    ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
     if len(sys.argv) < 2:
         print 'Usage: ', sys.argv[0], 'showregs|showmem|addtlb|writebin|execute'
     elif sys.argv[1] == 'showregs':
@@ -126,5 +142,7 @@ if __name__ == '__main__':
         writebin(ser, open(sys.argv[2], 'rb').read(), parseint(sys.argv[3]))
     elif sys.argv[1] == 'execute':
         execute(ser, parseint(sys.argv[2]))
+    elif sys.argv[1] == 'writeihex':
+        writeihex(ser, sys.argv[2])
     else:
         print 'Unknown command'

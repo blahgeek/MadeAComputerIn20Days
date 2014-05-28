@@ -18,6 +18,7 @@ port (
     ENET_INT : in std_logic;
     ENET_IOR : out std_logic := '1';
     ENET_IOW : out std_logic := '1';
+    ENET_25M : out std_logic;
     ENET_RESET : out std_logic := '1'); -- reset on 0
 
 end TopTest;
@@ -25,8 +26,7 @@ end TopTest;
 
 architecture arch of TopTest is
 
-    type state_type is (s0, s1, s2, s3);
-    signal state: state_type := s0;
+    signal tri_state: std_logic;
 
     signal real_clock: std_logic := '0';
     signal clk25M: std_logic := '0';
@@ -40,6 +40,8 @@ begin
         end if;
     end process ; -- divider
 
+    ENET_25M <= clk25M;
+
     with SW_DIP(2 downto 0) select
         real_clock <= CLK50M when "000",
                       not CLK_From_Key when "010",
@@ -47,41 +49,19 @@ begin
 
     ENET_RESET <= reset;
 
-    process(real_clock, reset) begin
-        if reset = '0' then
-            ENET_IOR <= '1';
-            ENET_IOW <= '1';
-            ENET_D <= (others => 'Z');
-            state <= s0;
-        elsif rising_edge(real_clock) then
-            case( state ) is
-                when s0 =>
-                    ENET_CMD <= '0'; -- IO
-                    ENET_IOW <= '0';
-                    ENET_D <= SW_DIP(31 downto 16);
-                    LED(15 downto 14) <= "00";
-                    state <= s1;
-                when s1 =>
-                    ENET_IOW <= '1';
-                    LED(15 downto 14) <= "01";
-                    state <= s2;
-                when s2 =>
-                    ENET_D <= (others => 'Z');
-                    ENET_CMD <= '1'; -- data
-                    ENET_IOR <= '0';
-                    LED(15 downto 14) <= "10";
-                    state <= s3;
-                when s3 =>
-                    LED(7 downto 0) <= ENET_D(7 downto 0);
-                    ENET_IOR <= '1';
-                    LED(15 downto 14) <= "11";
-                    state <= s0;
-            
-                when others =>
-                    state <= s0;
-            
-            end case ;
-        end if;
-    end process;
+    tri_state <= SW_DIP(15);
+
+    with tri_state select
+        ENET_D <= SW_DIP(31 downto 16) when '1',
+                  (others => 'Z') when others;
+
+    with tri_state select
+        LED <= SW_DIP(31 downto 16) when '1',
+               ENET_D when others;
+
+    ENET_CS <= '0';
+    ENET_CMD <= SW_DIP(7);
+    ENET_IOR <= SW_DIP(6);
+    ENET_IOW <= SW_DIP(5);
 
 end arch ; -- arch
