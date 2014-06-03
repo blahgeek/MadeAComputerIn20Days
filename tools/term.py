@@ -72,12 +72,13 @@ def syscall(ser):
         print 'Allocated %s byts, now at %s' % (hex(size), hex(ALLOC_NOW))
     elif code == 3: # read int
         print 'Enter a integer: ',
-        value = int(raw_input())
+        value = raw_input().strip()
+        value = int(value, 16 if 'x' in value else 10)
         send4bit(ser, value)
     elif code == 5:
         print 'Print a integer: ',
-        value = Bits(bytes=recv4bit(ser)).uint
-        print value
+        value = Bits(bytes=recv4bit(ser)).int
+        print hex(value)
     elif code == 8:
         print 'Halt'
         return True
