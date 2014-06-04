@@ -1,6 +1,6 @@
 BIN_DIR = ../mips-gcc-4.7.2/mips-elf/bin/
 CFLAGS = -std=gnu99 -O0
-FLAGS = -mips1 -G0
+FLAGS = -mips32 -G0
 LDFLAGS = -Ttext 0x80400000
 OBJCOPY_FLAGS = --change-addresses -0xffffffff80000000
 

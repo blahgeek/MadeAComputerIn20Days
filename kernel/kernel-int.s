@@ -149,6 +149,9 @@ nonesyscall:
     mfc0 $s1, $13               #CPR Casue
     jal shows1
 
+    mfc0 $s1, $14
+    jal shows1
+
     jal rtest                   #recv int over flag
     lw $s1, 0x3F8($s0)
 

@@ -94,7 +94,9 @@ def interrupt(ser):
     }
     cause = Bits(bytes=recv4bit(ser)).uint
     cause = (cause >> 2) & 0x1f
+    pc = Bits(bytes=recv4bit(ser)).hex
     print 'Cause: %d: %s' % (cause, reason.get(cause, 'Unknown'))
+    print 'PC:', '0x' + pc
     ser.write(chr(4))
 
 def execute(ser, addr):
