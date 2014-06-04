@@ -26,10 +26,12 @@ architecture arch of DummyTLB is
 
 begin
 
-    instruction_real_addr <= instruction_virt_addr;
+    instruction_real_addr(19 downto 18) <= (others => '0');
+    instruction_real_addr(17 downto 0) <= instruction_virt_addr(17 downto 0);
     instruction_bad <= '0';
 
-    data_real_addr <= data_virt_addr;
+    data_real_addr(19 downto 18) <= (others => '0');
+    data_real_addr(17 downto 0) <= data_virt_addr(17 downto 0);
     data_bad <= '0';
 
 end architecture ; -- arch

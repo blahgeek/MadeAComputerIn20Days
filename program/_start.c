@@ -21,18 +21,11 @@ int _start() {
     ethernet_reset();
     ethernet_phy_reset();
 
-    ethernet_send(data, 9);
+    // ethernet_send(data, 9);
     writeint(ethernet_check_iomode());
     writeint(ethernet_check_link());
     writeint(ethernet_check_speed());
     writeint(ethernet_check_duplex());
-    nop();nop();
-    nop();nop();
-    nop();nop();
-    nop();nop();
-    nop();nop();
-    nop();nop();
-    nop();nop();
 
     return 0;
 }
