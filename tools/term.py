@@ -47,7 +47,9 @@ def writemem(ser, addr, value):
     ser.write(chr(0x41))
     send4bit(ser, addr)
     send4bit(ser, value)
-    if ser.read(1) != chr(0):
+    ret = recv4bit(ser)
+    print repr(ret)
+    if ret != value:
         print '[ERROR] retry...'
         writemem(ser, addr, value)
 
@@ -142,6 +144,7 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'writebin':
         writebin(ser, open(sys.argv[2], 'rb').read(), parseint(sys.argv[3]))
     elif sys.argv[1] == 'execute':
+        ser.setTimeout(None)
         execute(ser, parseint(sys.argv[2]))
     elif sys.argv[1] == 'writeihex':
         writeihex(ser, sys.argv[2])

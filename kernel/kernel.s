@@ -274,9 +274,10 @@ assemble:
 	jal reads1
 	sw $s1, 0($s2)
 
-	jal wtest
-	li $s1, 0
-	sw $s1, 0x3F8($s0)
+	jal shows1
+	# jal wtest
+	# li $s1, 0
+	# sw $s1, 0x3F8($s0)
 
 	b begin
 
