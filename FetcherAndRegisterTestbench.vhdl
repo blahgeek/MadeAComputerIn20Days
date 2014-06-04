@@ -118,9 +118,61 @@ begin
 
     process begin
         BACK_REG_write <= '1';
-        BACK_REG_write_addr <= "11111"; -- 10
+        BACK_REG_write_addr <= "11101"; -- sp
         BACK_REG_write_data <= x"DEADBEEF";
-        data <= x"10000002"; -- b +2
+        data <= x"27bdffd8"; -- addiu $sp
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        BACK_REG_write <= '1';
+        BACK_REG_write_addr <= "11101"; -- sp
+        BACK_REG_write_data <= x"DEADFACE";
+        data(31 downto 0) <= x"afbf0024";
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;
@@ -135,39 +187,7 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '0';
-        data(31 downto 0) <= x"0c00000e"; -- jr 31
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
-        clock <= '1';
-        wait for clk_period/2;
-        clock <= '0';
-        wait for clk_period/2;
+        data(31 downto 0) <= x"afbe0020";
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';
