@@ -1,3 +1,4 @@
+#define ENET_INT_ADDR 0xBFD00014
 #define ENET_IO_ADDR 0xBFD00018
 #define ENET_DATA_ADDR 0xBFD0001C
 #define UART_CTRL 0xBFD003FC
@@ -11,5 +12,8 @@ int readint();
 void writeint(int x);
 
 void delay_ms(int ms);
+void delay_us(int us);
 
 #define nop() asm volatile ("nop")
+#define LSB(x) ((x) & 0xFF)
+#define MSB(x) (((x) >> 8) & 0xFF)

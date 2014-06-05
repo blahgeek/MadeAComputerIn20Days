@@ -45,6 +45,7 @@ entity Memory is
     ENET_CMD: out std_logic := '0';
     ENET_IOR : out std_logic := '1';
     ENET_IOW : out std_logic := '1';
+    ENET_INT: in std_logic;
 
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
@@ -149,6 +150,10 @@ begin
                 ENET_IOR <= '0'; -- read!
                 s_use_me_as_output <= '0';
                 s_use_ethernet_output <= '1';
+              when x"FD00014" =>
+                s_use_me_as_output <= '1';
+                s_output(31 downto 1) <= (others => '0');
+                s_output(0) <= ENET_INT;
               when others =>
                 ram_choice <= ALU_output_after_TLB(22);
                 if ALU_output_after_TLB(22) = '0' then

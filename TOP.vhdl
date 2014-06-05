@@ -180,6 +180,7 @@ component Memory port (
     ENET_CMD: out std_logic := '0';
     ENET_IOR : out std_logic := '1';
     ENET_IOW : out std_logic := '1';
+    ENET_INT: in std_logic;
 
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
@@ -413,7 +414,7 @@ Mem0: Memory port map (
     uart_data_out, uart_data_out_stb, uart_data_out_ack,
     open, open, open, open, -- no VGA
     -- VGA_in_x, VGA_in_y, VGA_in_data, VGA_in_set,
-    ENET_D, ENET_CMD, ENET_IOR, ENET_IOW, -- ethernet
+    ENET_D, ENET_CMD, ENET_IOR, ENET_IOW, ENET_INT, -- ethernet
     DYP0, DYP1, LED);
 
 PC0: PCdecider port map(

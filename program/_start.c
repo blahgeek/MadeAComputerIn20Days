@@ -2,30 +2,29 @@
 * @Author: BlahGeek
 * @Date:   2014-05-16
 * @Last Modified by:   BlahGeek
-* @Last Modified time: 2014-06-04
+* @Last Modified time: 2014-06-05
 */
 
 #include "defs.h"
 #include "ethernet.h"
 
 int data[] = {
-    0xffff, 0xffff, 0xffff,
-    0x0000, 0x1111, 0x2222,
-    0x0806,
-    0x4242, 0x4242
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
+    0x08, 0x06,
+    0x23, 0x42,
 };
 
 int _start() {
 
-    ethernet_powerup();
-    ethernet_reset();
-    ethernet_phy_reset();
+    ethernet_init();
 
-    // ethernet_send(data, 9);
-    writeint(ethernet_check_iomode());
     writeint(ethernet_check_link());
-    writeint(ethernet_check_speed());
-    writeint(ethernet_check_duplex());
+
+    readint();
+
+    writeint(ETHERNET_ISR);
+    writeint(ethernet_recv());
 
     return 0;
 }

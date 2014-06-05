@@ -2,7 +2,7 @@
 * @Author: BlahGeek
 * @Date:   2014-05-26
 * @Last Modified by:   BlahGeek
-* @Last Modified time: 2014-05-26
+* @Last Modified time: 2014-06-05
 */
 
 #include "defs.h"
@@ -31,4 +31,11 @@ void writeint(int x) {
 void delay_ms(int ms) {
     for(int i = 0 ; i < ms ; i += 1)
         for(int j = 0 ; j < 446 ; j += 1);
+}
+
+void delay_us(int us) {
+    for(int i = 0 ; i < us ; i += 1) {
+        nop();nop();nop();
+        nop();nop();
+    }
 }
