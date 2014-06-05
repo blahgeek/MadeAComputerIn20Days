@@ -9,8 +9,11 @@
 #include "ethernet.h"
 #include "utils.h"
 
-int MAC_ADDR[6] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
+int MAC_ADDR[6] = {0xf0, 0xde, 0xf1, 0x44, 0x55, 0x66};
 int ethernet_rx_data[2048];
+int ethernet_rx_len;
+int ethernet_tx_data[2048];
+int ethernet_tx_len;
 
 unsigned int ethernet_read(unsigned int addr) {
     *(unsigned int *)(ENET_IO_ADDR) = addr;
@@ -50,6 +53,9 @@ void ethernet_init() {
     // enable reciever
     ethernet_write(DM9000_REG_RCR,
         RCR_DIS_LONG | RCR_DIS_CRC | RCR_RXEN);
+    // enable checksum calc
+    ethernet_write(DM9000_REG_TCSCR,
+        TCSCR_IPCSE);
 }
 
 int ethernet_check_iomode() {
@@ -107,60 +113,62 @@ void ethernet_phy_reset() {
 }
 
 
-void ethernet_send(int * data, int length) {
+void ethernet_send() {
     // int is char
     // A dummy write
     ethernet_write(DM9000_REG_MWCMDX, 0);
     // select reg
     *(unsigned int *)(ENET_IO_ADDR) = DM9000_REG_MWCMD;
     nop(); nop();
-    for(int i = 0 ; i < length ; i += 2){
-        int val = data[i];
-        if(i + 1 < length) val |= (data[i+1] << 8);
+    for(int i = 0 ; i < ethernet_tx_len ; i += 2){
+        int val = ethernet_tx_data[i];
+        if(i + 1 < ethernet_tx_len) val |= (ethernet_tx_data[i+1] << 8);
         *(unsigned int *)(ENET_DATA_ADDR) = val;
         nop();
     }
     // write length
-    ethernet_write(DM9000_REG_TXPLH, MSB(length));
-    ethernet_write(DM9000_REG_TXPLL, LSB(length));
+    ethernet_write(DM9000_REG_TXPLH, MSB(ethernet_tx_len));
+    ethernet_write(DM9000_REG_TXPLL, LSB(ethernet_tx_len));
     // clear interrupt flag
     ethernet_write(DM9000_REG_ISR, ISR_PT);
     // transfer data
     ethernet_write(DM9000_REG_TCR, TCR_TXREQ);
 }
 
-int ethernet_recv() {
+void ethernet_recv() {
     // a dummy read
     ethernet_read(DM9000_REG_MRCMDX);
     // select reg
     *(unsigned int *)(ENET_IO_ADDR) = DM9000_REG_MRCMDX1;
     nop(); nop();
     int status = LSB(*(unsigned int *)(ENET_DATA_ADDR));
-    if(status != 0x01) return -1;
-    else {
-        *(unsigned int *)(ENET_IO_ADDR) = DM9000_REG_MRCMD;
-        nop(); nop();
-        status = MSB(*(unsigned int *)(ENET_DATA_ADDR));
-        nop(); nop();
-        int length = *(unsigned int *)(ENET_DATA_ADDR);
-        nop(); nop();
-        if(status & (RSR_LCS | RSR_RWTO | RSR_PLE | 
-                     RSR_AE | RSR_CE | RSR_FOE))
-            return -1;
-        for(int i = 0 ; i < length ; i += 2) {
-            int data = *(unsigned int *)(ENET_DATA_ADDR);
-            ethernet_rx_data[i] = LSB(data);
-            ethernet_rx_data[i+1] = MSB(data);
-        }
-        // clear intrrupt
-        ethernet_write(DM9000_REG_ISR, ISR_PR);
-        return length;
+    if(status != 0x01){
+        ethernet_rx_len = -1;
+        return;
     }
+    *(unsigned int *)(ENET_IO_ADDR) = DM9000_REG_MRCMD;
+    nop(); nop();
+    status = MSB(*(unsigned int *)(ENET_DATA_ADDR));
+    nop(); nop();
+    ethernet_rx_len = *(unsigned int *)(ENET_DATA_ADDR);
+    nop(); nop();
+    if(status & (RSR_LCS | RSR_RWTO | RSR_PLE | 
+                 RSR_AE | RSR_CE | RSR_FOE)) {
+        ethernet_rx_len = -1;
+        return;
+    }
+    for(int i = 0 ; i < ethernet_rx_len ; i += 2) {
+        int data = *(unsigned int *)(ENET_DATA_ADDR);
+        ethernet_rx_data[i] = LSB(data);
+        ethernet_rx_data[i+1] = MSB(data);
+    }
+    // clear intrrupt
+    ethernet_write(DM9000_REG_ISR, ISR_PR);
 }
 
-void ethernet_fill_hdr(int * data, int * dst, int type) {
-    memcpy(data + ETHERNET_DST_MAC, dst, 6);
-    memcpy(data + ETHERNET_SRC_MAC, MAC_ADDR, 6);
-    data[12] = MSB(type);
-    data[13] = LSB(type);
+void ethernet_set_tx(int * dst, int type) {
+    memcpy(ethernet_tx_data + ETHERNET_DST_MAC, dst, 6);
+    memcpy(ethernet_tx_data + ETHERNET_SRC_MAC, MAC_ADDR, 6);
+    ethernet_tx_data[12] = MSB(type);
+    ethernet_tx_data[13] = LSB(type);
 }

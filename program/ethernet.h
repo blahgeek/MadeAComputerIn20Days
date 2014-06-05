@@ -3,6 +3,9 @@
 
 extern int MAC_ADDR[6];
 extern int ethernet_rx_data[2048];
+extern int ethernet_rx_len;
+extern int ethernet_tx_data[2048];
+extern int ethernet_tx_len;
 
 #define ETHERNET_ISR (*(unsigned int *)ENET_INT_ADDR)
 
@@ -10,7 +13,11 @@ extern int ethernet_rx_data[2048];
 #define ETHERNET_SRC_MAC 6
 #define ETHERNET_HDR_LEN 14
 
-#define ethernet_type(data) (((data)[12] << 8) | ((data)[13]))
+#define ethernet_rx_type ((ethernet_rx_data[12] << 8) | ethernet_rx_data[13])
+#define ethernet_rx_src (ethernet_rx_data + ETHERNET_SRC_MAC)
+#define ethernet_rx_dst (ethernet_rx_data + ETHERNET_DST_MAC)
+
+void ethernet_set_tx(int * dst, int type);
 
 //DM9000 identifiers
 #define DM9000_VID             0x0A46
@@ -323,9 +330,7 @@ int ethernet_check_link(); // return 1 if link ok
 int ethernet_check_speed(); // return 10 or 100 Mbps
 int ethernet_check_duplex(); // return 1 if full duplex
 
-void ethernet_fill_hdr(int * data, int * dst, int type);
-
-void ethernet_send(int * data, int length);
-int ethernet_recv();
+void ethernet_send();
+void ethernet_recv();
 
 #endif

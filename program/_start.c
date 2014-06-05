@@ -8,6 +8,7 @@
 #include "defs.h"
 #include "ethernet.h"
 #include "arp.h"
+#include "ip.h"
 
 int data[] = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -28,12 +29,14 @@ int _start() {
 
     for(int i = 0 ; i < 10 ; i += 1) {
         while(!ETHERNET_ISR);
-        int length = ethernet_recv();
-        if(length == -1) continue;
-        int type = ethernet_type(ethernet_rx_data);
+        ethernet_recv();
+        if(ethernet_rx_len == -1) continue;
+        int type = ethernet_rx_type;
         writeint(type);
         if(type == ETHERNET_TYPE_ARP)
-            arp_handle(ethernet_rx_data, length);
+            arp_handle();
+        if(type == ETHERNET_TYPE_IP)
+            ip_handle();
     }
 
     return 0;

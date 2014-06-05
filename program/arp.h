@@ -20,6 +20,6 @@ extern int IP_ADDR[4];
 #define ARP_BODY_LEN (ARP_TARGET_IP + 4)
 
 // handle arp 
-void arp_handle(int * data, int length);
+void arp_handle();
 
 #endif
