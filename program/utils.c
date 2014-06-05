@@ -18,7 +18,7 @@ int memcmp(int * a, int * b, int length) {
 
 void memcpy(int * dst, int * src, int length) {
     for(int i = 0 ; i < length ; i += 1)
-        dst[i] = src[i];
+        dst[i] = LSB(src[i]);
 }
 
 

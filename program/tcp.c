@@ -14,11 +14,9 @@
 #define WINDOW_SIZE 1000
 #define INIT_SEQ 1001
 
-int MYDATA[] = {104, 101, 108, 108, 111, 32, 119, 111, 114, 
-    108, 100, 33, 98, 108, 97, 104, 103, 101, 101, 107, 32, 
-    126, 126, 126, 10};
-int MYDATA_LENGTH = sizeof(MYDATA) / sizeof(int);
-int CHUNK_LEN = 5; // chunk_len must be devided by data length
+int * MYDATA = (int *)(0x80200000);
+int MYDATA_LENGTH = 192;
+int CHUNK_LEN = 64;// chunk_len must be devided by data length
 
 int send_pos = 0;
 
