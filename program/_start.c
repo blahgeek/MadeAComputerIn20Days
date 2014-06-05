@@ -20,7 +20,7 @@ int _start() {
     writeint(ethernet_check_speed());
 
 
-    for(int i = 0 ; i < 10000 ; i += 1) {
+    for(int i = 0 ; i < 50000 ; i += 1) {
         // while(!ETHERNET_ISR);
         delay_ms(1);
         ethernet_recv();

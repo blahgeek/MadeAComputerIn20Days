@@ -15,8 +15,8 @@
 #define INIT_SEQ 1001
 
 int * MYDATA = (int *)(0x80200000);
-int MYDATA_LENGTH = 192;
-int CHUNK_LEN = 64;// chunk_len must be devided by data length
+int MYDATA_LENGTH = 6000;
+int CHUNK_LEN = 1000;// chunk_len must be devided by data length
 
 int send_pos = 0;
 
@@ -58,6 +58,7 @@ void tcp_handle(int length) {
         tcp_ack = mem2int(data + TCP_SEQ, 4) + (length - TCP_HDR_LEN);
         tcp_seq = mem2int(data + TCP_ACK, 4);
         int pos = tcp_seq - (INIT_SEQ + 1);
+        if(pos == 0 && length == TCP_HDR_LEN) return;
         if(pos == MYDATA_LENGTH) {
             tcp_send_packet(TCP_FLAG_RST, 0, 0);
             tcp_state = TCP_CLOSED;
