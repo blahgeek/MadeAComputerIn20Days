@@ -7,6 +7,7 @@
 
 #include "defs.h"
 #include "ethernet.h"
+#include "utils.h"
 
 int MAC_ADDR[6] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
 int ethernet_rx_data[2048];
@@ -35,6 +36,8 @@ void ethernet_init() {
     // initialize hash table
     for(int i = 0 ; i < 8 ; i += 1)
         ethernet_write(DM9000_REG_MAR0 + i, 0x00);
+    // accept broadcast
+    ethernet_write(DM9000_REG_MAR7, 0x80);
     // enable pointer auto return function
     ethernet_write(DM9000_REG_IMR, IMR_PAR);
     // clear NSR status
@@ -42,9 +45,8 @@ void ethernet_init() {
     // clear interrupt flag
     ethernet_write(DM9000_REG_ISR, 
         ISR_UDRUN | ISR_ROO | ISR_ROS | ISR_PT | ISR_PR);
-    // enable interrupt
-    ethernet_write(DM9000_REG_IMR, 
-        IMR_PAR | IMR_LNKCHGI | IMR_PTI | IMR_PRI);
+    // enable interrupt (recv only)
+    ethernet_write(DM9000_REG_IMR, IMR_PAR | IMR_PRI);
     // enable reciever
     ethernet_write(DM9000_REG_RCR,
         RCR_DIS_LONG | RCR_DIS_CRC | RCR_RXEN);
@@ -142,6 +144,23 @@ int ethernet_recv() {
         nop(); nop();
         int length = *(unsigned int *)(ENET_DATA_ADDR);
         nop(); nop();
+        if(status & (RSR_LCS | RSR_RWTO | RSR_PLE | 
+                     RSR_AE | RSR_CE | RSR_FOE))
+            return -1;
+        for(int i = 0 ; i < length ; i += 2) {
+            int data = *(unsigned int *)(ENET_DATA_ADDR);
+            ethernet_rx_data[i] = LSB(data);
+            ethernet_rx_data[i+1] = MSB(data);
+        }
+        // clear intrrupt
+        ethernet_write(DM9000_REG_ISR, ISR_PR);
         return length;
     }
+}
+
+void ethernet_fill_hdr(int * data, int * dst, int type) {
+    memcpy(data + ETHERNET_DST_MAC, dst, 6);
+    memcpy(data + ETHERNET_SRC_MAC, MAC_ADDR, 6);
+    data[12] = MSB(type);
+    data[13] = LSB(type);
 }

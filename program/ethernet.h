@@ -6,6 +6,12 @@ extern int ethernet_rx_data[2048];
 
 #define ETHERNET_ISR (*(unsigned int *)ENET_INT_ADDR)
 
+#define ETHERNET_DST_MAC 0
+#define ETHERNET_SRC_MAC 6
+#define ETHERNET_HDR_LEN 14
+
+#define ethernet_type(data) (((data)[12] << 8) | ((data)[13]))
+
 //DM9000 identifiers
 #define DM9000_VID             0x0A46
 #define DM9000_PID             0x9000
@@ -316,6 +322,8 @@ int ethernet_check_iomode(); // return 8 or 16bit mode
 int ethernet_check_link(); // return 1 if link ok
 int ethernet_check_speed(); // return 10 or 100 Mbps
 int ethernet_check_duplex(); // return 1 if full duplex
+
+void ethernet_fill_hdr(int * data, int * dst, int type);
 
 void ethernet_send(int * data, int length);
 int ethernet_recv();
