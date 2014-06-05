@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "defs.h"
 #include "arp.h"
+#include "tcp.h"
 
 void ip_handle() {
     int * data = ethernet_rx_data + ETHERNET_HDR_LEN;
@@ -21,10 +22,10 @@ void ip_handle() {
     int length = (data[IP_TOTAL_LEN] << 8) | data[IP_TOTAL_LEN + 1];
     length -= 20; // ip header
 
-    writeint(length);
-
     if(data[IP_PROTOCAL] == IP_PROTOCAL_ICMP)
         icmp_handle(length);
+    if(data[IP_PROTOCAL] == IP_PROTOCAL_TCP)
+        tcp_handle(length);
 }
 
 void ip_make_reply(int proto, int length) {
