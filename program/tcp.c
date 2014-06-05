@@ -15,7 +15,7 @@
 #define INIT_SEQ 1001
 
 int * MYDATA = (int *)(0x80200000);
-int MYDATA_LENGTH = 6000;
+int MYDATA_LENGTH = 4000;
 int CHUNK_LEN = 1000;// chunk_len must be devided by data length
 
 int send_pos = 0;

@@ -4,7 +4,7 @@
 
 import sys
 
-CHUNK = 64
+CHUNK = 1000
 
 HTTP_HEAD = ('HTTP/1.0 200 OK\r\n' + 
     'Content-Type: text/html; charset=UTF-8\r\n' +
