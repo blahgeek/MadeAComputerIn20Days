@@ -27,8 +27,9 @@ int _start() {
     writeint(ethernet_check_speed());
 
 
-    for(int i = 0 ; i < 10 ; i += 1) {
-        while(!ETHERNET_ISR);
+    for(int i = 0 ; i < 100 ; i += 1) {
+        // while(!ETHERNET_ISR);
+        delay_ms(100);
         ethernet_recv();
         if(ethernet_rx_len == -1) continue;
         int type = ethernet_rx_type;

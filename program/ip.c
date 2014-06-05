@@ -21,6 +21,8 @@ void ip_handle() {
     int length = (data[IP_TOTAL_LEN] << 8) | data[IP_TOTAL_LEN + 1];
     length -= 20; // ip header
 
+    writeint(length);
+
     if(data[IP_PROTOCAL] == IP_PROTOCAL_ICMP)
         icmp_handle(length);
 }

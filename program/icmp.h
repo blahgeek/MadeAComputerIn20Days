@@ -18,4 +18,6 @@
 
 void icmp_handle(int length);
 
+void icmp_checksum(int * data, int length);
+
 #endif

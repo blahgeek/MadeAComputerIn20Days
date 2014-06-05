@@ -122,7 +122,7 @@ void ethernet_send() {
     nop(); nop();
     for(int i = 0 ; i < ethernet_tx_len ; i += 2){
         int val = ethernet_tx_data[i];
-        if(i + 1 < ethernet_tx_len) val |= (ethernet_tx_data[i+1] << 8);
+        if(i + 1 != ethernet_tx_len) val |= (ethernet_tx_data[i+1] << 8);
         *(unsigned int *)(ENET_DATA_ADDR) = val;
         nop();
     }
