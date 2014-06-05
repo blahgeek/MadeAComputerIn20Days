@@ -55,7 +55,7 @@ void ethernet_init() {
         RCR_DIS_LONG | RCR_DIS_CRC | RCR_RXEN);
     // enable checksum calc
     ethernet_write(DM9000_REG_TCSCR,
-        TCSCR_IPCSE | TCSCR_TCPCSE);
+        TCSCR_IPCSE);
 }
 
 int ethernet_check_iomode() {

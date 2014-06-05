@@ -19,7 +19,7 @@ extern int tcp_ack, tcp_seq;
 #define TCP_DATA_OFFSET 12
 #define TCP_FLAGS 13
 #define TCP_WINDOW 14
-#define TCP_CHECKDUM 16
+#define TCP_CHECKSUM 16
 #define TCP_URGEN 18
 
 #define TCP_DATA 20
