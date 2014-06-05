@@ -14,15 +14,15 @@ int _start() {
 
     ethernet_init();
 
-    readint();
+    delay_ms(50);
 
     writeint(ethernet_check_link());
     writeint(ethernet_check_speed());
 
-
-    for(int i = 0 ; i < 50000 ; i += 1) {
+    while(1){
+    // for(int i = 0 ; i < 50000 ; i += 1) {
         // while(!ETHERNET_ISR);
-        delay_ms(1);
+        // delay_ms(1);
         ethernet_recv();
         if(ethernet_rx_len == -1) continue;
         int type = ethernet_rx_type;
