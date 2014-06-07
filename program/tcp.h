@@ -4,6 +4,7 @@
 #define TCP_CLOSED 1
 #define TCP_SYNC_RECVED 2
 #define TCP_ESTABLISHED 3
+#define TCP_FIN_SENT 4
 
 extern int tcp_src_port, tcp_dst_port;
 extern int tcp_src_addr[4], tcp_dst_addr[4];

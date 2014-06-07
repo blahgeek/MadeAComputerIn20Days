@@ -2,7 +2,7 @@
 * @Author: BlahGeek
 * @Date:   2014-06-05
 * @Last Modified by:   BlahGeek
-* @Last Modified time: 2014-06-05
+* @Last Modified time: 2014-06-07
 */
 
 #include "tcp.h"
@@ -13,12 +13,16 @@
 
 #define WINDOW_SIZE 1000
 #define INIT_SEQ 1001
+#define TIMEOUT 30
 
-int * MYDATA = (int *)(0x80200000);
-int MYDATA_LENGTH = 4000;
-int CHUNK_LEN = 1000;// chunk_len must be devided by data length
+int * MYDATA = (int *)(0x80300000);
+#define MYDATA_LENGTH 15649
+#define CHUNK_LEN 1000
+#define LAST_CHUNK_POS ((MYDATA_LENGTH / CHUNK_LEN) * CHUNK_LEN)
 
 int send_pos = 0;
+
+int tcp_timeout = 0;
 
 int tcp_src_port, tcp_dst_port;
 int tcp_src_addr[4], tcp_dst_addr[4];
@@ -27,7 +31,13 @@ int tcp_state = TCP_CLOSED;
 
 void tcp_handle(int length) {
     int * data = ethernet_rx_data + ETHERNET_HDR_LEN + IP_HDR_LEN;
-    if((data[TCP_FLAGS] & TCP_FLAG_SYN)) {
+    // writeint(tcp_state);
+    if(tcp_state != TCP_CLOSED) tcp_timeout += 1;
+    if(tcp_timeout == TIMEOUT) {
+        tcp_timeout = 0;
+        tcp_state = TCP_CLOSED;
+    }
+    if((data[TCP_FLAGS] & TCP_FLAG_SYN) && (tcp_state == TCP_CLOSED || tcp_state == 0)) {
         tcp_src_port = mem2int(data + TCP_SRC_PORT, 2);
         tcp_dst_port = mem2int(data + TCP_DST_PORT, 2);
         memcpy(tcp_src_addr, data - IP_HDR_LEN + IP_SRC, 4);
@@ -47,6 +57,16 @@ void tcp_handle(int length) {
         || memcmp(data - IP_HDR_LEN + IP_SRC, tcp_src_addr, 4) != 0) {
         return;
     }
+    if(data[TCP_FLAGS] & TCP_FLAG_RST) {
+        tcp_state = TCP_CLOSED;
+        return;
+    }
+    if(tcp_state == TCP_FIN_SENT) {
+        tcp_seq = mem2int(data + TCP_ACK, 4);
+        tcp_send_packet(TCP_FLAG_RST, 0, 0);
+        tcp_state = TCP_CLOSED;
+        return;
+    }
     if(tcp_state == TCP_SYNC_RECVED &&
         (data[TCP_FLAGS] & TCP_FLAG_ACK)) {
         tcp_seq = mem2int(data + TCP_ACK, 4);
@@ -60,13 +80,16 @@ void tcp_handle(int length) {
         int pos = tcp_seq - (INIT_SEQ + 1);
         if(pos == 0 && length == TCP_HDR_LEN) return;
         if(pos == MYDATA_LENGTH) {
-            tcp_send_packet(TCP_FLAG_RST, 0, 0);
-            tcp_state = TCP_CLOSED;
+            tcp_send_packet(TCP_FLAG_FIN | TCP_FLAG_ACK, 0, 0);
+            tcp_state = TCP_FIN_SENT;
             return;
         }
+        int len = CHUNK_LEN;
+        if(pos == LAST_CHUNK_POS)
+            len = MYDATA_LENGTH - pos;
         int flag = TCP_FLAG_ACK;
-        if(pos == 0) flag |= TCP_FLAG_PSH;
-        tcp_send_packet(flag, MYDATA + pos, CHUNK_LEN);
+        if(pos != 0) flag |= TCP_FLAG_PSH;
+        tcp_send_packet(flag, MYDATA + pos, len);
         // tcp_seq += 3;
         // tcp_send_packet(TCP_FLAG_RST, 0, 0);
         // tcp_state = TCP_CLOSED;
