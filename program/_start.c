@@ -2,7 +2,7 @@
 * @Author: BlahGeek
 * @Date:   2014-05-16
 * @Last Modified by:   BlahGeek
-* @Last Modified time: 2014-06-05
+* @Last Modified time: 2014-06-07
 */
 
 #include "defs.h"
@@ -20,7 +20,7 @@ int _start() {
     writeint(ethernet_check_speed());
 
     while(1){
-    // for(int i = 0 ; i < 50000 ; i += 1) {
+    // for(int i = 0 ; i < 10000 ; i += 1) {
         // while(!ETHERNET_ISR);
         // delay_ms(1);
         ethernet_recv();

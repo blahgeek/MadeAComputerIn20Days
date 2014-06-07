@@ -33,6 +33,7 @@ void tcp_handle(int length) {
     int * data = ethernet_rx_data + ETHERNET_HDR_LEN + IP_HDR_LEN;
     // writeint(tcp_state);
     if(tcp_state != TCP_CLOSED) tcp_timeout += 1;
+    else tcp_timeout = 0;
     if(tcp_timeout == TIMEOUT) {
         tcp_timeout = 0;
         tcp_state = TCP_CLOSED;
