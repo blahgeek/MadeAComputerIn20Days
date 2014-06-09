@@ -2,7 +2,7 @@
 * @Author: BlahGeek
 * @Date:   2014-06-05
 * @Last Modified by:   BlahGeek
-* @Last Modified time: 2014-06-07
+* @Last Modified time: 2014-06-09
 */
 
 #include "tcp.h"
@@ -16,7 +16,7 @@
 #define TIMEOUT 30
 
 int * MYDATA = (int *)(0x80300000);
-#define MYDATA_LENGTH 15649
+#define MYDATA_LENGTH 15654
 #define CHUNK_LEN 1000
 #define LAST_CHUNK_POS ((MYDATA_LENGTH / CHUNK_LEN) * CHUNK_LEN)
 
