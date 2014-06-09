@@ -33,9 +33,9 @@ def read(f, addr):
     return ans
 
 if __name__ == '__main__':
-    ser = serial.Serial('/dev/ttyAMA0', 115200)
-    print 'Now reset the FPGA please...', raw_input()
     import sys
+    ser = serial.Serial(sys.argv.pop(), 115200)
+    print 'Now reset the FPGA and press enter to continue...', raw_input()
     if sys.argv[1] == 'write':
         data = open(sys.argv[2], 'rb').read()
         try:

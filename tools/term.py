@@ -133,7 +133,7 @@ def writeihex(ser, filename):
 if __name__ == '__main__':
     import sys
     parseint = lambda x: int(x, 16) if 'x' in x else int(x)
-    ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=0.1)
+    ser = serial.Serial(sys.argv.pop(), 115200, timeout=0.1)
     if len(sys.argv) < 2:
         print 'Usage: ', sys.argv[0], 'showregs|showmem|addtlb|writebin|execute'
     elif sys.argv[1] == 'showregs':
