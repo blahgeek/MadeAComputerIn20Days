@@ -82,6 +82,7 @@ component FetcherAndRegister port (
     BACK_REG_write: in std_logic;
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
+    BACK_REG_write_byte_only: in std_logic;
 
     BASERAM_data: in std_logic_vector(31 downto 0);
     EXTRAM_data: in std_logic_vector(31 downto 0);
@@ -98,6 +99,7 @@ component FetcherAndRegister port (
     MEM_data: out std_logic_vector(31 downto 0);
 
     REG_write: out std_logic;
+    REG_write_byte_only: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
   ) ;
  end component ; -- FetcherAndRegister 
@@ -125,12 +127,14 @@ component ALUWrapper port (
     in_MEM_write: in std_logic ;
     in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
+    in_REG_write_byte_only: in std_logic;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
     MEM_data: out std_logic_vector(31 downto 0);
     REG_write: out std_logic := '0';
+    REG_write_byte_only: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)
   ) ;
 end component; -- ALUWrapper
@@ -152,8 +156,10 @@ component Memory port (
 
     in_REG_write: in std_logic;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
+    in_REG_write_byte_only: in std_logic;
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
+    REG_write_byte_only: out std_logic := '0';
 
     BASERAM_WE: out std_logic;
     BASERAM_addr: inout std_logic_vector(19 downto 0);
@@ -307,10 +313,13 @@ end component ; -- TLB
 
     signal A_REG_write: std_logic := '0';
     signal A_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
+    signal A_REG_write_byte_only: std_logic := '0';
     signal B_REG_write: std_logic := '0';
     signal B_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
+    signal B_REG_write_byte_only: std_logic := '0';
     signal C_REG_write: std_logic := '0';
     signal C_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
+    signal C_REG_write_byte_only: std_logic := '0';
 
     signal s_state : std_logic_vector(1 downto 0) := "00";
 
@@ -377,12 +386,13 @@ FetcherAndRegister0: FetcherAndRegister port map (
     C_REG_write,
     C_REG_write_addr,
     MEM_output, -- reg write data
+    C_REG_write_byte_only,
     BaseRamData,  -- data from sw
     ExtRamData,
     ALU_operator, ALU_numA, ALU_numB,
     JUMP_true, JUMP_addr,
     A_MEM_read, A_MEM_write, A_MEM_data,
-    A_REG_write, A_REG_write_addr
+    A_REG_write, A_REG_write_byte_only, A_REG_write_addr
     );
 
 -- LED(0) <= instruction_bad;
@@ -396,18 +406,18 @@ ALUWrapper0: ALUWrapper port map (
     TLB_data_exception, TLB_data_exception_read_or_write,
     A_MEM_read, A_MEM_write, 
     A_MEM_data, 
-    A_REG_write, A_REG_write_addr,
+    A_REG_write, A_REG_write_byte_only, A_REG_write_addr,
     B_MEM_read, B_MEM_write,
     B_MEM_data, 
-    B_REG_write, B_REG_write_addr);
+    B_REG_write, B_REG_write_byte_only, B_REG_write_addr);
 
 Mem0: Memory port map (
     real_clock, real_reset,
     ALU_output, ALU_output_after_TLB, B_MEM_read, B_MEM_write,
     B_MEM_data,
     MEM_output, 
-    B_REG_write, B_REG_write_addr, 
-    C_REG_write, C_REG_write_addr,
+    B_REG_write, B_REG_write_addr, B_REG_write_byte_only,
+    C_REG_write, C_REG_write_addr, C_REG_write_byte_only,
     BaseRamWE, BaseRamAddr, BaseRamData,
     ExtRamWE, ExtRamAddr, ExtRamData,
     uart_data_in, uart_data_in_stb, uart_data_in_ack,

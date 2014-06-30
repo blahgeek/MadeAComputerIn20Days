@@ -17,8 +17,10 @@ entity Memory is
 
     in_REG_write: in std_logic;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
+    in_REG_write_byte_only: in std_logic;
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
+    REG_write_byte_only: out std_logic := '0';
 
     BASERAM_WE: out std_logic;
     BASERAM_addr: inout std_logic_vector(19 downto 0);
@@ -73,6 +75,7 @@ architecture arch of Memory is
 
     signal s_REG_write: std_logic:= '0';
     signal s_REG_write_addr: std_logic_vector(4 downto 0):= (others => '0');
+    signal s_REG_write_byte_only: std_logic := '0';
 
     signal s_dyp_value0: std_logic_vector(3 downto 0) := (others => '0');
     signal s_dyp_value1: std_logic_vector(3 downto 0) := (others => '0');
@@ -204,6 +207,7 @@ begin
           state <= s2;
           s_REG_write <= in_REG_write;
           s_REG_write_addr <= in_REG_write_addr;
+          s_REG_write_byte_only <= in_REG_write_byte_only;
       
         when s2 =>
           VGA_set <= s_VGA_set;
@@ -230,6 +234,7 @@ begin
           state <= s3;
           REG_write <= s_REG_write;
           REG_write_addr <= s_REG_write_addr;
+          REG_write_byte_only <= s_REG_write_byte_only;
 
         when s3 =>
           EXTRAM_WE <= '1'; -- disable write

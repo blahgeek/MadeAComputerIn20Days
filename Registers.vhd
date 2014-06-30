@@ -13,6 +13,7 @@ entity Registers is
 		RegWrite : in STD_LOGIC;
 		RegWriteNumber : in STD_LOGIC_VECTOR(4 downto 0);
 		RegWriteValue : in STD_LOGIC_VECTOR(31 downto 0);
+		RegWriteByteOnly: in STD_LOGIC;
 		RegReadValueA : out STD_LOGIC_VECTOR(31 downto 0);
 		RegReadValueB : out STD_LOGIC_VECTOR(31 downto 0)
 		);
@@ -23,7 +24,14 @@ architecture Behavioral of Registers is
 	-- signal GPR : regs := (others => (others => '0'));
 	signal GPR : regs := (29 => x"807fff00",  -- $sp
 						  others => (others => '0'));
+	signal realWriteValue: STD_LOGIC_VECTOR(31 downto 0);
 	begin
+
+		realWriteValue(7 downto 0) <= RegWriteValue(7 downto 0);
+		with RegWriteByteOnly select
+			realWriteValue(31 downto 8) <= (others => '0') when '1'
+									       RegWriteValue(31 downto 8) when '0';
+
 		process(clk, reset)
 		begin
 			if reset = '1' then 
@@ -34,19 +42,19 @@ architecture Behavioral of Registers is
  					    others => (others => '0'));
 			elsif ( clk'event and clk = '1' ) then
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") then
-					GPR(to_integer(unsigned(RegWriteNumber))) <= RegWriteValue;
+					GPR(to_integer(unsigned(RegWriteNumber))) <= realWriteValue;
 				end if;
 
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") and 
 						RegReadNumberA = RegWriteNumber then
-					RegReadValueA <= RegWriteValue;
+					RegReadValueA <= realWriteValue;
 				else
 					RegReadValueA <= GPR(to_integer(unsigned(RegReadNumberA)));
 				end if;
 
 				if ( RegWrite = '1' ) and (RegWriteNumber /= "00000") and 
 						RegReadNumberB = RegWriteNumber then
-					RegReadValueB <= RegWriteValue;
+					RegReadValueB <= realWriteValue;
 				else
 					RegReadValueB <= GPR(to_integer(unsigned(RegReadNumberB)));
 				end if;

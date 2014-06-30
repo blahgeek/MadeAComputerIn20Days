@@ -32,6 +32,7 @@ component FetcherAndRegister port (
     BACK_REG_write: in std_logic;
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
+    BACK_REG_write_byte_only: in std_logic;
 
     BASERAM_data: in std_logic_vector(31 downto 0);
     EXTRAM_data: in std_logic_vector(31 downto 0);
@@ -48,6 +49,7 @@ component FetcherAndRegister port (
     MEM_data: out std_logic_vector(31 downto 0);
 
     REG_write: out std_logic;
+    REG_write_byte_only: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
   ) ;
  end component ; -- FetcherAndRegister 
@@ -66,11 +68,13 @@ component FetcherAndRegister port (
   signal MEM_data:  std_logic_vector(31 downto 0);
 
   signal REG_write:  std_logic;
+  signal REG_write_byte_only: std_logic;
   signal REG_write_addr:  std_logic_vector(4 downto 0);  -- we have 32 registers
 
   signal BACK_REG_write : std_logic;
   signal BACK_REG_write_addr: std_logic_vector(4 downto 0);
   signal BACK_REG_write_data: std_logic_vector(31 downto 0);
+  signal BACK_REG_write_byte_only : std_logic := '0';
 
   constant clk_period :time :=20 ns;
   signal data: std_logic_vector(31 downto 0);
@@ -96,6 +100,7 @@ begin
         BACK_REG_write => BACK_REG_write,
         BACK_REG_write_addr => BACK_REG_write_addr,
         BACK_REG_write_data => BACK_REG_write_data,
+        BACK_REG_write_byte_only => BACK_REG_write_byte_only,
 
         BASERAM_data => data, -- instruction
         EXTRAM_data => x"00000000",
@@ -112,6 +117,7 @@ begin
         MEM_data => MEM_data,
 
         REG_write => REG_write,
+        REG_write_byte_only => REG_write_byte_only,
         REG_write_addr => REG_write_addr
 
         );

@@ -25,12 +25,14 @@ entity ALUWrapper is
     in_MEM_write: in std_logic ;
     in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
+    in_REG_write_byte_only: in std_logic;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
     MEM_data: out std_logic_vector(31 downto 0);
     REG_write: out std_logic := '0';
+    REG_write_byte_only: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0)
   ) ;
 end entity ; -- ALUWrapper
@@ -55,6 +57,7 @@ end component;
     signal s_MEM_write: std_logic := '0';
     signal s_MEM_data: std_logic_vector(31 downto 0);
     signal s_REG_write: std_logic := '0';
+    signal s_REG_write_byte_only: std_logic := '0';
     signal s_REG_write_addr: std_logic_vector(4 downto 0);
     signal s_skip_one: std_logic:= '0';
 
@@ -84,6 +87,7 @@ begin
                     s_MEM_read <= in_MEM_read;
                     s_MEM_data <= in_MEM_data;
                     s_REG_write <= in_REG_write;
+                    s_REG_write_byte_only <= in_REG_write_byte_only;
                     s_REG_write_addr <= in_REG_write_addr;
 
                     state <= s1;
@@ -124,6 +128,7 @@ begin
                             MEM_read <= s_MEM_read;
                             MEM_data <= s_MEM_data;
                             REG_write <= s_REG_write;
+                            REG_write_byte_only <= s_REG_write_byte_only;
                             REG_write_addr <= s_REG_write_addr;
                             TLB_exception <= '0';
                         end if;
