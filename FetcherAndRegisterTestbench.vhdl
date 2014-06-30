@@ -120,7 +120,7 @@ begin
         BACK_REG_write <= '1';
         BACK_REG_write_addr <= "11101"; -- sp
         BACK_REG_write_data <= x"DEADBEEF";
-        data <= x"27bdffd8"; -- addiu $sp
+        data <= "00000111101100000101010101010101"; -- blez
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;
@@ -137,7 +137,7 @@ begin
         BACK_REG_write <= '1';
         BACK_REG_write_addr <= "11101"; -- sp
         BACK_REG_write_data <= x"DEADFACE";
-        data(31 downto 0) <= x"afbf0024";
+        data <= "00000011111000000000100000100100"; -- and 31,0 -> 1
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

@@ -68,6 +68,9 @@ entity FetcherAndRegister is
   type state_type is (s0, s1, s2, s3);
   signal state: state_type := s0;
 
+  type jump_condition_type is (none, eq, gez, gz, lez, lz, ne);
+  signal s_jump_true_if_condition: jump_condition_type := none;
+
   type regs is array (0 to 31) of STD_LOGIC_VECTOR(31 downto 0);
   signal REGS_C0: regs:= (others => (others => '0'));
 
@@ -101,9 +104,8 @@ entity FetcherAndRegister is
   signal numA_from_reg, numB_from_reg: std_logic; -- if read register for ALU
   signal mem_data_from_reg_B: std_logic;
 
-  signal s_jump_true_if_eq: std_logic := '0';
-  signal s_jump_true_if_ne: std_logic := '0';
   signal s_jump_addr_from_reg_a: std_logic := '0';
+  signal s_link_if_jump_true: std_logic := '0';
 
   signal s_data : std_logic_vector(31 downto 0):= (others => '0');
 
@@ -189,8 +191,7 @@ begin
 
             if s_data(31 downto 26) = "010000" then -- super command!
               -- TODO: check C0(12) here
-              s_jump_true_if_ne <= '0';
-              s_jump_true_if_eq <= '0';
+              s_jump_true_if_condition <= none;
               outbuffer_MEM_read <= '0';
               outbuffer_MEM_write <= '0';
               if s_data(5 downto 0) = "011000" then -- eret
@@ -234,8 +235,7 @@ begin
               end if;
 
             elsif s_data(31 downto 26) = "000000" then -- R type
-              s_jump_true_if_ne <= '0';
-              s_jump_true_if_eq <= '0';
+              s_jump_true_if_condition <= none;
               s_numA_to_c0 <= '0';
 
               if s_data(5 downto 0) = "001100" then  -- SYSCALL!
@@ -313,10 +313,9 @@ begin
                 end if;
               end if;
 
-            elsif s_data(31 downto 28) = "0000" then -- J type
+            elsif s_data(31 downto 26) = "000010" or s_data(31 downto 26) = "000011" then -- J type
               s_numA_to_c0 <= '0';
-              s_jump_true_if_ne <= '0';
-              s_jump_true_if_eq <= '0';
+              s_jump_true_if_condition <= none;
               s_jump_addr_from_reg_a <= '0';
               numA_from_reg <= '0';
               outbuffer_ALU_numA <= PC;
@@ -346,8 +345,7 @@ begin
                 outbuffer_ALU_numB <= immediate_sign_extend;
                 outbuffer_ALU_operator <= "0001"; -- add
                 outbuffer_JUMP_true <= '0';
-                s_jump_true_if_eq <= '0';
-                s_jump_true_if_ne <= '0';
+                s_jump_true_if_condition <= none;
                 if s_data(29 downto 26) = "0011" then  -- lw
                   outbuffer_MEM_read <= '1'; -- read memory!
                   outbuffer_MEM_write <= '0';
@@ -367,18 +365,23 @@ begin
                 numB_from_reg <= '0';
                 outbuffer_ALU_operator <= "1111"; -- forward A
                 outbuffer_JUMP_true <= '0';
-                s_jump_true_if_ne <= '0';
-                s_jump_true_if_eq <= '0';
+                s_jump_true_if_condition <= none;
                 outbuffer_MEM_write <= '0';
                 outbuffer_MEM_read <= '0';
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_addr <= s_data(20 downto 16);
               elsif s_data(31 downto 29) = "000" then -- branch
-                numA_from_reg <= '1';
-                s_REG_read_number_A <= s_data(25 downto 21);
-                numB_from_reg <= '1';
+
+                numA_from_reg <= '0';
+                outbuffer_ALU_numA <= PC;
+                numB_from_reg <= '0';
+                outbuffer_ALU_numB(3 downto 0) <= "1000";
+                outbuffer_ALU_numB(31 downto 4) <= (others => '0');
+                outbuffer_ALU_operator <= "0001";  -- output PC+8
+
+                s_REG_read_number_A <= s_data(25 downto 21); -- read it from reg but not put this to ALU
                 s_REG_read_number_B <= s_data(20 downto 16);
-                outbuffer_ALU_operator <= "1111";
+
                 outbuffer_JUMP_true <= '0';
                 s_jump_addr_from_reg_a <= '0';
                 outbuffer_JUMP_addr(27 downto 2) <= std_logic_vector(
@@ -388,21 +391,35 @@ begin
                 outbuffer_JUMP_addr(1 downto 0) <= "00";
                 outbuffer_MEM_read <= '0';
                 outbuffer_MEM_write <= '0';
-                outbuffer_REG_write <= '0';
+
+                outbuffer_REG_write <= '0'; -- well, we dont know it YET
+                outbuffer_REG_write_addr <= "11111"; -- write to R31
+
                 if s_data(28 downto 26) = "100" then -- beq
-                  s_jump_true_if_eq <= '1';
-                  s_jump_true_if_ne <= '0';
+                  s_jump_true_if_condition <= eq;
+                  s_link_if_jump_true <= '0'; -- will not link
+                elsif s_data(28 downto 26) = "111" then
+                  s_jump_true_if_condition <= gz;
+                  s_link_if_jump_true <= '0'; -- will not link
+                elsif s_data(28 downto 26) = "110" then
+                  s_jump_true_if_condition <= lez;
+                  s_link_if_jump_true <= '0'; -- will not link
+                elsif s_data(28 downto 26) = "001" and s_data(16) = '1' then -- bgez
+                  s_jump_true_if_condition <= gez;
+                  s_link_if_jump_true <= s_data(20); -- link?
+                elsif s_data(28 downto 26) = "001" and s_data(16) = '0' then
+                  s_jump_true_if_condition <= lz; 
+                  s_link_if_jump_true <= s_data(20); -- link?
                 else -- bne
-                  s_jump_true_if_eq <= '0';
-                  s_jump_true_if_ne <= '1';
+                  s_jump_true_if_condition <= ne;
+                  s_link_if_jump_true <= '0'; -- will not link
                 end if;
               else -- other I type
                 numA_from_reg <= '1';
                 s_REG_read_number_A <= s_data(25 downto 21);
                 numB_from_reg <= '0';
                 outbuffer_JUMP_true <= '0';
-                s_jump_true_if_ne <= '0';
-                s_jump_true_if_eq <= '0';
+                s_jump_true_if_condition <= none;
                 outbuffer_MEM_write <= '0';
                 outbuffer_MEM_read <= '0';
                 outbuffer_REG_write <= '1';
@@ -482,8 +499,7 @@ begin
             REGS_C0(12)(1) <= '1';
             numA_from_reg <= '0';
             numB_from_reg <= '0';
-            s_jump_true_if_eq <= '0';
-            s_jump_true_if_ne <= '0';
+            s_jump_true_if_condition <= none;
             s_jump_addr_from_reg_a <= '0'; -- shit
             outbuffer_ALU_operator <= "1111";
             outbuffer_MEM_read <= '0';
@@ -500,10 +516,12 @@ begin
       
         when s3 =>  -- state: now we got data from register
 
-          if hold = '0' and outbuffer_REG_write = '1' then
-            s_last_write_reg <= outbuffer_REG_write_addr;
-          else
-            s_last_write_reg <= "00000";
+          if not (s_jump_true_if_condition /= none and s_link_if_jump_true = '1') then
+            if hold = '0' and outbuffer_REG_write = '1' then
+              s_last_write_reg <= outbuffer_REG_write_addr;
+            else
+              s_last_write_reg <= "00000";
+            end if;
           end if;
 
           if hold = '1' or s_skip_this = '1' then
@@ -557,18 +575,32 @@ begin
 
             if outbuffer_JUMP_true = '1' then
               JUMP_true <= '1';
-            elsif s_jump_true_if_eq = '1' and s_REG_read_value_A = s_REG_read_value_B then
+            elsif (s_jump_true_if_condition = eq and s_REG_read_value_A = s_REG_read_value_B) or 
+                  (s_jump_true_if_condition = ne and s_REG_read_value_A /= s_REG_read_value_B) or
+                  (s_jump_true_if_condition = gez and signed(s_REG_read_value_A) >= 0) or
+                  (s_jump_true_if_condition = gz and signed(s_REG_read_value_A) > 0) or
+                  (s_jump_true_if_condition = lez and signed(s_REG_read_value_A) <= 0) or
+                  (s_jump_true_if_condition = lz and signed(s_REG_read_value_A) < 0) then
               JUMP_true <= '1';
-            elsif s_jump_true_if_ne = '1' and s_REG_read_value_A /= s_REG_read_value_B then
-              JUMP_true <= '1';
+              if s_link_if_jump_true = '1' then
+                REG_write <= '1';
+                s_last_write_reg <= outbuffer_REG_write_addr;
+              end if;
             else
               JUMP_true <= '0';
+              if s_jump_true_if_condition /= none and s_link_if_jump_true = '1' then
+                REG_write <= '0';
+                s_last_write_reg <= (others => '0');
+              end if;
             end if;
 
             ALU_operator <= outbuffer_ALU_operator;
             MEM_read <= outbuffer_MEM_read;
             MEM_write <= outbuffer_MEM_write;
-            REG_write <= outbuffer_REG_write;
+
+            if not (s_jump_true_if_condition /= none and s_link_if_jump_true = '1') then
+              REG_write <= outbuffer_REG_write;
+            end if;
             REG_write_addr <= outbuffer_REG_write_addr;
 
             s_REG_read_number_A <= (others => '0');
