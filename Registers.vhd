@@ -14,6 +14,7 @@ entity Registers is
 		RegWriteNumber : in STD_LOGIC_VECTOR(4 downto 0);
 		RegWriteValue : in STD_LOGIC_VECTOR(31 downto 0);
 		RegWriteByteOnly: in STD_LOGIC;
+		RegWriteBytePos: in STD_LOGIC_VECTOR(1 downto 0);
 		RegReadValueA : out STD_LOGIC_VECTOR(31 downto 0);
 		RegReadValueB : out STD_LOGIC_VECTOR(31 downto 0)
 		);
@@ -27,7 +28,12 @@ architecture Behavioral of Registers is
 	signal realWriteValue: STD_LOGIC_VECTOR(31 downto 0);
 	begin
 
-		realWriteValue(7 downto 0) <= RegWriteValue(7 downto 0);
+		realWriteValue(7 downto 0) <= 
+			RegWriteValue(31 downto 24) when RegWriteByteOnly = '1' and RegWriteBytePos = "11" else
+			RegWriteValue(23 downto 16) when RegWriteByteOnly = '1' and RegWriteBytePos = "10" else
+			RegWriteValue(15 downto 8) when RegWriteByteOnly = '1' and RegWriteBytePos = "01" else
+			RegWriteValue(7 downto 0);
+
 		with RegWriteByteOnly select
 			realWriteValue(31 downto 8) <= (others => '0') when '1',
 									       RegWriteValue(31 downto 8) when '0';

@@ -24,6 +24,7 @@ entity Memory is
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
     REG_write_byte_only: out std_logic := '0';
+    REG_write_byte_pos: out std_logic_vector(1 downto 0) := "00";
 
     BASERAM_WE: out std_logic;
     BASERAM_addr: inout std_logic_vector(19 downto 0);
@@ -275,6 +276,7 @@ begin
           REG_write <= s_REG_write;
           REG_write_addr <= s_REG_write_addr;
           REG_write_byte_only <= s_REG_write_byte_only;
+          REG_write_byte_pos <= s_MEM_addr(1 downto 0);
 
         when s3 =>
 

@@ -83,6 +83,7 @@ component FetcherAndRegister port (
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
     BACK_REG_write_byte_only: in std_logic;
+    BACK_REG_write_byte_pos: in std_logic_vector(1 downto 0);
 
     BASERAM_data: in std_logic_vector(31 downto 0);
     EXTRAM_data: in std_logic_vector(31 downto 0);
@@ -170,6 +171,7 @@ component Memory port (
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
     REG_write_byte_only: out std_logic := '0';
+    REG_write_byte_pos: out std_logic_vector(1 downto 0) := "00";
 
     BASERAM_WE: out std_logic;
     BASERAM_addr: inout std_logic_vector(19 downto 0);
@@ -333,6 +335,8 @@ end component ; -- TLB
     signal C_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
     signal C_REG_write_byte_only: std_logic := '0';
 
+    signal REG_write_byte_pos: std_logic_vector(1 downto 0) := "00";
+
     signal s_state : std_logic_vector(1 downto 0) := "00";
 
     signal s_rx, s_tx: std_logic;
@@ -401,6 +405,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     C_REG_write_addr,
     MEM_output, -- reg write data
     C_REG_write_byte_only,
+    REG_write_byte_pos,
     BaseRamData,  -- data from sw
     ExtRamData,
     ALU_operator, ALU_numA, ALU_numB,
@@ -433,6 +438,7 @@ Mem0: Memory port map (
     MEM_output, 
     B_REG_write, B_REG_write_addr, B_REG_write_byte_only,
     C_REG_write, C_REG_write_addr, C_REG_write_byte_only,
+    REG_write_byte_pos,
     BaseRamWE, BaseRamAddr, BaseRamData,
     ExtRamWE, ExtRamAddr, ExtRamData,
     uart_data_in, uart_data_in_stb, uart_data_in_ack,

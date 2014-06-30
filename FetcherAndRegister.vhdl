@@ -28,6 +28,7 @@ entity FetcherAndRegister is
     BACK_REG_write_addr: in std_logic_vector(4 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
     BACK_REG_write_byte_only: in std_logic;
+    BACK_REG_write_byte_pos: in std_logic_vector(1 downto 0);
 
     BASERAM_data: in std_logic_vector(31 downto 0);
     EXTRAM_data: in std_logic_vector(31 downto 0);
@@ -66,6 +67,7 @@ entity FetcherAndRegister is
     RegWriteNumber: in std_logic_vector(4 downto 0);
     RegWriteValue: in std_logic_vector(31 downto 0);
     RegWriteByteOnly: in STD_LOGIC;
+    RegWriteBytePos: in std_logic_vector(1 downto 0);
     RegReadValueA: out std_logic_vector(31 downto 0);
     RegReadValueB: out std_logic_vector(31 downto 0));
  end component;
@@ -85,6 +87,7 @@ entity FetcherAndRegister is
   signal s_REG_clock: std_logic := '0';
   signal s_REG_write: std_logic;
   signal s_REG_write_byte_only: std_logic := '0';
+  signal s_REG_write_byte_pos: std_logic_vector(1 downto 0) := "00";
   signal s_REG_read_number_B: std_logic_vector(4 downto 0) := (others => '0');
   signal s_REG_read_value_B: std_logic_vector(31 downto 0);
   signal s_REG_read_number_A, s_REG_write_number: std_logic_vector(4 downto 0) := (others => '0');
@@ -136,6 +139,7 @@ begin
   REG0: Registers port map(s_REG_clock, reset, s_REG_read_number_A, s_REG_read_number_B,
                           s_REG_write, s_REG_write_number, 
                           s_REG_write_value, s_REG_write_byte_only,
+                          s_REG_write_byte_pos,
                           s_REG_read_value_A, s_REG_read_value_B);
 
   -- always compute immediate extend
@@ -485,6 +489,7 @@ begin
           s_REG_write_number <= BACK_REG_write_addr;
           s_REG_write_value <= BACK_REG_write_data;
           s_REG_write_byte_only <= BACK_REG_write_byte_only;
+          s_REG_write_byte_pos <= BACK_REG_write_byte_pos;
 
           state <= s1;
 
