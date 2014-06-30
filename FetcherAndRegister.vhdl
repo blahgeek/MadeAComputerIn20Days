@@ -42,8 +42,10 @@ entity FetcherAndRegister is
 
     MEM_read: out std_logic := '0'; -- read memory
     MEM_write: out std_logic := '0'; -- write memory
+    MEM_write_byte_only: out std_logic := '0';
     MEM_data: out std_logic_vector(31 downto 0);
     -- use ALUout as addr
+    hold_from_memory: in std_logic;
 
     REG_write: out std_logic := '0';
     REG_write_byte_only: out std_logic := '0';
@@ -98,6 +100,7 @@ entity FetcherAndRegister is
 
   signal outbuffer_MEM_read: std_logic := '0';
   signal outbuffer_MEM_write: std_logic := '0';
+  signal outbuffer_MEM_write_byte_only: std_logic := '0';
   signal outbuffer_MEM_data: std_logic_vector(31 downto 0);
 
   signal outbuffer_REG_write: std_logic := '0';
@@ -365,7 +368,12 @@ begin
                   outbuffer_REG_write <= '1';
                   outbuffer_REG_write_addr <= s_data(20 downto 16);
                   outbuffer_REG_write_byte_only <= not s_data(26); -- if lb
-                else  -- sw
+                else  -- sw or sb
+                  if s_data(29 downto 26) = "1000" then -- sb
+                    outbuffer_MEM_write_byte_only <= '1';
+                  else
+                    outbuffer_MEM_write_byte_only <= '0';
+                  end if;
                   outbuffer_MEM_read <= '0';
                   outbuffer_MEM_write <= '1'; -- write memory!
                   mem_data_from_reg_B <= '1'; -- read reg B to mem_data_from_reg_B
@@ -504,6 +512,10 @@ begin
         when s2 => 
           s_last_last_write_reg <= s_last_write_reg;
 
+          if hold_from_memory = '1' and s_exception = '0' then
+            hold <= '1';
+          end if;
+
           if s_exception = '1' and s_skip_this = '0' then
 
             s_exception <= '0';
@@ -615,6 +627,7 @@ begin
             ALU_operator <= outbuffer_ALU_operator;
             MEM_read <= outbuffer_MEM_read;
             MEM_write <= outbuffer_MEM_write;
+            MEM_write_byte_only <= outbuffer_MEM_write_byte_only;
 
             if not (s_jump_true_if_condition /= none and s_link_if_jump_true = '1') then
               REG_write <= outbuffer_REG_write;

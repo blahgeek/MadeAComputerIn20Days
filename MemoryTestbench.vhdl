@@ -12,16 +12,20 @@ component Memory port (
     reset: in std_logic;
 
     ALU_output: in std_logic_vector(31 downto 0);
+    ALU_output_after_TLB: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
     MEM_data: in std_logic_vector(31 downto 0);
+    MEM_write_byte_only: in std_logic;
 
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
 
     in_REG_write: in std_logic;
     in_REG_write_addr: in std_logic_vector(4 downto 0);
+    in_REG_write_byte_only: in std_logic;
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
+    REG_write_byte_only: out std_logic := '0';
 
     BASERAM_WE: out std_logic;
     BASERAM_addr: inout std_logic_vector(19 downto 0);
@@ -44,6 +48,12 @@ component Memory port (
     VGA_data: out std_logic_vector(6 downto 0);
     VGA_set: out std_logic := '0';
 
+    ENET_D: inout std_logic_vector(15 downto 0) := (others => 'Z');
+    ENET_CMD: out std_logic := '0';
+    ENET_IOR : out std_logic := '1';
+    ENET_IOW : out std_logic := '1';
+    ENET_INT: in std_logic;
+
     DYP0: out std_logic_vector(6 downto 0) := (others => '0');
     DYP1: out std_logic_vector(6 downto 0) := (others => '0');
     LED: out std_logic_vector(15 downto 0) := (others => '0')
@@ -52,15 +62,12 @@ end component ; -- Memory
 
     signal clock: std_logic;
     signal MEM_read, MEM_write: std_logic;
-    signal ALU_output, MEM_data, MEM_output: std_logic_vector(31 downto 0);
+    signal MEM_write_byte_only: std_logic;
+    signal ALU_output, ALU_output_after_TLB, MEM_data, MEM_output: std_logic_vector(31 downto 0);
     signal BASERAM_addr, EXTRAM_addr: std_logic_vector(19 downto 0);
     signal BASERAM_data, EXTRAM_data: std_logic_vector(31 downto 0);
-    signal VGA_x: std_logic_vector(6 downto 0);
-    signal VGA_y: std_logic_vector(4 downto 0);
-    signal VGA_data: std_logic_vector(6 downto 0);
-    signal VGA_set: std_logic;
-
-    signal UART_DATA_SEND_STB: std_logic;
+    signal BASERAM_WE, EXTRAM_WE: std_logic;
+    signal ENET_D: std_logic_vector(15 downto 0);
 
     constant clk_period :time :=20 ns;
 
@@ -68,22 +75,40 @@ begin
 
     instance: Memory port map (
         clock, '0',
-        ALU_output, MEM_read, MEM_write, MEM_data,
-        MEM_output, '0', "00000", open, open,
-        open, BASERAM_addr, BASERAM_data,
-        open, EXTRAM_addr, EXTRAM_data,
-        open, UART_DATA_SEND_STB, '0',
+        ALU_output, ALU_output_after_TLB, 
+        MEM_read, MEM_write, MEM_data, MEM_write_byte_only,
+        MEM_output, '0', "00000", '0', open, open, open, 
+        BASERAM_WE, BASERAM_addr, BASERAM_data,
+        EXTRAM_WE, EXTRAM_addr, EXTRAM_data,
+        open, open, '0',
         "00000000", '0', open,
-        VGA_x, VGA_y, VGA_data, VGA_set,
+        open, open, open, open,
+        ENET_D, open, open, open, '0',
         open, open, open);
 
     process begin
         clock <= '0';
         MEM_read <= '0';
         MEM_write <= '1';
+        MEM_write_byte_only <= '1';
         MEM_data <= x"00000023";
         ALU_output <= x"90000000";
+        ALU_output_after_TLB <= x"DEADBEEF";
         wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        clock <= '1';
+        wait for clk_period/2;
+        clock <= '0';
+        wait for clk_period/2;
+        MEM_read <= '0';
+        MEM_write <= '0';
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';

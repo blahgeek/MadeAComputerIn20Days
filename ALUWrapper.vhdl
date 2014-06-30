@@ -7,6 +7,8 @@ entity ALUWrapper is
     clock: in std_logic;
     reset: in std_logic;
 
+    hold_from_memory: in std_logic;
+
     ALU_operator: in std_logic_vector(3 downto 0) ;
     ALU_numA: in std_logic_vector(31 downto 0) ;
     ALU_numB: in std_logic_vector(31 downto 0) ;
@@ -23,6 +25,7 @@ entity ALUWrapper is
 
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
+    in_MEM_write_byte_only: in std_logic;
     in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
     in_REG_write_byte_only: in std_logic;
@@ -30,6 +33,7 @@ entity ALUWrapper is
 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
+    MEM_write_byte_only: out std_logic := '0';
     MEM_data: out std_logic_vector(31 downto 0);
     REG_write: out std_logic := '0';
     REG_write_byte_only: out std_logic := '0';
@@ -55,6 +59,7 @@ end component;
 
     signal s_MEM_read: std_logic := '0';
     signal s_MEM_write: std_logic := '0';
+    signal s_MEM_write_byte_only : std_logic := '0';
     signal s_MEM_data: std_logic_vector(31 downto 0);
     signal s_REG_write: std_logic := '0';
     signal s_REG_write_byte_only: std_logic := '0';
@@ -84,6 +89,7 @@ begin
                     b <= ALU_numB;
                     op <= ALU_operator;
                     s_MEM_write <= in_MEM_write;
+                    s_MEM_write_byte_only <= in_MEM_write_byte_only;
                     s_MEM_read <= in_MEM_read;
                     s_MEM_data <= in_MEM_data;
                     s_REG_write <= in_REG_write;
@@ -100,7 +106,7 @@ begin
             
                 when s3 =>
 
-                    if s_skip_one = '1' then
+                    if s_skip_one = '1' or hold_from_memory = '1' then
                         MEM_read <= '0';
                         MEM_write <= '0';
                         REG_write <= '0';
@@ -125,6 +131,7 @@ begin
                             ALU_output_after_TLB(31 downto 12) <= TLB_real;
                             ALU_output_after_TLB(11 downto 0) <= c(11 downto 0);
                             MEM_write <= s_MEM_write;
+                            MEM_write_byte_only <= s_MEM_write_byte_only;
                             MEM_read <= s_MEM_read;
                             MEM_data <= s_MEM_data;
                             REG_write <= s_REG_write;

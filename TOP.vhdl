@@ -96,7 +96,10 @@ component FetcherAndRegister port (
 
     MEM_read: out std_logic;
     MEM_write: out std_logic;
+    MEM_write_byte_only: out std_logic;
     MEM_data: out std_logic_vector(31 downto 0);
+
+    hold_from_memory: in std_logic;
 
     REG_write: out std_logic;
     REG_write_byte_only: out std_logic := '0';
@@ -107,6 +110,8 @@ component FetcherAndRegister port (
 component ALUWrapper port (
     clock: in std_logic;
     reset: in std_logic;
+
+    hold_from_memory: in std_logic;
 
     ALU_operator: in std_logic_vector(3 downto 0) ;
     ALU_numA: in std_logic_vector(31 downto 0) ;
@@ -125,6 +130,7 @@ component ALUWrapper port (
     -- forward
     in_MEM_read: in std_logic ;
     in_MEM_write: in std_logic ;
+    in_MEM_write_byte_only: in std_logic;
     in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
     in_REG_write_byte_only: in std_logic;
@@ -132,6 +138,7 @@ component ALUWrapper port (
 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
+    MEM_write_byte_only: out std_logic := '0';
     MEM_data: out std_logic_vector(31 downto 0);
     REG_write: out std_logic := '0';
     REG_write_byte_only: out std_logic := '0';
@@ -146,10 +153,13 @@ component Memory port (
     clock: in std_logic;
     reset: in std_logic;
 
+    hold_from_memory: out std_logic;
+
     ALU_output: in std_logic_vector(31 downto 0);
     ALU_output_after_TLB: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
+    MEM_write_byte_only: in std_logic;
     MEM_data: in std_logic_vector(31 downto 0);
 
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
@@ -304,9 +314,11 @@ end component ; -- TLB
 
     signal A_MEM_read: std_logic := '0'; 
     signal A_MEM_write: std_logic := '0'; 
+    signal A_MEM_write_byte_only: std_logic:= '0';
     signal A_MEM_data: std_logic_vector(31 downto 0) := (others => '0');
     signal B_MEM_read: std_logic := '0'; 
     signal B_MEM_write: std_logic := '0'; 
+    signal B_MEM_write_byte_only: std_logic := '0';
     signal B_MEM_data: std_logic_vector(31 downto 0) := (others => '0');
 
     signal MEM_output: std_logic_vector(31 downto 0) := (others => '0');
@@ -328,6 +340,8 @@ end component ; -- TLB
     signal uart_data_in_stb, uart_data_in_ack: std_logic;
     signal uart_data_out: std_logic_vector(7 downto 0);
     signal uart_data_out_stb, uart_data_out_ack: std_logic;
+
+    signal hold_from_memory: std_logic := '0';
     
 begin
 
@@ -391,7 +405,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     ExtRamData,
     ALU_operator, ALU_numA, ALU_numB,
     JUMP_true, JUMP_addr,
-    A_MEM_read, A_MEM_write, A_MEM_data,
+    A_MEM_read, A_MEM_write, A_MEM_write_byte_only, A_MEM_data, hold_from_memory,
     A_REG_write, A_REG_write_byte_only, A_REG_write_addr
     );
 
@@ -400,20 +414,21 @@ FetcherAndRegister0: FetcherAndRegister port map (
 -- LED(7 downto 2) <= instruction_virt_addr(19 downto 14);
 
 ALUWrapper0: ALUWrapper port map (
-    real_clock, real_reset,
+    real_clock, real_reset, hold_from_memory,
     ALU_operator, ALU_numA, ALU_numB, ALU_output, ALU_output_after_TLB,
     data_virt_addr, data_real_addr, data_bad, 
     TLB_data_exception, TLB_data_exception_read_or_write,
-    A_MEM_read, A_MEM_write, 
+    A_MEM_read, A_MEM_write, A_MEM_write_byte_only,
     A_MEM_data, 
     A_REG_write, A_REG_write_byte_only, A_REG_write_addr,
-    B_MEM_read, B_MEM_write,
+    B_MEM_read, B_MEM_write, B_MEM_write_byte_only,
     B_MEM_data, 
     B_REG_write, B_REG_write_byte_only, B_REG_write_addr);
 
 Mem0: Memory port map (
-    real_clock, real_reset,
-    ALU_output, ALU_output_after_TLB, B_MEM_read, B_MEM_write,
+    real_clock, real_reset, hold_from_memory,
+    ALU_output, ALU_output_after_TLB, 
+    B_MEM_read, B_MEM_write, B_MEM_write_byte_only,
     B_MEM_data,
     MEM_output, 
     B_REG_write, B_REG_write_addr, B_REG_write_byte_only,

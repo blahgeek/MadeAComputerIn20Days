@@ -29,7 +29,7 @@ architecture Behavioral of Registers is
 
 		realWriteValue(7 downto 0) <= RegWriteValue(7 downto 0);
 		with RegWriteByteOnly select
-			realWriteValue(31 downto 8) <= (others => '0') when '1'
+			realWriteValue(31 downto 8) <= (others => '0') when '1',
 									       RegWriteValue(31 downto 8) when '0';
 
 		process(clk, reset)
