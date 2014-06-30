@@ -9,7 +9,7 @@ OBJS = $(SOURCES:.c=.o)
 TARGET = main
 
 $(TARGET).hex: $(TARGET).out
-	$(BIN_DIR)/objcopy $(OBJCOPY_FLAGS) -j .text -j .data -j .bss -O ihex $< $@
+	$(BIN_DIR)/objcopy $(OBJCOPY_FLAGS) -j .text -j .data -j .bss -j .rodata -O ihex $< $@
 
 %.o: %.c
 	$(BIN_DIR)/gcc $(FLAGS) $(CFLAGS) $< -c -o $@
