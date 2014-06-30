@@ -74,6 +74,11 @@ entity FetcherAndRegister is
   type jump_condition_type is (none, eq, gez, gz, lez, lz, ne);
   signal s_jump_true_if_condition: jump_condition_type := none;
 
+  type sb_state_type is (none, one_sent, wait1, wait2);
+  signal sb_state: sb_state_type := none;
+  signal sb_instruction: std_logic_vector(31 downto 0) := (others => '0');
+  signal sb_target_data: std_logic_vector(31 downto 0) := (others => '0');
+
   type regs is array (0 to 31) of STD_LOGIC_VECTOR(31 downto 0);
   signal REGS_C0: regs:= (others => (others => '0'));
 
@@ -147,6 +152,7 @@ begin
   begin
     if reset = '1' then
       state <= s0;
+      sb_state <= none;
       ALU_operator <= "1111";
       ALU_numA <= (others => '0');
       ALU_numB <= (others => '0');
@@ -365,6 +371,16 @@ begin
                   outbuffer_REG_write <= '1';
                   outbuffer_REG_write_addr <= s_data(20 downto 16);
                   outbuffer_REG_write_byte_only <= not s_data(26); -- if lb
+                elsif s_data(29 downto 26) = "1000" then -- sb !!!
+                  -- load it first, load to THE register and save the old data
+                  outbuffer_MEM_read <= '1'; -- read memory
+                  outbuffer_MEM_write <= '0';
+                  outbuffer_REG_write <= '1';
+                  outbuffer_REG_write_addr <= s_data(20 downto 16);
+                  outbuffer_REG_write_byte_only <= '0';
+                  sb_instruction <= s_data;
+                  s_REG_read_number_B <= s_data(20 downto 16); -- we will store this data in sb_target_data
+                  sb_state <= one_sent;
                 else  -- sw
                   outbuffer_MEM_read <= '0';
                   outbuffer_MEM_write <= '1'; -- write memory!
@@ -485,10 +501,16 @@ begin
             (s_last_last_write_reg = s_REG_read_number_A 
               or s_last_last_write_reg = s_REG_read_number_B) then
             hold <= '1';
+            if sb_state = one_sent then  -- in this case we will not send one sb instruction
+              sb_state <= none;
+            end if;
           elsif s_last_write_reg /= "00000" and
             (s_last_write_reg = s_REG_read_number_A
               or s_last_write_reg = s_REG_read_number_B) then
             hold <= '1';
+            if sb_state = one_sent then
+              sb_state <= none;
+            end if;
           else
             hold <= '0';
           end if;
