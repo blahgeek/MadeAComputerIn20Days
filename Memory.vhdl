@@ -281,11 +281,11 @@ begin
         when s3 =>
 
           if sb_in_the_middle = '1' then
-            if sb_replace_pos = "00" then
+            if sb_replace_pos = "11" then
               sb_target_data(7 downto 0) <= s_MEM_data(7 downto 0);
-            elsif sb_replace_pos = "01" then
-              sb_target_data(15 downto 8) <= s_MEM_data(15 downto 8);
             elsif sb_replace_pos = "10" then
+              sb_target_data(15 downto 8) <= s_MEM_data(15 downto 8);
+            elsif sb_replace_pos = "01" then
               sb_target_data(23 downto 16) <= s_MEM_data(23 downto 16);
             else
               sb_target_data(31 downto 24) <= s_MEM_data(31 downto 24);

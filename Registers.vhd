@@ -29,9 +29,9 @@ architecture Behavioral of Registers is
 	begin
 
 		realWriteValue(7 downto 0) <= 
-			RegWriteValue(31 downto 24) when RegWriteByteOnly = '1' and RegWriteBytePos = "11" else
-			RegWriteValue(23 downto 16) when RegWriteByteOnly = '1' and RegWriteBytePos = "10" else
-			RegWriteValue(15 downto 8) when RegWriteByteOnly = '1' and RegWriteBytePos = "01" else
+			RegWriteValue(31 downto 24) when RegWriteByteOnly = '1' and RegWriteBytePos = "00" else
+			RegWriteValue(23 downto 16) when RegWriteByteOnly = '1' and RegWriteBytePos = "01" else
+			RegWriteValue(15 downto 8) when RegWriteByteOnly = '1' and RegWriteBytePos = "10" else
 			RegWriteValue(7 downto 0);
 
 		with RegWriteByteOnly select
