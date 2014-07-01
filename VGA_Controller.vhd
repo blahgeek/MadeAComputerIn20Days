@@ -10,10 +10,9 @@ entity VGA_Controller is
         oGreen  : out std_logic_vector (2 downto 0);
         oBlue   : out std_logic_vector (2 downto 0);
 
-        in_x:   in std_logic_vector(6 downto 0);
-        in_y:   in std_logic_vector(4 downto 0);
-        in_data:in std_logic_vector(6 downto 0); -- ascii
-        in_set: in std_logic;
+        col: out std_logic_vector(6 downto 0);
+        row: out std_logic_vector(4 downto 0);
+        data: in std_logic_vector(7 downto 0); -- ascii
 
         reset   : in  std_logic;
         CLK_in  : in  std_logic -- 50M
@@ -21,44 +20,36 @@ entity VGA_Controller is
 end entity VGA_Controller;
 
 architecture behave of VGA_Controller is
-component font_rom port(
-      clk: in std_logic;
-      addr: in std_logic_vector(10 downto 0);
-      data: out std_logic_vector(7 downto 0)
-   );
+
+component CoreFontRom port (
+    a: IN std_logic_vector(10 downto 0);
+    spo: out std_logic_vector(7 downto 0)
+);
 end component;
 
-    type data_type is array(0 to 2399) of std_logic_vector(6 downto 0);
-
-    signal data: data_type:= (others => (others => '0'));
+    signal font_rom_addr: std_logic_vector(10 downto 0);
+    signal font_rom_data: std_logic_vector(7 downto 0);
+    
 
 --VGA
-    signal not_CLK  : std_logic := '0';
     signal rt,gt,bt : std_logic_vector (2 downto 0);
     signal x        : std_logic_vector (9 downto 0);
     signal y        : std_logic_vector (9 downto 0);
 
-    signal font_addr: std_logic_vector(10 downto 0);
-    signal font_data: std_logic_vector(7 downto 0);
+    signal data_bit: std_logic;
 
     signal state : std_logic := '0';
     
 begin
 
-    not_CLK <= not CLK_in;
+    fontrom0: CoreFontRom port map (font_rom_addr, font_rom_data);
 
-    font_addr(3 downto 0) <= y(3 downto 0);
-    font_addr(10 downto 4) <= data(to_integer(unsigned(x(9 downto 3))+unsigned(y(9 downto 4))*80));
+    font_rom_addr(3 downto 0) <= y(3 downto 0);
+    font_rom_addr(10 downto 4) <= data(6 downto 0); -- ascii
+    data_bit <= font_rom_data(to_integer(unsigned(x(2 downto 0))));
 
-    font0: font_rom port map(not_CLK, font_addr, font_data);
-
-    process (in_set, reset) begin
-        if reset = '1' then
-            data <= (others => (others => '0'));
-        elsif rising_edge(in_set) then
-            data(to_integer(unsigned(in_x)+unsigned(in_y)*80)) <= in_data;
-        end if;
-    end process;
+    col <= x(9 downto 3);
+    row <= y(8 downto 4);
 
     process (CLK_in, reset) begin
         if reset = '1' then
@@ -98,8 +89,8 @@ begin
                         gt <= (others=>'0');
                         bt <= (others=>'0');
                     else
-                        rt <= (others => font_data(to_integer(7-unsigned(x(2 downto 0)))));
-                        gt <= (others => font_data(to_integer(7-unsigned(x(2 downto 0)))));
+                        rt <= (others => data_bit);
+                        gt <= (others => data_bit);
                         bt <= (others => '1');  -- so that it's not black... = =
                     end if;
                     state <= '0';

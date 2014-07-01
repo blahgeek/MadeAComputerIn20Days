@@ -197,7 +197,7 @@ begin
             sb_in_the_middle <= '0';
             s_output <= s_MEM_data;
             s_use_me_as_output <= '1';
-            if s_MEM_addr(31 downto 28) = x"f" then
+            if s_MEM_addr(29 downto 28) = "11" then
               VGA_data <= s_MEM_data(6 downto 0);
               VGA_x <= s_MEM_addr(14 downto 8);
               VGA_y <= s_MEM_addr(4 downto 0);

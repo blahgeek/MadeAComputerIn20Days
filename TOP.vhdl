@@ -59,11 +59,23 @@ end TOP;
 
 architecture arch of TOP is
 
-component CoreFontRom port (
-    a: IN std_logic_vector(10 downto 0);
-    spo: out std_logic_vector(7 downto 0)
-);
-end component;
+component VGAConsoleMemory PORT (
+    a : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+    d : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    dpra : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+    clk : IN STD_LOGIC;
+    we : IN STD_LOGIC;
+    spo : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    dpo : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+  );
+END component;
+
+signal VGA_write_addr: std_logic_vector(11 downto 0);
+signal VGA_write_data: std_logic_vector(7 downto 0);
+signal VGA_read_addr: std_logic_vector(11 downto 0);
+signal VGA_write_we: STD_LOGIC := '0';
+signal VGA_read_data: STD_LOGIC_VECTOR(7 downto 0);
+
 
 component FetcherAndRegister port (
 
@@ -280,28 +292,25 @@ end component ; -- TLB
     signal TLB_set_index: std_logic_vector(2 downto 0);
     signal TLB_set_entry: std_logic_vector(63 downto 0);
 
--- component VGA_Controller is
---     port (
---         VGA_CLK : out std_logic;
---         hs,vs   : buffer std_logic;
---         oRed    : out std_logic_vector (2 downto 0);
---         oGreen  : out std_logic_vector (2 downto 0);
---         oBlue   : out std_logic_vector (2 downto 0);
+component VGA_Controller is
+    port (
+        VGA_CLK : out std_logic;
+        hs,vs   : buffer std_logic;
+        oRed    : out std_logic_vector (2 downto 0);
+        oGreen  : out std_logic_vector (2 downto 0);
+        oBlue   : out std_logic_vector (2 downto 0);
 
---         in_x:   in std_logic_vector(6 downto 0);
---         in_y:   in std_logic_vector(4 downto 0);
---         in_data:in std_logic_vector(6 downto 0);
---         in_set: in std_logic;
+        col: out std_logic_vector(6 downto 0);
+        row: out std_logic_vector(4 downto 0);
+        data: in std_logic_vector(7 downto 0); -- ascii
 
---         reset   : in  std_logic;
---         CLK_in  : in  std_logic -- 50M
---     );      
--- end component;
+        reset   : in  std_logic;
+        CLK_in  : in  std_logic -- 50M
+    );      
+end component;
 
---     signal VGA_in_x: std_logic_vector(6 downto 0);
---     signal VGA_in_y: std_logic_vector(4 downto 0);
---     signal VGA_in_data: std_logic_vector(6 downto 0);
---     signal VGA_in_set: std_logic := '0';
+    signal VGA_col: STD_LOGIC_VECTOR(6 downto 0);
+    signal VGA_row: STD_LOGIC_VECTOR(4 downto 0);
 
     -- reset is '1' if not clicked, that's not what we want
     signal real_reset: std_logic := '0';
@@ -353,22 +362,53 @@ end component ; -- TLB
 
     signal hold_from_memory: std_logic := '0';
 
-    signal font_rom_addr: std_logic_vector(10 downto 0);
-    signal font_rom_data: std_logic_vector(7 downto 0);
-    
+component VGARowColToAddr is
+  port (
+    col: in std_logic_vector(6 downto 0);
+    row: in std_logic_vector(4 downto 0);
+    addr: out std_logic_vector(11 downto 0)
+  ) ;
+end component ; -- VGARowColToAddr
+
+    signal VGA_mem_col: std_logic_vector(6 downto 0);
+    signal VGA_mem_row: std_logic_vector(4 downto 0);
+    signal VGA_mem_data: std_logic_vector(6 downto 0);
+
 begin
+
+    VGAConsolemem0: VGAConsoleMemory port map (
+        VGA_write_addr, VGA_write_data,
+        VGA_read_addr, real_clock,
+        VGA_write_we, open, VGA_read_data
+        );
+
+    VGA_write_data(6 downto 0) <= VGA_mem_data;
+    VGA_write_data(7) <= '0';
+
 
     InterConn(0) <= 'Z'; -- in
     s_rx <= InterConn(0);
     InterConn(5) <= s_tx;
-
-    fontrom0: CoreFontRom port map (font_rom_addr, font_rom_data);
 
     uart0: UART generic map (BAUD_RATE => 115200, CLOCK_FREQUENCY => 11059200)
                 port map (CLK11M0592, real_reset, 
                           uart_data_in, uart_data_in_stb, uart_data_in_ack,
                           uart_data_out, uart_data_out_stb, uart_data_out_ack,
                           s_tx, s_rx);
+
+    vga0: VGA_Controller port map (
+        open, VGA_Hhync, VGA_Vhync,
+        VGA_Red, VGA_Green, VGA_Blue,
+        VGA_col, VGA_row, VGA_read_data,
+        real_reset, CLK50M
+        );
+
+    rowcol2addr0: VGARowColToAddr port map (
+        VGA_col, VGA_row, VGA_read_addr
+        );
+    rowcol2addr1: VGARowColToAddr port map (
+        VGA_mem_col, VGA_mem_row, VGA_write_addr
+        );
 
     -- vga0: VGA_Controller port map(
     --     open, VGA_Hhync, VGA_Vhync, VGA_Red, VGA_Green, VGA_Blue,
@@ -454,7 +494,8 @@ Mem0: Memory port map (
     ExtRamWE, ExtRamAddr, ExtRamData,
     uart_data_in, uart_data_in_stb, uart_data_in_ack,
     uart_data_out, uart_data_out_stb, uart_data_out_ack,
-    open, open, open, open, -- no VGA
+    VGA_mem_col, VGA_mem_row, VGA_mem_data, VGA_write_we,
+    -- open, open, open, open, -- no VGA
     -- VGA_in_x, VGA_in_y, VGA_in_data, VGA_in_set,
     ENET_D, ENET_CMD, ENET_IOR, ENET_IOW, ENET_INT, -- ethernet
     DYP0, DYP1, LED);
