@@ -65,6 +65,7 @@ end component;
     signal s_REG_write_byte_only: std_logic := '0';
     signal s_REG_write_addr: std_logic_vector(4 downto 0);
     signal s_skip_one: std_logic:= '0';
+    signal s_do_not_read_input: std_logic := '0';
 
 begin
 
@@ -80,21 +81,25 @@ begin
             ALU_output <= (others => '0');
             s_skip_one <= '0';
             TLB_exception <= '0';
+            s_do_not_read_input <= '0';
 
         elsif rising_edge(clock) then
             case( state ) is
             
                 when s0 =>
-                    a <= ALU_numA;
-                    b <= ALU_numB;
-                    op <= ALU_operator;
-                    s_MEM_write <= in_MEM_write;
-                    s_MEM_write_byte_only <= in_MEM_write_byte_only;
-                    s_MEM_read <= in_MEM_read;
-                    s_MEM_data <= in_MEM_data;
-                    s_REG_write <= in_REG_write;
-                    s_REG_write_byte_only <= in_REG_write_byte_only;
-                    s_REG_write_addr <= in_REG_write_addr;
+
+                    if s_do_not_read_input = '0' then
+                        a <= ALU_numA;
+                        b <= ALU_numB;
+                        op <= ALU_operator;
+                        s_MEM_write <= in_MEM_write;
+                        s_MEM_write_byte_only <= in_MEM_write_byte_only;
+                        s_MEM_read <= in_MEM_read;
+                        s_MEM_data <= in_MEM_data;
+                        s_REG_write <= in_REG_write;
+                        s_REG_write_byte_only <= in_REG_write_byte_only;
+                        s_REG_write_addr <= in_REG_write_addr;
+                    end if;
 
                     state <= s1;
 
@@ -105,6 +110,12 @@ begin
                 when s2 => state <= s3;
             
                 when s3 =>
+
+                    if hold_from_memory = '1' then
+                        s_do_not_read_input <= '1';
+                    else
+                        s_do_not_read_input <= '0';
+                    end if;
 
                     if s_skip_one = '1' or hold_from_memory = '1' then
                         MEM_read <= '0';

@@ -366,7 +366,10 @@ begin
                 outbuffer_ALU_operator <= "0001"; -- add
                 outbuffer_JUMP_true <= '0';
                 s_jump_true_if_condition <= none;
-                if s_data(29 downto 26) = "0011" or s_data(29 downto 26) = "0000" then  -- lw or lb
+                if s_data(29 downto 26) = "0011" or 
+                   s_data(29 downto 26) = "0000" or 
+                   s_data(29 downto 26) = "0100" then  -- lw or lb or lbu
+                   -- FIXME! lbu
                   outbuffer_MEM_read <= '1'; -- read memory!
                   outbuffer_MEM_write <= '0';
                   outbuffer_REG_write <= '1';
