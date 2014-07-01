@@ -216,7 +216,7 @@ begin
                   ENET_IOW <= '0'; -- write!
                   ENET_D <= s_MEM_data(15 downto 0);
                 when others => -- general
-                  if ALU_output(22) = '0' then
+                  if s_MEM_addr(22) = '0' then
                     BASERAM_addr <= s_MEM_addr(21 downto 2);
                     BASERAM_data <= s_MEM_data;
                     BASERAM_WE <= '0';
@@ -284,11 +284,11 @@ begin
             if sb_replace_pos = "11" then
               sb_target_data(7 downto 0) <= s_MEM_data(7 downto 0);
             elsif sb_replace_pos = "10" then
-              sb_target_data(15 downto 8) <= s_MEM_data(15 downto 8);
+              sb_target_data(15 downto 8) <= s_MEM_data(7 downto 0);
             elsif sb_replace_pos = "01" then
-              sb_target_data(23 downto 16) <= s_MEM_data(23 downto 16);
+              sb_target_data(23 downto 16) <= s_MEM_data(7 downto 0);
             else
-              sb_target_data(31 downto 24) <= s_MEM_data(31 downto 24);
+              sb_target_data(31 downto 24) <= s_MEM_data(7 downto 0);
             end if;
           end if;
                 

@@ -11,12 +11,14 @@ component Memory port (
     clock: in std_logic;
     reset: in std_logic;
 
+    hold_from_memory: out std_logic := '0';
+
     ALU_output: in std_logic_vector(31 downto 0);
     ALU_output_after_TLB: in std_logic_vector(31 downto 0);
     MEM_read: in std_logic;
     MEM_write: in std_logic;
-    MEM_data: in std_logic_vector(31 downto 0);
     MEM_write_byte_only: in std_logic;
+    MEM_data: in std_logic_vector(31 downto 0);
 
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
 
@@ -26,6 +28,7 @@ component Memory port (
     REG_write: out std_logic := '0';
     REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
     REG_write_byte_only: out std_logic := '0';
+    REG_write_byte_pos: out std_logic_vector(1 downto 0) := "00";
 
     BASERAM_WE: out std_logic;
     BASERAM_addr: inout std_logic_vector(19 downto 0);
@@ -61,6 +64,7 @@ component Memory port (
 end component ; -- Memory
 
     signal clock: std_logic;
+    signal hold_from_memory: std_logic;
     signal MEM_read, MEM_write: std_logic;
     signal MEM_write_byte_only: std_logic;
     signal ALU_output, ALU_output_after_TLB, MEM_data, MEM_output: std_logic_vector(31 downto 0);
@@ -74,10 +78,10 @@ end component ; -- Memory
 begin
 
     instance: Memory port map (
-        clock, '0',
+        clock, '0', hold_from_memory,
         ALU_output, ALU_output_after_TLB, 
-        MEM_read, MEM_write, MEM_data, MEM_write_byte_only,
-        MEM_output, '0', "00000", '0', open, open, open, 
+        MEM_read, MEM_write, MEM_write_byte_only, MEM_data,
+        MEM_output, '0', "00000", '0', open, open, open, open,
         BASERAM_WE, BASERAM_addr, BASERAM_data,
         EXTRAM_WE, EXTRAM_addr, EXTRAM_data,
         open, open, '0',
@@ -91,9 +95,9 @@ begin
         MEM_read <= '0';
         MEM_write <= '1';
         MEM_write_byte_only <= '1';
-        MEM_data <= x"00000023";
+        MEM_data <= x"FACEB00C";
         ALU_output <= x"90000000";
-        ALU_output_after_TLB <= x"DEADBEEF";
+        ALU_output_after_TLB <= x"00000023";
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;
