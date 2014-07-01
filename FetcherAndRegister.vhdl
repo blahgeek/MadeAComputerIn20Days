@@ -518,7 +518,9 @@ begin
           state <= s2;
 
         when s2 => 
-          s_last_last_write_reg <= s_last_write_reg;
+          if hold_from_memory = '0' then
+            s_last_last_write_reg <= s_last_write_reg;
+          end if;
 
           if hold_from_memory = '1' and s_exception = '0' then
             hold <= '1';
@@ -554,11 +556,13 @@ begin
       
         when s3 =>  -- state: now we got data from register
 
-          if not (s_jump_true_if_condition /= none and s_link_if_jump_true = '1') then
-            if hold = '0' and outbuffer_REG_write = '1' then
-              s_last_write_reg <= outbuffer_REG_write_addr;
-            else
-              s_last_write_reg <= "00000";
+          if hold_from_memory = '0' then
+            if not (s_jump_true_if_condition /= none and s_link_if_jump_true = '1') then
+              if hold = '0' and outbuffer_REG_write = '1' then
+                s_last_write_reg <= outbuffer_REG_write_addr;
+              else
+                s_last_write_reg <= "00000";
+              end if;
             end if;
           end if;
 
@@ -622,13 +626,17 @@ begin
               JUMP_true <= '1';
               if s_link_if_jump_true = '1' then
                 REG_write <= '1';
-                s_last_write_reg <= outbuffer_REG_write_addr;
+                if hold_from_memory = '0' then
+                  s_last_write_reg <= outbuffer_REG_write_addr;
+                end if;
               end if;
             else
               JUMP_true <= '0';
               if s_jump_true_if_condition /= none and s_link_if_jump_true = '1' then
                 REG_write <= '0';
-                s_last_write_reg <= (others => '0');
+                if hold_from_memory = '0' then
+                  s_last_write_reg <= (others => '0');
+                end if;
               end if;
             end if;
 
