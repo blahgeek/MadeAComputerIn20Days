@@ -59,6 +59,12 @@ end TOP;
 
 architecture arch of TOP is
 
+component CoreFontRom port (
+    a: IN std_logic_vector(10 downto 0);
+    spo: out std_logic_vector(7 downto 0)
+);
+end component;
+
 component FetcherAndRegister port (
 
     debug: out std_logic_vector(7 downto 0) := (others => '0');
@@ -346,12 +352,17 @@ end component ; -- TLB
     signal uart_data_out_stb, uart_data_out_ack: std_logic;
 
     signal hold_from_memory: std_logic := '0';
+
+    signal font_rom_addr: std_logic_vector(10 downto 0);
+    signal font_rom_data: std_logic_vector(7 downto 0);
     
 begin
 
     InterConn(0) <= 'Z'; -- in
     s_rx <= InterConn(0);
     InterConn(5) <= s_tx;
+
+    fontrom0: CoreFontRom port map (font_rom_addr, font_rom_data);
 
     uart0: UART generic map (BAUD_RATE => 115200, CLOCK_FREQUENCY => 11059200)
                 port map (CLK11M0592, real_reset, 
