@@ -46,7 +46,7 @@ begin
 
     font_rom_addr(3 downto 0) <= y(3 downto 0);
     font_rom_addr(10 downto 4) <= data(6 downto 0); -- ascii
-    data_bit <= font_rom_data(to_integer(unsigned(x(2 downto 0))));
+    data_bit <= font_rom_data(to_integer(7-unsigned(x(2 downto 0))));
 
     col <= x(9 downto 3);
     row <= y(8 downto 4);
