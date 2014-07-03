@@ -83,6 +83,7 @@ signal VGA_read_data: STD_LOGIC_VECTOR(7 downto 0);
     mask: in std_logic_vector(7 downto 0);
 
     timer_int: in std_logic;
+    uart_int: in std_logic;
 
     int: out std_logic;
     int_numbers: out std_logic_vector(7 downto 0)
@@ -495,6 +496,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     real_clock, real_reset, 
     Interrupt_mask, -- IM7-0
     timer_int,
+    uart_data_out_stb,
     Interrupt_int, Interrupt_numbers
   );
 

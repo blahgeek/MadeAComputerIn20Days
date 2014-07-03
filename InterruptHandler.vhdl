@@ -11,27 +11,30 @@ entity InterruptHandler is
     mask: in std_logic_vector(7 downto 0);
 
     timer_int: in std_logic;
+    uart_int: in std_logic;
 
     int: out std_logic := '0';
-    int_numbers: out std_logic_vector(7 downto 0)
+    int_numbers: out std_logic_vector(7 downto 0) := (others => '0')
   ) ;
 end entity ; -- InterruptHandler
 
 
 architecture arch of InterruptHandler is
 
-    constant timerNo: std_logic_vector(2 downto 0) := "111";
-    constant timerNoI: Integer := 7;
+    constant timerNo: Integer := 7;
+    constant uartNo: Integer := 4;
 
     signal timer_int_masked: std_logic := '0';
+    signal uart_int_masked: std_logic := '0';
 
 begin
 
-    timer_int_masked <= timer_int and mask(timerNoI);
+    timer_int_masked <= timer_int and mask(timerNo);
+    uart_int_masked <= uart_int and mask(uartNo);
 
-    int <= timer_int_masked; -- or anything else
+    int <= timer_int_masked or uart_int_masked; -- or anything else
 
-    int_numbers(7) <= timer_int_masked;
-    int_numbers(6 downto 0) <= (others => '0');
+    int_numbers(timerNo) <= timer_int_masked;
+    int_numbers(uartNo) <= uart_int_masked;
 
 end architecture ; -- arch
