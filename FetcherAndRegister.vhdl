@@ -72,6 +72,23 @@ entity FetcherAndRegister is
     RegReadValueB: out std_logic_vector(31 downto 0));
  end component;
 
+ component InterruptHandler port (
+    clock: in std_logic;
+    reset: in std_logic;
+
+    mask: in std_logic_vector(7 downto 0);
+
+    timer_count: out std_logic_vector(31 downto 0);
+    timer_compare: in std_logic_vector(31 downto 0);
+
+    int: out std_logic;
+    int_numbers: out std_logic_vector(7 downto 0)
+  );
+  end component;
+
+  signal interrupt_int: std_logic := '0';
+  signal interrupt_numbers: std_logic_vector(7 downto 0);
+
   type state_type is (s0, s1, s2, s3);
   signal state: state_type := s0;
 
@@ -130,6 +147,10 @@ entity FetcherAndRegister is
 
   signal s_TLB_set_do: std_logic := '0';
 
+  constant C0_SR: Integer := 12;
+  constant C0_COUNT: Integer := 9;
+  constant C0_COMPARE: Integer := 11;
+
 begin
 
   with RAM_select select
@@ -141,6 +162,12 @@ begin
                           s_REG_write_value, s_REG_write_byte_only,
                           s_REG_write_byte_pos,
                           s_REG_read_value_A, s_REG_read_value_B);
+
+  int_handler0: InterruptHandler port map (
+    clock, reset, REGS_C0(C0_SR)(15 downto 8), -- IM7-0
+    REGS_C0(C0_COUNT), REGS_C0(C0_COMPARE),
+    interrupt_int, interrupt_numbers
+  );
 
   -- always compute immediate extend
   immediate_zero_extend(15 downto 0) <= s_data(15 downto 0);
