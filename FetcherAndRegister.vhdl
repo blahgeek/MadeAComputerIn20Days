@@ -12,6 +12,12 @@ entity FetcherAndRegister is
     clock: in std_logic;
     reset: in std_logic;
 
+    timer_int: out std_logic := '0';
+
+    Interrupt_mask: out std_logic_vector(7 downto 0);
+    Interrupt_int: in std_logic := '0';
+    Interrupt_numbers: in std_logic_vector(7 downto 0);
+
     TLB_set_do: out std_logic := '0';
     TLB_set_index: out std_logic_vector(2 downto 0);
     TLB_set_entry: out std_logic_vector(63 downto 0);
@@ -71,23 +77,6 @@ entity FetcherAndRegister is
     RegReadValueA: out std_logic_vector(31 downto 0);
     RegReadValueB: out std_logic_vector(31 downto 0));
  end component;
-
- component InterruptHandler port (
-    clock: in std_logic;
-    reset: in std_logic;
-
-    mask: in std_logic_vector(7 downto 0);
-
-    timer_count: out std_logic_vector(31 downto 0);
-    timer_compare: in std_logic_vector(31 downto 0);
-
-    int: out std_logic;
-    int_numbers: out std_logic_vector(7 downto 0)
-  );
-  end component;
-
-  signal interrupt_int: std_logic := '0';
-  signal interrupt_numbers: std_logic_vector(7 downto 0);
 
   type state_type is (s0, s1, s2, s3);
   signal state: state_type := s0;
@@ -153,6 +142,8 @@ entity FetcherAndRegister is
 
 begin
 
+  Interrupt_mask <= REGS_C0(C0_SR)(15 downto 8);
+
   with RAM_select select
     s_data <= BASERAM_data when '0',
               EXTRAM_data when others;
@@ -162,12 +153,6 @@ begin
                           s_REG_write_value, s_REG_write_byte_only,
                           s_REG_write_byte_pos,
                           s_REG_read_value_A, s_REG_read_value_B);
-
-  int_handler0: InterruptHandler port map (
-    clock, reset, REGS_C0(C0_SR)(15 downto 8), -- IM7-0
-    REGS_C0(C0_COUNT), REGS_C0(C0_COMPARE),
-    interrupt_int, interrupt_numbers
-  );
 
   -- always compute immediate extend
   immediate_zero_extend(15 downto 0) <= s_data(15 downto 0);
@@ -579,6 +564,9 @@ begin
 
           end if;
 
+          -- add timer in whatever condition
+          REGS_C0(C0_COUNT) <= std_logic_vector(unsigned(REGS_C0(C0_COUNT))+1);
+
           state <= s3;
       
         when s3 =>  -- state: now we got data from register
@@ -684,6 +672,12 @@ begin
           end if;
 
           TLB_set_do <= '0';
+
+          if REGS_C0(C0_COMPARE) = REGS_C0(C0_COUNT) then
+            timer_int <= '1';
+          else 
+            timer_int <= '0';
+          end if;
 
           state <= s0;
       

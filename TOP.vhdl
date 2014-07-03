@@ -76,6 +76,25 @@ signal VGA_read_addr: std_logic_vector(11 downto 0);
 signal VGA_write_we: STD_LOGIC := '0';
 signal VGA_read_data: STD_LOGIC_VECTOR(7 downto 0);
 
+ component InterruptHandler port (
+    clock: in std_logic;
+    reset: in std_logic;
+
+    mask: in std_logic_vector(7 downto 0);
+
+    timer_int: in std_logic;
+
+    int: out std_logic;
+    int_numbers: out std_logic_vector(7 downto 0)
+  );
+  end component;
+
+signal timer_int: std_logic;
+
+signal Interrupt_mask: std_logic_vector(7 downto 0);
+signal Interrupt_int: std_logic;
+signal Interrupt_numbers: std_logic_vector(7 downto 0);
+
 
 component FetcherAndRegister port (
 
@@ -85,6 +104,12 @@ component FetcherAndRegister port (
     RAM_select: in std_logic;
     clock: in std_logic;
     reset: in std_logic;
+
+    timer_int: out std_logic := '0';
+
+    Interrupt_mask: out std_logic_vector(7 downto 0);
+    Interrupt_int: in std_logic := '0';
+    Interrupt_numbers: in std_logic_vector(7 downto 0);
 
     TLB_set_do: out std_logic := '0';
     TLB_set_index: out std_logic_vector(2 downto 0);
@@ -448,6 +473,7 @@ tlb0: DummyTLB port map (
 FetcherAndRegister0: FetcherAndRegister port map (
     open,
     PC, A_RAM_SELECT, real_clock, real_reset, 
+    timer_int, Interrupt_mask, Interrupt_int, Interrupt_numbers,
     TLB_set_do, TLB_set_index, TLB_set_entry,
     TLB_data_exception, TLB_data_exception_read_or_write,
     instruction_bad,
@@ -464,6 +490,13 @@ FetcherAndRegister0: FetcherAndRegister port map (
     A_MEM_read, A_MEM_write, A_MEM_write_byte_only, A_MEM_data, hold_from_memory,
     A_REG_write, A_REG_write_byte_only, A_REG_write_addr
     );
+
+  int_handler0: InterruptHandler port map (
+    real_clock, real_reset, 
+    Interrupt_mask, -- IM7-0
+    timer_int,
+    Interrupt_int, Interrupt_numbers
+  );
 
 -- LED(0) <= instruction_bad;
 -- LED(1) <= data_bad;
