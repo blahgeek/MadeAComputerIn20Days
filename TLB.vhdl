@@ -41,6 +41,7 @@ begin
     end process;
 
     process(clock, reset)
+        variable bad: std_logic := '1';
     begin
         if reset = '1' then 
             instruction_bad <= '0';
@@ -51,26 +52,31 @@ begin
                 instruction_real_addr(19 downto 18) <= "00";
                 instruction_bad <= '0';
             elsif instruction_virt_addr(0) = '0' then
+                bad := '1';
                 for i in 0 to 7 loop
                     if instruction_virt_addr(19 downto 1) = data(i)(62 downto 44) 
                         and data(i)(22) = '1' then
-                        instruction_bad <= '0';
+                        bad := '0';
                         instruction_real_addr <= data(i)(43 downto 24);
                     end if;
                 end loop ;
+                instruction_bad <= bad;
             else
+                bad := '1';
                 for i in 0 to 7 loop
                     if instruction_virt_addr(19 downto 1) = data(i)(62 downto 44) 
                         and data(i)(0) = '1' then
-                        instruction_bad <= '0';
+                        bad := '0';
                         instruction_real_addr <= data(i)(21 downto 2);
                     end if;
                 end loop ;
+                instruction_bad <= bad;
             end if;
         end if;
     end process;
 
     process(clock, reset)
+        variable bad: std_logic := '1';
     begin
         if reset = '1' then 
             data_bad <= '0';
@@ -81,21 +87,25 @@ begin
                 data_real_addr(19 downto 18) <= "00";
                 data_bad <= '0';
             elsif data_virt_addr(0) = '0' then
+                bad := '1';
                 for i in 0 to 7 loop
                     if data_virt_addr(19 downto 1) = data(i)(62 downto 44) 
                         and data(i)(22) = '1' then
-                        data_bad <= '0';
+                        bad := '0';
                         data_real_addr <= data(i)(43 downto 24);
                     end if;
                 end loop ;
+                data_bad <= bad;
             else
+                bad := '1';
                 for i in 0 to 7 loop
                     if data_virt_addr(19 downto 1) = data(i)(62 downto 44) 
                         and data(i)(0) = '1' then
-                        data_bad <= '0';
+                        bad := '0';
                         data_real_addr <= data(i)(21 downto 2);
                     end if;
                 end loop ;
+                data_bad <= bad;
             end if;
         end if;
     end process;
