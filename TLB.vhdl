@@ -46,72 +46,26 @@ begin
             instruction_bad <= '0';
             instruction_real_addr <= (others => '0');
         elsif rising_edge(clock) then
-            if instruction_virt_addr(19 downto 17) = "100" then --kseg0
-                instruction_real_addr(18 downto 0) <= instruction_virt_addr(18 downto 0);
-                instruction_real_addr(19) <= '0';
-                instruction_bad <= '0';
-            elsif instruction_virt_addr(19 downto 17) = "101" then --kseg1
-                instruction_real_addr(16 downto 0) <= instruction_virt_addr(16 downto 0);
-                instruction_real_addr(19 downto 17) <= "000";
+            if instruction_virt_addr(19 downto 18) = "10" then --kseg0/1
+                instruction_real_addr(17 downto 0) <= instruction_virt_addr(17 downto 0);
+                instruction_real_addr(19 downto 18) <= "00";
                 instruction_bad <= '0';
             elsif instruction_virt_addr(0) = '0' then
-                if instruction_virt_addr(19 downto 1) = data(0)(62 downto 44) and data(0)(23) = '1' then
-                    instruction_real_addr <= data(0)(43 downto 24);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(1)(62 downto 44) and data(1)(23) = '1' then
-                    instruction_real_addr <= data(1)(43 downto 24);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(2)(62 downto 44) and data(2)(23) = '1' then
-                    instruction_real_addr <= data(2)(43 downto 24);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(3)(62 downto 44) and data(3)(23) = '1' then
-                    instruction_real_addr <= data(3)(43 downto 24);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(4)(62 downto 44) and data(4)(23) = '1' then
-                    instruction_real_addr <= data(4)(43 downto 24);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(5)(62 downto 44) and data(5)(23) = '1' then
-                    instruction_real_addr <= data(5)(43 downto 24);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(6)(62 downto 44) and data(6)(23) = '1' then
-                    instruction_real_addr <= data(6)(43 downto 24);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(7)(62 downto 44) and data(7)(23) = '1' then
-                    instruction_real_addr <= data(7)(43 downto 24);
-                    instruction_bad <= '0';
-                else
-                    instruction_real_addr <= (others => '0');
-                    instruction_bad <= '1';
-                end if;
+                for i in 0 to 7 loop
+                    if instruction_virt_addr(19 downto 1) = data(i)(62 downto 44) 
+                        and data(i)(22) = '1' then
+                        instruction_bad <= '0';
+                        instruction_real_addr <= data(i)(43 downto 24);
+                    end if;
+                end loop ;
             else
-                if instruction_virt_addr(19 downto 1) = data(0)(62 downto 44) and data(0)(1) = '1' then
-                    instruction_real_addr <= data(0)(21 downto 2);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(1)(62 downto 44) and data(1)(1) = '1' then
-                    instruction_real_addr <= data(1)(21 downto 2);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(2)(62 downto 44) and data(2)(1) = '1' then
-                    instruction_real_addr <= data(2)(21 downto 2);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(3)(62 downto 44) and data(3)(1) = '1' then
-                    instruction_real_addr <= data(3)(21 downto 2);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(4)(62 downto 44) and data(4)(1) = '1' then
-                    instruction_real_addr <= data(4)(21 downto 2);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(5)(62 downto 44) and data(5)(1) = '1' then
-                    instruction_real_addr <= data(5)(21 downto 2);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(6)(62 downto 44) and data(6)(1) = '1' then
-                    instruction_real_addr <= data(6)(21 downto 2);
-                    instruction_bad <= '0';
-                elsif instruction_virt_addr(19 downto 1) = data(7)(62 downto 44) and data(7)(1) = '1' then
-                    instruction_real_addr <= data(7)(21 downto 2);
-                    instruction_bad <= '0';
-                else
-                    instruction_real_addr <= (others => '0');
-                    instruction_bad <= '1';
-                end if;
+                for i in 0 to 7 loop
+                    if instruction_virt_addr(19 downto 1) = data(i)(62 downto 44) 
+                        and data(i)(0) = '1' then
+                        instruction_bad <= '0';
+                        instruction_real_addr <= data(i)(21 downto 2);
+                    end if;
+                end loop ;
             end if;
         end if;
     end process;
@@ -122,72 +76,26 @@ begin
             data_bad <= '0';
             data_real_addr <= (others => '0');
         elsif rising_edge(clock) then
-            if data_virt_addr(19 downto 17) = "100" then --kseg0
-                data_real_addr(18 downto 0) <= data_virt_addr(18 downto 0);
-                data_real_addr(19) <= '0';
-                data_bad <= '0';
-            elsif data_virt_addr(19 downto 17) = "101" then --kseg1
-                data_real_addr(16 downto 0) <= data_virt_addr(16 downto 0);
-                data_real_addr(19 downto 17) <= "000";
+            if data_virt_addr(19 downto 18) = "10" then --kseg0/1
+                data_real_addr(17 downto 0) <= data_virt_addr(17 downto 0);
+                data_real_addr(19 downto 18) <= "00";
                 data_bad <= '0';
             elsif data_virt_addr(0) = '0' then
-                if data_virt_addr(19 downto 1) = data(0)(62 downto 44) and data(0)(23) = '1' then
-                    data_real_addr <= data(0)(43 downto 24);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(1)(62 downto 44) and data(1)(23) = '1' then
-                    data_real_addr <= data(1)(43 downto 24);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(2)(62 downto 44) and data(2)(23) = '1' then
-                    data_real_addr <= data(2)(43 downto 24);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(3)(62 downto 44) and data(3)(23) = '1' then
-                    data_real_addr <= data(3)(43 downto 24);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(4)(62 downto 44) and data(4)(23) = '1' then
-                    data_real_addr <= data(4)(43 downto 24);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(5)(62 downto 44) and data(5)(23) = '1' then
-                    data_real_addr <= data(5)(43 downto 24);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(6)(62 downto 44) and data(6)(23) = '1' then
-                    data_real_addr <= data(6)(43 downto 24);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(7)(62 downto 44) and data(7)(23) = '1' then
-                    data_real_addr <= data(7)(43 downto 24);
-                    data_bad <= '0';
-                else
-                    data_real_addr <= (others => '0');
-                    data_bad <= '1';
-                end if;
+                for i in 0 to 7 loop
+                    if data_virt_addr(19 downto 1) = data(i)(62 downto 44) 
+                        and data(i)(22) = '1' then
+                        data_bad <= '0';
+                        data_real_addr <= data(i)(43 downto 24);
+                    end if;
+                end loop ;
             else
-                if data_virt_addr(19 downto 1) = data(0)(62 downto 44) and data(0)(1) = '1' then
-                    data_real_addr <= data(0)(21 downto 2);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(1)(62 downto 44) and data(1)(1) = '1' then
-                    data_real_addr <= data(1)(21 downto 2);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(2)(62 downto 44) and data(2)(1) = '1' then
-                    data_real_addr <= data(2)(21 downto 2);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(3)(62 downto 44) and data(3)(1) = '1' then
-                    data_real_addr <= data(3)(21 downto 2);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(4)(62 downto 44) and data(4)(1) = '1' then
-                    data_real_addr <= data(4)(21 downto 2);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(5)(62 downto 44) and data(5)(1) = '1' then
-                    data_real_addr <= data(5)(21 downto 2);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(6)(62 downto 44) and data(6)(1) = '1' then
-                    data_real_addr <= data(6)(21 downto 2);
-                    data_bad <= '0';
-                elsif data_virt_addr(19 downto 1) = data(7)(62 downto 44) and data(7)(1) = '1' then
-                    data_real_addr <= data(7)(21 downto 2);
-                    data_bad <= '0';
-                else
-                    data_real_addr <= (others => '0');
-                    data_bad <= '1';
-                end if;
+                for i in 0 to 7 loop
+                    if data_virt_addr(19 downto 1) = data(i)(62 downto 44) 
+                        and data(i)(0) = '1' then
+                        data_bad <= '0';
+                        data_real_addr <= data(i)(21 downto 2);
+                    end if;
+                end loop ;
             end if;
         end if;
     end process;

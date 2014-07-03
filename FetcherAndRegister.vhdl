@@ -133,12 +133,21 @@ entity FetcherAndRegister is
   signal s_skip_next, s_skip_this: std_logic:= '0';
   signal s_exception: std_logic := '0';
   signal s_exception_cause: std_logic_vector(4 downto 0):= (others => '0');
+  signal s_interrupt_numbers: std_logic_vector(7 downto 0) := (others => '0');
 
   signal s_TLB_set_do: std_logic := '0';
 
   constant C0_SR: Integer := 12;
   constant C0_COUNT: Integer := 9;
   constant C0_COMPARE: Integer := 11;
+  constant C0_EPC: Integer:= 14;
+  constant C0_BADVADDR: Integer := 8;
+  constant C0_EBASE: Integer := 15;
+  constant C0_CAUSE: Integer := 13;
+  constant C0_INDEX: Integer := 0;
+  constant C0_ENTRYHI: Integer := 10;
+  constant C0_ENTRYLO0: Integer := 2;
+  constant C0_ENTRYLO1: Integer := 3;
 
 begin
 
@@ -196,7 +205,13 @@ begin
 
           debug(7 downto 4) <= PC(5 downto 2);
 
-          if TLB_data_exception = '1' then 
+          if Interrupt_int = '1' then
+
+            s_exception <= '1';
+            s_exception_cause <= (others => '0'); -- int
+            s_interrupt_numbers <= Interrupt_numbers;
+
+          elsif TLB_data_exception = '1' then 
 
             s_exception <= '1';
             if TLB_data_exception_read_or_write = '0' then --read
@@ -251,13 +266,13 @@ begin
                 outbuffer_ALU_operator <= "1111";
                 outbuffer_REG_write <= '0';
                 outbuffer_JUMP_true <= '0';
-                TLB_set_index <= REGS_C0(0)(2 downto 0);
+                TLB_set_index <= REGS_C0(C0_INDEX)(2 downto 0);
                 TLB_set_entry(63) <= '0';
-                TLB_set_entry(62 downto 44) <= REGS_C0(10)(31 downto 13);
-                TLB_set_entry(43 downto 24) <= REGS_C0(2)(25 downto 6);
-                TLB_set_entry(23 downto 22) <= REGS_C0(2)(1 downto 0);
-                TLB_set_entry(21 downto 2) <= REGS_C0(3)(25 downto 6);
-                TLB_set_entry(1 downto 0) <= REGS_C0(3)(1 downto 0);
+                TLB_set_entry(62 downto 44) <= REGS_C0(C0_ENTRYHI)(31 downto 13); -- VPN2
+                TLB_set_entry(43 downto 24) <= REGS_C0(C0_ENTRYLO0)(25 downto 6);
+                TLB_set_entry(23 downto 22) <= REGS_C0(C0_ENTRYLO0)(2 downto 1); -- Dirty and Valid flags only
+                TLB_set_entry(21 downto 2) <= REGS_C0(C0_ENTRYLO1)(25 downto 6);
+                TLB_set_entry(1 downto 0) <= REGS_C0(C0_ENTRYLO1)(2 downto 1);
                 s_TLB_set_do <= '1';
               end if;
 
@@ -543,12 +558,13 @@ begin
             s_exception <= '0';
 
             if s_exception_cause = "00010" or s_exception_cause = "00011" then -- FIXME its TLB data exception
-              REGS_C0(14) <= std_logic_vector(unsigned(PC)-8); -- eret
+              REGS_C0(C0_EPC) <= std_logic_vector(unsigned(PC)-8); -- eret
             else
-              REGS_C0(14) <= PC;  -- don't +4
+              REGS_C0(C0_EPC) <= PC;  -- don't +4
             end if;
-            REGS_C0(13)(6 downto 2) <= s_exception_cause;
-            REGS_C0(12)(1) <= '1';
+            REGS_C0(C0_CAUSE)(6 downto 2) <= s_exception_cause;
+            REGS_C0(C0_CAUSE)(15 downto 8) <= s_interrupt_numbers;
+            REGS_C0(C0_SR)(1) <= '1'; -- EXL
             numA_from_reg <= '0';
             numB_from_reg <= '0';
             s_jump_true_if_condition <= none;
@@ -558,7 +574,7 @@ begin
             outbuffer_MEM_write <= '0';
             outbuffer_REG_write <= '0';
             outbuffer_JUMP_true <= '1'; --jump!
-            outbuffer_JUMP_addr <= REGS_C0(15);  -- not standard
+            outbuffer_JUMP_addr <= REGS_C0(C0_EBASE);  -- not standard
 
             s_skip_next <= '1'; -- there's no delay slot for exception
 

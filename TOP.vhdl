@@ -290,7 +290,7 @@ component UART is
          );
 end component;
 
-component DummyTLB is
+component TLB is
   port (
     clock: in std_logic;
     reset: in std_logic;
@@ -464,7 +464,7 @@ begin
     ExtRamCE <= '0';
     ExtRamOE <= '0';
 
-tlb0: DummyTLB port map (
+tlb0: TLB port map (
     TLB_clock, real_reset,
     instruction_virt_addr, instruction_real_addr, instruction_bad,
     data_virt_addr, data_real_addr, data_bad,
