@@ -30,7 +30,7 @@ end component ; -- TLB
     signal clock: std_logic;
     signal virt_addr, real_addr: std_logic_vector(19 downto 0);
     signal bad: std_logic;
-    signal set_do: std_logic;
+    signal set_do: std_logic := '0';
     signal set_index: std_logic_vector(2 downto 0);
     signal set_entry: std_logic_vector(63 downto 0);
 
@@ -45,13 +45,6 @@ begin
 
     process begin
         clock <= '0';
-        set_do <= '1';
-        set_index <= (others => '0');
-        set_entry(63) <= '0';
-        set_entry(62 downto 44) <= (others => '0');
-        set_entry(43 downto 24) <= (others => '1');
-        set_entry(23) <= '1';
-        set_entry(22 downto 0) <= (others => '0');
         virt_addr <= (others => '0');
         wait for clk_period/2;
         clock <= '1';

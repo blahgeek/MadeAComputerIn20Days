@@ -555,6 +555,8 @@ begin
 
           if s_exception = '1' and s_skip_this = '0' then
 
+            hold <= '0';
+
             s_exception <= '0';
 
             if s_exception_cause = "00010" or s_exception_cause = "00011" then -- FIXME its TLB data exception
