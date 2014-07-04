@@ -4,7 +4,7 @@
 
 initial:
 	#设置 $sp
-	lui $sp, 0x007F
+	lui $sp, 0x807F
 	li $s1, 0xFF00
 	addu $sp, $sp, $s1
 

@@ -2,13 +2,14 @@
 * @Author: BlahGeek
 * @Date:   2014-05-16
 * @Last Modified by:   BlahGeek
-* @Last Modified time: 2014-06-07
+* @Last Modified time: 2014-07-04
 */
 
 #include "defs.h"
 #include "ethernet.h"
 #include "arp.h"
 #include "ip.h"
+#include "vga.h"
 
 int _start() {
 
