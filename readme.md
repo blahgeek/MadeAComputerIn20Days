@@ -54,5 +54,11 @@ see commit db563505bbceaae3890e8fb8dad93b652ad26ab6
 
 *TODO*：
 
-- [ ] 支持mul, mfhi, mflo, mtlo, mthi指令
 - [ ] eret/异常产生时对切换用户、内核态; KSU_USER
+
+### 2014/7/5
+
+- 开始移至ucore，已在QEMU上能够成功运行中断处理代码（通过时钟中断）
+- 完善指令集：支持mul, mfhi, mflo, mtlo, mthi指令
+
+see commit ed50a9d
