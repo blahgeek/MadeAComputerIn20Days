@@ -36,7 +36,7 @@ component FetcherAndRegister port (
     hold: buffer std_logic:= '0';
 
     BACK_REG_write: in std_logic;
-    BACK_REG_write_addr: in std_logic_vector(4 downto 0);
+    BACK_REG_write_addr: in std_logic_vector(5 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
     BACK_REG_write_byte_only: in std_logic;
     BACK_REG_write_byte_pos: in std_logic_vector(1 downto 0);
@@ -60,7 +60,7 @@ component FetcherAndRegister port (
 
     REG_write: out std_logic;
     REG_write_byte_only: out std_logic := '0';
-    REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
+    REG_write_addr: out std_logic_vector(5 downto 0)  -- we have 32 registers
   ) ;
  end component ; -- FetcherAndRegister 
 
@@ -79,10 +79,10 @@ component FetcherAndRegister port (
 
   signal REG_write:  std_logic;
   signal REG_write_byte_only: std_logic;
-  signal REG_write_addr:  std_logic_vector(4 downto 0);  -- we have 32 registers
+  signal REG_write_addr:  std_logic_vector(5 downto 0);  -- we have 32 registers
 
   signal BACK_REG_write : std_logic;
-  signal BACK_REG_write_addr: std_logic_vector(4 downto 0);
+  signal BACK_REG_write_addr: std_logic_vector(5 downto 0);
   signal BACK_REG_write_data: std_logic_vector(31 downto 0);
   signal BACK_REG_write_byte_only : std_logic := '0';
   signal BACK_REG_write_byte_pos : std_logic_vector(1 downto 0);
@@ -144,7 +144,7 @@ begin
 
     process begin
         BACK_REG_write <= '1';
-        BACK_REG_write_addr <= "11101"; -- sp
+        BACK_REG_write_addr <= "011101"; -- sp
         BACK_REG_write_data <= x"DEADBEEF";
         data <= x"8c100000";
         wait for clk_period/2;
@@ -161,7 +161,7 @@ begin
         clock <= '0';
         wait for clk_period/2;
         BACK_REG_write <= '1';
-        BACK_REG_write_addr <= "11101"; -- sp
+        BACK_REG_write_addr <= "011101"; -- sp
         BACK_REG_write_data <= x"DEADFACE";
         data <= "00000011111000000000100000100100"; -- and 31,0 -> 1
         clock <= '1';

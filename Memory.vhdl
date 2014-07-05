@@ -19,10 +19,10 @@ entity Memory is
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
 
     in_REG_write: in std_logic;
-    in_REG_write_addr: in std_logic_vector(4 downto 0);
+    in_REG_write_addr: in std_logic_vector(5 downto 0);
     in_REG_write_byte_only: in std_logic;
     REG_write: out std_logic := '0';
-    REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
+    REG_write_addr: out std_logic_vector(5 downto 0) := (others => '0');
     REG_write_byte_only: out std_logic := '0';
     REG_write_byte_pos: out std_logic_vector(1 downto 0) := "00";
 
@@ -78,7 +78,7 @@ architecture arch of Memory is
     signal s_use_ethernet_output: std_logic := '0';
 
     signal s_REG_write: std_logic:= '0';
-    signal s_REG_write_addr: std_logic_vector(4 downto 0):= (others => '0');
+    signal s_REG_write_addr: std_logic_vector(5 downto 0):= (others => '0');
     signal s_REG_write_byte_only: std_logic := '0';
 
     signal s_dyp_value0: std_logic_vector(3 downto 0) := (others => '0');

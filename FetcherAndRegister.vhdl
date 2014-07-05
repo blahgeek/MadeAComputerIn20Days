@@ -31,7 +31,7 @@ entity FetcherAndRegister is
 
     -- signals from 5th stage, for writing registers
     BACK_REG_write: in std_logic;
-    BACK_REG_write_addr: in std_logic_vector(4 downto 0);
+    BACK_REG_write_addr: in std_logic_vector(5 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
     BACK_REG_write_byte_only: in std_logic;
     BACK_REG_write_byte_pos: in std_logic_vector(1 downto 0);
@@ -56,7 +56,7 @@ entity FetcherAndRegister is
 
     REG_write: out std_logic := '0';
     REG_write_byte_only: out std_logic := '0';
-    REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
+    REG_write_addr: out std_logic_vector(5 downto 0)  -- we have 32 registers
   ) ;
  end entity ; -- FetcherAndRegister 
 
@@ -67,10 +67,10 @@ entity FetcherAndRegister is
    port (
     clk: in std_logic;
     reset: in std_logic;
-    RegReadNumberA: in std_logic_vector(4 downto 0);
-    RegReadNumberB: in std_logic_vector(4 downto 0);
+    RegReadNumberA: in std_logic_vector(5 downto 0);
+    RegReadNumberB: in std_logic_vector(5 downto 0);
     RegWrite: in std_logic;
-    RegWriteNumber: in std_logic_vector(4 downto 0);
+    RegWriteNumber: in std_logic_vector(5 downto 0);
     RegWriteValue: in std_logic_vector(31 downto 0);
     RegWriteByteOnly: in STD_LOGIC;
     RegWriteBytePos: in std_logic_vector(1 downto 0);
@@ -94,9 +94,9 @@ entity FetcherAndRegister is
   signal s_REG_write: std_logic;
   signal s_REG_write_byte_only: std_logic := '0';
   signal s_REG_write_byte_pos: std_logic_vector(1 downto 0) := "00";
-  signal s_REG_read_number_B: std_logic_vector(4 downto 0) := (others => '0');
+  signal s_REG_read_number_B: std_logic_vector(5 downto 0) := (others => '0');
   signal s_REG_read_value_B: std_logic_vector(31 downto 0);
-  signal s_REG_read_number_A, s_REG_write_number: std_logic_vector(4 downto 0) := (others => '0');
+  signal s_REG_read_number_A, s_REG_write_number: std_logic_vector(5 downto 0) := (others => '0');
   signal s_REG_read_value_A, s_REG_write_value: std_logic_vector(31 downto 0);
 
 
@@ -113,7 +113,7 @@ entity FetcherAndRegister is
   signal outbuffer_MEM_data: std_logic_vector(31 downto 0);
 
   signal outbuffer_REG_write: std_logic := '0';
-  signal outbuffer_REG_write_addr: std_logic_vector(4 downto 0);
+  signal outbuffer_REG_write_addr: std_logic_vector(5 downto 0);
   signal outbuffer_REG_write_byte_only: std_logic := '0';
 
   signal immediate_sign_extend, immediate_zero_extend: std_logic_vector(31 downto 0);
@@ -126,8 +126,8 @@ entity FetcherAndRegister is
 
   signal s_data : std_logic_vector(31 downto 0):= (others => '0');
 
-  signal s_last_last_write_reg: std_logic_vector(4 downto 0);
-  signal s_last_write_reg: std_logic_vector(4 downto 0);
+  signal s_last_last_write_reg: std_logic_vector(5 downto 0);
+  signal s_last_write_reg: std_logic_vector(5 downto 0);
 
   -- skip one instruction, used after syscall, exception etc
   signal s_skip_next, s_skip_this: std_logic:= '0';
@@ -253,11 +253,11 @@ begin
                   outbuffer_ALU_numA <= REGS_C0(to_integer(unsigned(s_data(15 downto 11))));
                   outbuffer_REG_write <= '1';
                   outbuffer_REG_write_byte_only <= '0';
-                  outbuffer_REG_write_addr <= s_data(20 downto 16);
+                  outbuffer_REG_write_addr <= '0' & s_data(20 downto 16);
                 else  -- mtc0
                   s_numA_to_c0 <= '1';
                   s_numA_to_c0_addr <= s_data(15 downto 11);
-                  s_REG_read_number_A <= s_data(20 downto 16);
+                  s_REG_read_number_A <= '0' & s_data(20 downto 16);
                   outbuffer_REG_write <= '0';
                 end if;
               else  -- tlbwi 
@@ -288,29 +288,29 @@ begin
 
               elsif s_data(5) = '1' then -- 3 reg type
                 numA_from_reg <= '1';
-                s_REG_read_number_A <= s_data(25 downto 21); -- rs
+                s_REG_read_number_A <= '0' & s_data(25 downto 21); -- rs
                 numB_from_reg <= '1';
-                s_REG_read_number_B <= s_data(20 downto 16); -- rt
+                s_REG_read_number_B <= '0' & s_data(20 downto 16); -- rt
                 outbuffer_JUMP_true <= '0';
                 outbuffer_MEM_read <= '0';
                 outbuffer_MEM_write <= '0';
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_byte_only <= '0';
-                outbuffer_REG_write_addr <= s_data(15 downto 11); -- rd
+                outbuffer_REG_write_addr <= '0' & s_data(15 downto 11); -- rd
                 outbuffer_ALU_operator <= s_data(3 downto 0);
               else
                 if s_data(2) = '1' then -- also 3 reg type
                   -- yes, rs and rt is swapped
                   numB_from_reg <= '1';
-                  s_REG_read_number_B <= s_data(25 downto 21); -- rs
+                  s_REG_read_number_B <= '0' & s_data(25 downto 21); -- rs
                   numA_from_reg <= '1';
-                  s_REG_read_number_A <= s_data(20 downto 16); -- rt
+                  s_REG_read_number_A <= '0' & s_data(20 downto 16); -- rt
                   outbuffer_JUMP_true <= '0';
                   outbuffer_MEM_read <= '0';
                   outbuffer_MEM_write <= '0';
                   outbuffer_REG_write <= '1';
                   outbuffer_REG_write_byte_only <= '0';
-                  outbuffer_REG_write_addr <= s_data(15 downto 11); -- rd
+                  outbuffer_REG_write_addr <= '0' & s_data(15 downto 11); -- rd
                   case( s_data(1 downto 0) ) is
                     when "00" => outbuffer_ALU_operator <= "1100"; -- C, "<<"
                     when "10" => outbuffer_ALU_operator <= "1101"; -- D, >>, logical
@@ -320,7 +320,7 @@ begin
                 else
                   if s_data(3) = '0' then  -- not jr/jalr
                     numA_from_reg <= '1';
-                    s_REG_read_number_A <= s_data(20 downto 16); -- rt
+                    s_REG_read_number_A <= '0' & s_data(20 downto 16); -- rt
                     numB_from_reg <= '0'; -- B is immediate
                     outbuffer_ALU_numB(4 downto 0) <= s_data(10 downto 6);
                     outbuffer_ALU_numB(31 downto 5) <= (others => '0');
@@ -329,7 +329,7 @@ begin
                     outbuffer_MEM_write <= '0';
                     outbuffer_REG_write <= '1';
                     outbuffer_REG_write_byte_only <= '0';
-                    outbuffer_REG_write_addr <= s_data(15 downto 11); -- rd
+                    outbuffer_REG_write_addr <= '0' & s_data(15 downto 11); -- rd
                     case( s_data(1 downto 0) ) is
                       when "00" => outbuffer_ALU_operator <= "1100"; -- C, "<<"
                       when "10" => outbuffer_ALU_operator <= "1101"; -- D, >>, logical
@@ -338,7 +338,7 @@ begin
                     end case ;
                   else -- jr or jalr
                     if s_data(0) = '1' then -- jalr
-                      outbuffer_REG_write_addr <= "11111"; -- write to $31
+                      outbuffer_REG_write_addr <= "011111"; -- write to $31
                       outbuffer_REG_write <= '1';
                       outbuffer_REG_write_byte_only <= '0';
                     else
@@ -351,7 +351,7 @@ begin
                     outbuffer_ALU_numB(31 downto 4) <= (others => '0');
                     outbuffer_ALU_operator <= "0001";  -- output PC+8
                     outbuffer_JUMP_true <= '1'; -- jump
-                    s_REG_read_number_A <= s_data(25 downto 21); -- rs
+                    s_REG_read_number_A <= '0' & s_data(25 downto 21); -- rs
                     s_jump_addr_from_reg_a <= '1';
                     outbuffer_MEM_read <= '0';
                     outbuffer_MEM_write <= '0';
@@ -380,14 +380,14 @@ begin
               else -- jal
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_byte_only <= '0';
-                outbuffer_REG_write_addr <= "11111"; -- write to R31
+                outbuffer_REG_write_addr <= "011111"; -- write to R31
               end if;
 
             else -- I type
               s_numA_to_c0 <= '0';
               if s_data(31 downto 30) = "10" then -- lw or sw
                 numA_from_reg <= '1';
-                s_REG_read_number_A <= s_data(25 downto 21);
+                s_REG_read_number_A <= '0' & s_data(25 downto 21);
                 numB_from_reg <= '0';
                 outbuffer_ALU_numB <= immediate_sign_extend;
                 outbuffer_ALU_operator <= "0001"; -- add
@@ -400,7 +400,7 @@ begin
                   outbuffer_MEM_read <= '1'; -- read memory!
                   outbuffer_MEM_write <= '0';
                   outbuffer_REG_write <= '1';
-                  outbuffer_REG_write_addr <= s_data(20 downto 16);
+                  outbuffer_REG_write_addr <= '0' & s_data(20 downto 16);
                   outbuffer_REG_write_byte_only <= not s_data(26); -- if lb
                 else  -- sw or sb
                   if s_data(29 downto 26) = "1000" then -- sb
@@ -411,7 +411,7 @@ begin
                   outbuffer_MEM_read <= '0';
                   outbuffer_MEM_write <= '1'; -- write memory!
                   mem_data_from_reg_B <= '1'; -- read reg B to mem_data_from_reg_B
-                  s_REG_read_number_B <= s_data(20 downto 16);
+                  s_REG_read_number_B <= '0' & s_data(20 downto 16);
                   outbuffer_REG_write <= '0'; -- not write register
                 end if;
               elsif s_data(31 downto 26) = "001111" then -- lui
@@ -426,7 +426,7 @@ begin
                 outbuffer_MEM_read <= '0';
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_byte_only <= '0';
-                outbuffer_REG_write_addr <= s_data(20 downto 16);
+                outbuffer_REG_write_addr <= '0' & s_data(20 downto 16);
               elsif s_data(31 downto 29) = "000" then -- branch
 
                 numA_from_reg <= '0';
@@ -436,8 +436,8 @@ begin
                 outbuffer_ALU_numB(31 downto 4) <= (others => '0');
                 outbuffer_ALU_operator <= "0001";  -- output PC+8
 
-                s_REG_read_number_A <= s_data(25 downto 21); -- read it from reg but not put this to ALU
-                s_REG_read_number_B <= s_data(20 downto 16);
+                s_REG_read_number_A <= '0' & s_data(25 downto 21); -- read it from reg but not put this to ALU
+                s_REG_read_number_B <= '0' & s_data(20 downto 16);
 
                 outbuffer_JUMP_true <= '0';
                 s_jump_addr_from_reg_a <= '0';
@@ -451,7 +451,7 @@ begin
 
                 outbuffer_REG_write <= '0'; -- well, we dont know it YET
                 outbuffer_REG_write_byte_only <= '0';
-                outbuffer_REG_write_addr <= "11111"; -- write to R31
+                outbuffer_REG_write_addr <= "011111"; -- write to R31
 
                 if s_data(28 downto 26) = "100" then -- beq
                   s_jump_true_if_condition <= eq;
@@ -474,7 +474,7 @@ begin
                 end if;
               else -- other I type
                 numA_from_reg <= '1';
-                s_REG_read_number_A <= s_data(25 downto 21);
+                s_REG_read_number_A <= '0' & s_data(25 downto 21);
                 numB_from_reg <= '0';
                 outbuffer_JUMP_true <= '0';
                 s_jump_true_if_condition <= none;
@@ -482,7 +482,7 @@ begin
                 outbuffer_MEM_read <= '0';
                 outbuffer_REG_write <= '1';
                 outbuffer_REG_write_byte_only <= '0';
-                outbuffer_REG_write_addr <= s_data(20 downto 16);
+                outbuffer_REG_write_addr <= '0' & s_data(20 downto 16);
                 case( s_data(29 downto 26) ) is
                   when "1000" => -- addi
                     outbuffer_ALU_numB <= immediate_sign_extend;
@@ -524,11 +524,11 @@ begin
           state <= s1;
 
         when s1 =>
-          if s_last_last_write_reg /= "00000" and
+          if s_last_last_write_reg /= "000000" and
             (s_last_last_write_reg = s_REG_read_number_A 
               or s_last_last_write_reg = s_REG_read_number_B) then
             hold <= '1';
-          elsif s_last_write_reg /= "00000" and
+          elsif s_last_write_reg /= "000000" and
             (s_last_write_reg = s_REG_read_number_A
               or s_last_write_reg = s_REG_read_number_B) then
             hold <= '1';
@@ -594,7 +594,7 @@ begin
               if hold = '0' and outbuffer_REG_write = '1' then
                 s_last_write_reg <= outbuffer_REG_write_addr;
               else
-                s_last_write_reg <= "00000";
+                s_last_write_reg <= (others => '0');
               end if;
             end if;
           end if;

@@ -124,7 +124,7 @@ component FetcherAndRegister port (
     hold: buffer std_logic:= '0';
 
     BACK_REG_write: in std_logic;
-    BACK_REG_write_addr: in std_logic_vector(4 downto 0);
+    BACK_REG_write_addr: in std_logic_vector(5 downto 0);
     BACK_REG_write_data: in std_logic_vector(31 downto 0);
     BACK_REG_write_byte_only: in std_logic;
     BACK_REG_write_byte_pos: in std_logic_vector(1 downto 0);
@@ -148,7 +148,7 @@ component FetcherAndRegister port (
 
     REG_write: out std_logic;
     REG_write_byte_only: out std_logic := '0';
-    REG_write_addr: out std_logic_vector(4 downto 0)  -- we have 32 registers
+    REG_write_addr: out std_logic_vector(5 downto 0)  -- we have 32 registers
   ) ;
  end component ; -- FetcherAndRegister 
 
@@ -179,7 +179,7 @@ component ALUWrapper port (
     in_MEM_data: in std_logic_vector(31 downto 0);
     in_REG_write: in std_logic ;
     in_REG_write_byte_only: in std_logic;
-    in_REG_write_addr: in std_logic_vector(4 downto 0);
+    in_REG_write_addr: in std_logic_vector(5 downto 0);
 
     MEM_read: out std_logic := '0';
     MEM_write: out std_logic := '0';
@@ -187,7 +187,7 @@ component ALUWrapper port (
     MEM_data: out std_logic_vector(31 downto 0);
     REG_write: out std_logic := '0';
     REG_write_byte_only: out std_logic := '0';
-    REG_write_addr: out std_logic_vector(4 downto 0)
+    REG_write_addr: out std_logic_vector(5 downto 0)
   ) ;
 end component; -- ALUWrapper
 
@@ -210,10 +210,10 @@ component Memory port (
     MEM_output: out std_logic_vector(31 downto 0) := (others => '0');
 
     in_REG_write: in std_logic;
-    in_REG_write_addr: in std_logic_vector(4 downto 0);
+    in_REG_write_addr: in std_logic_vector(5 downto 0);
     in_REG_write_byte_only: in std_logic;
     REG_write: out std_logic := '0';
-    REG_write_addr: out std_logic_vector(4 downto 0) := (others => '0');
+    REG_write_addr: out std_logic_vector(5 downto 0) := (others => '0');
     REG_write_byte_only: out std_logic := '0';
     REG_write_byte_pos: out std_logic_vector(1 downto 0) := "00";
 
@@ -367,13 +367,13 @@ end component;
     signal MEM_output: std_logic_vector(31 downto 0) := (others => '0');
 
     signal A_REG_write: std_logic := '0';
-    signal A_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
+    signal A_REG_write_addr: std_logic_vector(5 downto 0) := (others => '0');
     signal A_REG_write_byte_only: std_logic := '0';
     signal B_REG_write: std_logic := '0';
-    signal B_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
+    signal B_REG_write_addr: std_logic_vector(5 downto 0) := (others => '0');
     signal B_REG_write_byte_only: std_logic := '0';
     signal C_REG_write: std_logic := '0';
-    signal C_REG_write_addr: std_logic_vector(4 downto 0) := (others => '0');
+    signal C_REG_write_addr: std_logic_vector(5 downto 0) := (others => '0');
     signal C_REG_write_byte_only: std_logic := '0';
 
     signal REG_write_byte_pos: std_logic_vector(1 downto 0) := "00";
