@@ -95,6 +95,9 @@ entity FetcherAndRegister is
   signal s_signed_mul: std_logic := '0';
   signal s_unsigned_mul: std_logic := '0';
 
+  signal s_numA_to_lo: std_logic := '0';
+  signal s_numA_to_hi: std_logic := '0';
+
   signal s_numA_to_c0: std_logic := '0';
   signal s_numA_to_c0_addr: std_logic_vector(4 downto 0);
 
@@ -197,6 +200,8 @@ begin
       REG_write <= '0';
       REG_write_byte_only <= '0';
       s_numA_to_c0 <= '0';
+      s_numA_to_hi <= '0';
+      s_numA_to_lo <= '0';
       REGS_C0 <= (others => (others => '0'));
       REG_LO <= (others => '0');
       REG_HI <= (others => '0');
@@ -311,6 +316,39 @@ begin
                   s_signed_mul <= '1';
                 else 
                   s_unsigned_mul <= '1';
+                end if;
+
+              elsif s_data(7 downto 0) = x"11" or s_data(7 downto 0) = x"13" then
+                -- mtlo / mthi
+                numA_from_reg <= '0';
+                numB_from_reg <= '0';
+                outbuffer_JUMP_true <= '0';
+                outbuffer_MEM_read <= '0';
+                outbuffer_MEM_write <= '0';
+                outbuffer_REG_write <= '0';
+                s_REG_read_number_A <= s_data(25 downto 21);
+                if s_data(1) = '0' then -- mthi
+                  s_numA_to_hi <= '1';
+                else
+                  s_numA_to_lo <= '1';
+                end if;
+
+              elsif s_data(7 downto 0) = x"10" or s_data(7 downto 0) = x"12" then
+                -- mflo / mfhi
+                numA_from_reg <= '0';
+                numB_from_reg <= '0';
+                outbuffer_JUMP_true <= '0';
+                outbuffer_MEM_read <= '0';
+                outbuffer_MEM_write <= '0';
+                outbuffer_REG_write <= '1';
+                outbuffer_REG_write_byte_only <= '0';
+                outbuffer_REG_write_addr <= s_data(15 downto 11);
+                outbuffer_ALU_numB <= (others => '0');
+                outbuffer_ALU_operator <= "1111";
+                if s_data(1) = '0' then
+                  outbuffer_ALU_numA <= REG_HI;
+                else 
+                  outbuffer_ALU_numA <= REG_LO;
                 end if;
 
               elsif s_data(5 downto 0) = "001100" then  -- SYSCALL!
@@ -643,6 +681,8 @@ begin
             s_skip_next <= '0';
             s_signed_mul <= '0';
             s_unsigned_mul <= '0';
+            s_numA_to_lo <= '0';
+            s_numA_to_hi <= '0';
             if hold = '1' and s_skip_this = '1' then -- F**K
               s_skip_this <= '1';
             else
@@ -660,6 +700,15 @@ begin
               REG_LO <= s_REG_read_unsigned_mul(31 downto 0);
               REG_HI <= s_REG_read_unsigned_mul(63 downto 32);
               s_unsigned_mul <= '0';
+            end if;
+
+            if s_numA_to_lo = '1' then
+              REG_LO <= s_REG_read_value_A;
+              s_numA_to_lo <= '0';
+            end if;
+            if s_numA_to_hi = '1' then
+              REG_HI <= s_REG_read_value_A;
+              s_numA_to_hi <= '0';
             end if;
 
             if s_skip_next = '1' then

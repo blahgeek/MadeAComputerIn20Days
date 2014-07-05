@@ -62,7 +62,7 @@ END COMPONENT;
       c_addr_width => 11,
       c_default_data => "0",
       c_depth => 2048,
-      c_family => "virtex7",
+      c_family => "spartan6",
       c_has_clk => 0,
       c_has_d => 0,
       c_has_dpo => 0,

@@ -87,7 +87,7 @@ END COMPONENT;
       C_TEST_CORE => 0,
       C_USE_PCIN => 0,
       C_VERBOSITY => 0,
-      C_XDEVICEFAMILY => "virtex7"
+      C_XDEVICEFAMILY => "spartan6"
     );
 -- synthesis translate_on
 BEGIN
