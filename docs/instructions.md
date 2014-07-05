@@ -8,6 +8,8 @@
     else: tlbwi
 
 (31 downto 26) = 000000: R Type
+    (15 downto 0) = x"0018" or x"0019":
+        mult multu
     (5 downto 0) = 001100: syscall
     (5) = 1: 3 reg type, operator from (3 downto 0)
         add, addu, and, or, slt, sltu, sub, subu, xor, 

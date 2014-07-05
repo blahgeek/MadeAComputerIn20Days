@@ -74,6 +74,8 @@ entity FetcherAndRegister is
     RegWriteValue: in std_logic_vector(31 downto 0);
     RegWriteByteOnly: in STD_LOGIC;
     RegWriteBytePos: in std_logic_vector(1 downto 0);
+    RegReadSignedMultResult: out STD_LOGIC_VECTOR(63 downto 0);
+    RegReadUnsignedMultResult: out STD_LOGIC_VECTOR(63 downto 0);
     RegReadValueA: out std_logic_vector(31 downto 0);
     RegReadValueB: out std_logic_vector(31 downto 0));
  end component;
@@ -87,6 +89,12 @@ entity FetcherAndRegister is
   type regs is array (0 to 31) of STD_LOGIC_VECTOR(31 downto 0);
   signal REGS_C0: regs:= (others => (others => '0'));
 
+  signal REG_LO: std_logic_vector(31 downto 0) := (others => '0');
+  signal REG_HI: std_logic_vector(31 downto 0) := (others => '0');
+
+  signal s_signed_mul: std_logic := '0';
+  signal s_unsigned_mul: std_logic := '0';
+
   signal s_numA_to_c0: std_logic := '0';
   signal s_numA_to_c0_addr: std_logic_vector(4 downto 0);
 
@@ -98,6 +106,9 @@ entity FetcherAndRegister is
   signal s_REG_read_value_B: std_logic_vector(31 downto 0);
   signal s_REG_read_number_A, s_REG_write_number: std_logic_vector(4 downto 0) := (others => '0');
   signal s_REG_read_value_A, s_REG_write_value: std_logic_vector(31 downto 0);
+
+  signal s_REG_read_signed_mul: STD_LOGIC_VECTOR(63 downto 0);
+  signal s_REG_read_unsigned_mul: STD_LOGIC_VECTOR(63 downto 0);
 
 
   signal outbuffer_ALU_operator: std_logic_vector(3 downto 0) := "1111";
@@ -161,6 +172,8 @@ begin
                           s_REG_write, s_REG_write_number, 
                           s_REG_write_value, s_REG_write_byte_only,
                           s_REG_write_byte_pos,
+                          s_REG_read_signed_mul,
+                          s_REG_read_unsigned_mul,
                           s_REG_read_value_A, s_REG_read_value_B);
 
   -- always compute immediate extend
@@ -185,6 +198,10 @@ begin
       REG_write_byte_only <= '0';
       s_numA_to_c0 <= '0';
       REGS_C0 <= (others => (others => '0'));
+      REG_LO <= (others => '0');
+      REG_HI <= (others => '0');
+      s_signed_mul <= '0';
+      s_unsigned_mul <= '0';
       hold <= '0';
       s_last_last_write_reg <= (others => '0');
       s_last_write_reg <= (others => '0');
@@ -280,7 +297,23 @@ begin
               s_jump_true_if_condition <= none;
               s_numA_to_c0 <= '0';
 
-              if s_data(5 downto 0) = "001100" then  -- SYSCALL!
+              if s_data(15 downto 0) = x"0018" or s_data(15 downto 0) = x"0019" then
+                -- mult or multu
+                numA_from_reg <= '0';
+                numB_from_reg <= '0'; -- do not pass to ALU
+                s_REG_read_number_A <= s_data(25 downto 21);
+                s_REG_read_number_B <= s_data(20 downto 16);
+                outbuffer_JUMP_true <= '0';
+                outbuffer_MEM_read <= '0';
+                outbuffer_MEM_write <= '0';
+                outbuffer_REG_write <= '0';
+                if s_data(0) = '0' then
+                  s_signed_mul <= '1';
+                else 
+                  s_unsigned_mul <= '1';
+                end if;
+
+              elsif s_data(5 downto 0) = "001100" then  -- SYSCALL!
                 numA_from_reg <= '0';
                 numB_from_reg <= '0';
                 s_exception_cause <= "01000"; -- syscall only
@@ -608,12 +641,27 @@ begin
             MEM_write <= '0';
             REG_write <= '0';
             s_skip_next <= '0';
+            s_signed_mul <= '0';
+            s_unsigned_mul <= '0';
             if hold = '1' and s_skip_this = '1' then -- F**K
               s_skip_this <= '1';
             else
               s_skip_this <= '0';
             end if;
           else
+
+            if s_signed_mul = '1' then
+              REG_LO <= s_REG_read_signed_mul(31 downto 0);
+              REG_HI <= s_REG_read_signed_mul(63 downto 32);
+              s_signed_mul <= '0';
+            end if;
+
+            if s_unsigned_mul = '1' then
+              REG_LO <= s_REG_read_unsigned_mul(31 downto 0);
+              REG_HI <= s_REG_read_unsigned_mul(63 downto 32);
+              s_unsigned_mul <= '0';
+            end if;
+
             if s_skip_next = '1' then
               s_skip_next <= '0';
               s_skip_this <= '1';
