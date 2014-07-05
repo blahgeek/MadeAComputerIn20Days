@@ -51,3 +51,8 @@ see commit db563505bbceaae3890e8fb8dad93b652ad26ab6
 ### 2014/7/4
 
 - 整理了代码、文档和测试样例发布至Github上供老师审阅
+
+*TODO*：
+
+- [ ] 支持mul, mfhi, mflo, mtlo, mthi指令
+- [ ] eret/异常产生时对切换用户、内核态; KSU_USER

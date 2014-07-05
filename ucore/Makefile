@@ -2,11 +2,18 @@ TARGET = ucore
 
 GCCPREFIX = mips-elf-
 
+FOR_QEMU := y
+V := @
+
 GDB		:= $(GCCPREFIX)gdb
 
 CC 		:=$(GCCPREFIX)gcc
 CFLAGS	= -std=gnu99 -fno-builtin -nostdlib -nostdinc
 CFLAGS += -g -G0 -Wall -O0 -mips32
+
+ifeq ($(FOR_QEMU), y)
+CFLAGS += -D__QEMU
+endif
 
 LD      := $(GCCPREFIX)ld
 AS      := $(GCCPREFIX)as -g -mips32
@@ -36,18 +43,18 @@ all: $(TARGET).out
 
 $(OBJDIR)/%.o: %.c
 	@echo CC $<
-	@mkdir -pv $(dir $@)
-	@$(CC) -c $(INCLUDES) $(CFLAGS) $< -o $@
+	$(V)mkdir -pv $(dir $@)
+	$(V)$(CC) -c $(INCLUDES) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: %.S
 	@echo AS $<
-	@mkdir -pv $(dir $@)
-	@$(CC) $(CFLAGS) -c -D__ASSEMBLY__ $(INCLUDES) $< -o $@
+	$(V)mkdir -pv $(dir $@)
+	$(V)$(CC) $(CFLAGS) -c -D__ASSEMBLY__ $(INCLUDES) $< -o $@
 
 $(DEPDIR)/%.d: %.c
 	@echo DEP $<
-	@mkdir -pv $(dir $@)
-	@$(CC) $(INCLUDES) -MM -MT $(CFLAGS) $< > $@; 
+	$(V)mkdir -pv $(dir $@)
+	$(V)$(CC) $(INCLUDES) $(CFLAGS) -MM -MT "$(OBJDIR)/$(<:.c=.o) $(DEPDIR)/$(<:.c=.d)" $< > $@
 
 
 sinclude $(DEPS)
@@ -55,7 +62,11 @@ sinclude $(DEPS)
 
 $(TARGET).out: $(OBJS) tools/kernel.ld
 	@echo LINK $@
-	$(LD) $(LDFLAGS) -T tools/kernel.ld -o $@ $(OBJS)
+	$(V)$(LD) $(LDFLAGS) -T tools/kernel.ld -o $@ $(OBJS)
 
 
-.PHONU: all
+clean:
+	rm -rf build $(TARGET).out
+
+
+.PHONU: all clean
