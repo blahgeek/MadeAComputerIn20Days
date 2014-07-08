@@ -3,7 +3,7 @@ OBJS = $(SOURCES:.c=.o)
 TARGET = bios
 
 BIN_DIR = ../mips-gcc-4.7.2/mips-elf/bin/
-CFLAGS = -std=gnu99 -O0 -fno-builtin
+CFLAGS = -std=gnu99 -O2 -fno-builtin
 FLAGS = -mips1 -G0
 LDFLAGS = -Ttext 0xBFC00000
 COPY_SECS = -j .text -j .data -j .bss -j .rodata 

@@ -81,6 +81,7 @@ signal VGA_read_data: STD_LOGIC_VECTOR(7 downto 0);
     reset: in std_logic;
 
     mask: in std_logic_vector(7 downto 0);
+    globalmask: in STD_LOGIC;
 
     timer_int: in std_logic;
     uart_int: in std_logic;
@@ -93,6 +94,7 @@ signal VGA_read_data: STD_LOGIC_VECTOR(7 downto 0);
 signal timer_int: std_logic;
 
 signal Interrupt_mask: std_logic_vector(7 downto 0);
+signal Interrupt_globalmask: STD_LOGIC;
 signal Interrupt_int: std_logic;
 signal Interrupt_numbers: std_logic_vector(7 downto 0);
 
@@ -115,6 +117,7 @@ component FetcherAndRegister port (
     timer_int: out std_logic := '0';
 
     Interrupt_mask: out std_logic_vector(7 downto 0);
+    Interrupt_globalmask: out STD_LOGIC;
     Interrupt_int: in std_logic := '0';
     Interrupt_numbers: in std_logic_vector(7 downto 0);
 
@@ -487,7 +490,8 @@ tlb0: TLB port map (
 FetcherAndRegister0: FetcherAndRegister port map (
     open,
     PC, A_RAM_SELECT, real_clock, real_reset, 
-    timer_int, Interrupt_mask, Interrupt_int, Interrupt_numbers,
+    timer_int, Interrupt_mask, Interrupt_globalmask,
+    Interrupt_int, Interrupt_numbers,
     TLB_set_do, TLB_set_index, TLB_set_entry,
     TLB_data_exception, TLB_data_exception_read_or_write,
     instruction_bad,
@@ -509,6 +513,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
   int_handler0: InterruptHandler port map (
     real_clock, real_reset, 
     Interrupt_mask, -- IM7-0
+    Interrupt_globalmask,
     timer_int,
     uart_data_out_stb,
     Interrupt_int, Interrupt_numbers

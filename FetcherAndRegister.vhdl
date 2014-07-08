@@ -15,6 +15,7 @@ entity FetcherAndRegister is
     timer_int: out std_logic := '0';
 
     Interrupt_mask: out std_logic_vector(7 downto 0);
+    Interrupt_globalmask: out STD_LOGIC;
     Interrupt_int: in std_logic := '0';
     Interrupt_numbers: in std_logic_vector(7 downto 0);
 
@@ -165,9 +166,15 @@ entity FetcherAndRegister is
   constant C0_ENTRYLO0: Integer := 2;
   constant C0_ENTRYLO1: Integer := 3;
 
+  constant C0_SR_IE : Integer := 0;
+  constant C0_SR_EXL : Integer := 1;
+
 begin
 
   Interrupt_mask <= REGS_C0(C0_SR)(15 downto 8);
+
+  Interrupt_globalmask <= REGS_C0(C0_SR)(C0_SR_IE) -- IE
+                          and not REGS_C0(C0_SR)(C0_SR_EXL); -- EXL
 
   -- with RAM_select select
   --   s_data <= BASERAM_data when '0',
@@ -643,7 +650,7 @@ begin
             end if;
             REGS_C0(C0_CAUSE)(6 downto 2) <= s_exception_cause;
             REGS_C0(C0_CAUSE)(15 downto 8) <= s_interrupt_numbers;
-            REGS_C0(C0_SR)(1) <= '1'; -- EXL
+            REGS_C0(C0_SR)(C0_SR_EXL) <= '1'; -- EXL
             numA_from_reg <= '0';
             numB_from_reg <= '0';
             s_jump_true_if_condition <= none;

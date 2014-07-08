@@ -9,6 +9,7 @@ entity InterruptHandler is
     reset: in std_logic;
 
     mask: in std_logic_vector(7 downto 0);
+    globalmask: in std_logic;
 
     timer_int: in std_logic;
     uart_int: in std_logic;
@@ -32,7 +33,8 @@ begin
     timer_int_masked <= timer_int and mask(timerNo);
     uart_int_masked <= uart_int and mask(uartNo);
 
-    int <= timer_int_masked or uart_int_masked; -- or anything else
+    int <= globalmask and 
+        (timer_int_masked or uart_int_masked); -- or anything else
 
     int_numbers(timerNo) <= timer_int_masked;
     int_numbers(uartNo) <= uart_int_masked;
