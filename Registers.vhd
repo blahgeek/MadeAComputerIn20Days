@@ -29,50 +29,33 @@ architecture Behavioral of Registers is
 						  others => (others => '0'));
 	signal realWriteValue: STD_LOGIC_VECTOR(31 downto 0);
 
-component SignedMultAdd port (
-    clk : IN STD_LOGIC;
-    ce : IN STD_LOGIC;
-    sclr : IN STD_LOGIC;
+component SignedMultiplier port (
+    clk: IN STD_LOGIC;
     a : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     b : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    c : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    subtract : IN STD_LOGIC;
-    p : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
-    pcout : OUT STD_LOGIC_VECTOR(47 DOWNTO 0)
-	);
+    p : OUT STD_LOGIC_VECTOR(63 DOWNTO 0)
+    );
 end component;
 
-component UnsignedMultAdd port (
-    clk : IN STD_LOGIC;
-    ce : IN STD_LOGIC;
-    sclr : IN STD_LOGIC;
+component UnsignedMultiplier port (
+    clk: IN STD_LOGIC;
     a : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     b : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    c : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    subtract : IN STD_LOGIC;
-    p : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
-    pcout : OUT STD_LOGIC_VECTOR(47 DOWNTO 0)
-	);
+    p : OUT STD_LOGIC_VECTOR(63 DOWNTO 0)
+    );
 end component;
 
 
 	begin
 
-	mul0: SignedMultAdd port map (
-		not clk, '1', '0',
-		RegReadValueA, RegReadValueB,
-		"00", '0',
-		RegReadSignedMultResult,
-		open
+	mul0: SignedMultiplier port map (
+        not clk, RegReadValueA, RegReadValueB, RegReadSignedMultResult
 		);
 
-	mul1: UnsignedMultAdd port map (
-		not clk, '1', '0',
-		RegReadValueA, RegReadValueB,
-		"00", '0',
-		RegReadUnsignedMultResult,
-		open
-		);
+    mul1: UnsignedMultiplier port map (
+        not clk, RegReadValueA, RegReadValueB, RegReadUnsignedMultResult
+        );
+
 
 		realWriteValue(7 downto 0) <= 
 			RegWriteValue(31 downto 24) when RegWriteByteOnly = '1' and RegWriteBytePos = "00" else
