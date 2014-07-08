@@ -72,3 +72,8 @@ see commit ed50a9d
 - 使用来自IP Core的乘法器，通过C代码简单测试了mult和mfhi等指令可用，see commit 4a7df76e
 - **已在板子上成功运行ucore/lab1，可以在每次时钟中断时通过串口输出tick-tock**
 - UCORE支持CGA
+- 增加了片内ROM用作Bootloader，现在不需要另外的SRAM下载的FPGA代码，直接通过Bootloader就能把ucore写入内存，方便日后调试
+
+*TODO*：
+
+- [ ] 使用c写在bootloader中的下载SRAM的程序比直接使用硬件代码效率低，需要改进
