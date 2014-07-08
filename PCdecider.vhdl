@@ -7,6 +7,8 @@ entity PCdecider is
     clock: in std_logic;
     reset: in std_logic;
 
+    reset_on_bios: in std_logic;
+
     hold: in std_logic;
 
     JUMP_true: in std_logic;
@@ -26,6 +28,7 @@ end entity ; -- PCdecider
 architecture arch of PCdecider is
 
     constant BEGIN_PC: std_logic_vector(31 downto 0) := x"80000000";
+    constant BIOS_BEGIN_PC: std_logic_vector(31 downto 0) := x"BFC00000";
 
   type state_type is (s0, s1, s2, s3);
   signal state: state_type := s0;
@@ -40,8 +43,13 @@ begin
   begin
     if reset = '1' then
       state <= s0;
-      s_pc <= BEGIN_PC;
-      PC <= BEGIN_PC;
+      if reset_on_bios = '0' then
+        s_pc <= BEGIN_PC;
+        PC <= BEGIN_PC;
+      else
+        s_pc <= BIOS_BEGIN_PC;
+        PC <= BIOS_BEGIN_PC;
+      end if;
       BASERAM_addr <= (others => '0');
       EXTRAM_addr <= (others => '0');
       RAM_select <= '0';

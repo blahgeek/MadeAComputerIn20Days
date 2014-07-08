@@ -70,5 +70,5 @@ see commit ed50a9d
 ### 2014/7/8
 
 - 使用来自IP Core的乘法器，通过C代码简单测试了mult和mfhi等指令可用，see commit 4a7df76e
-- 已在板子上成功运行ucore/lab1，可以在每次时钟中断时通过串口输出tick-tock
-- 
+- **已在板子上成功运行ucore/lab1，可以在每次时钟中断时通过串口输出tick-tock**
+- UCORE支持CGA

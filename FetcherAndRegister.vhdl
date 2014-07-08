@@ -39,6 +39,8 @@ entity FetcherAndRegister is
     BASERAM_data: in std_logic_vector(31 downto 0);
     EXTRAM_data: in std_logic_vector(31 downto 0);
 
+    BIOS_data: in std_logic_vector(31 downto 0);
+
     -- output signals
     ALU_operator: out std_logic_vector(3 downto 0) := "1111";
     ALU_numA: out std_logic_vector(31 downto 0) := (others => '0');
@@ -167,9 +169,13 @@ begin
 
   Interrupt_mask <= REGS_C0(C0_SR)(15 downto 8);
 
-  with RAM_select select
-    s_data <= BASERAM_data when '0',
-              EXTRAM_data when others;
+  -- with RAM_select select
+  --   s_data <= BASERAM_data when '0',
+  --             EXTRAM_data when others;
+
+  s_data <= BIOS_data when PC(31 downto 16) = x"BFC0" else
+            BASERAM_data when RAM_select = '0' else
+            EXTRAM_data;
 
   REG0: Registers port map(s_REG_clock, reset, s_REG_read_number_A, s_REG_read_number_B,
                           s_REG_write, s_REG_write_number, 

@@ -97,6 +97,12 @@ signal Interrupt_int: std_logic;
 signal Interrupt_numbers: std_logic_vector(7 downto 0);
 
 
+component CoreRom port (
+    a : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+    spo : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    );
+end component;
+
 component FetcherAndRegister port (
 
     debug: out std_logic_vector(7 downto 0) := (others => '0');
@@ -131,6 +137,8 @@ component FetcherAndRegister port (
 
     BASERAM_data: in std_logic_vector(31 downto 0);
     EXTRAM_data: in std_logic_vector(31 downto 0);
+
+    BIOS_data: in std_logic_vector(31 downto 0);
 
     ALU_operator: out std_logic_vector(3 downto 0);
     ALU_numA: out std_logic_vector(31 downto 0);
@@ -254,6 +262,8 @@ component PCdecider port (
     clock: in std_logic;
     reset: in std_logic;
 
+    reset_on_bios: in std_logic;
+
     hold: in std_logic;
 
     JUMP_true: in std_logic;
@@ -269,6 +279,9 @@ component PCdecider port (
     PC: buffer std_logic_vector(31 downto 0)
   ) ;
 end component; -- PCdecider
+
+signal BIOS_data: std_logic_vector(31 downto 0) := (others => '0');
+signal BIOS_addr: std_logic_vector(11 downto 0) := (others => '0');
 
 signal A_RAM_SELECT : std_logic;
 
@@ -486,6 +499,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     REG_write_byte_pos,
     BaseRamData,  -- data from sw
     ExtRamData,
+    BIOS_data,
     ALU_operator, ALU_numA, ALU_numB,
     JUMP_true, JUMP_addr,
     A_MEM_read, A_MEM_write, A_MEM_write_byte_only, A_MEM_data, hold_from_memory,
@@ -533,15 +547,26 @@ Mem0: Memory port map (
     -- open, open, open, open, -- no VGA
     -- VGA_in_x, VGA_in_y, VGA_in_data, VGA_in_set,
     ENET_D, ENET_CMD, ENET_IOR, ENET_IOW, ENET_INT, -- ethernet
-    DYP0, DYP1, LED);
+    DYP0, DYP1, open);
 
 PC0: PCdecider port map(
-    real_clock, real_reset, A_HOLD,
+    real_clock, real_reset, 
+    SW_DIP(7),
+    A_HOLD,
     JUMP_true,
     JUMP_addr,
     BaseRamAddr, ExtRamAddr,
     instruction_virt_addr, instruction_real_addr,
     A_RAM_SELECT,
     PC);
+
+BIOS_addr <= BaseRamAddr(11 downto 0);
+
+bios: CoreRom port map (
+    BIOS_addr, BIOS_data);
+
+-- debug
+
+    LED <= BIOS_data(31 downto 16);
 
 end arch;
