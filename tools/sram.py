@@ -43,8 +43,14 @@ if __name__ == '__main__':
             addr >>= (BLOCK_ADDR_LEN+2)
         except IndexError:
             addr = 0x00
-        write(ser, addr, data)
-        read_back = read(ser, addr)[0:len(data)]
-        # with open('readback.bin', 'wb') as f:
-        #     f.write(read_back)
-        assert(read_back == data)
+        while True:
+            chunk = data[:BLOCK_LEN]
+            data = data[BLOCK_LEN:]
+            if not chunk:
+                break
+            write(ser, addr, chunk)
+            read_back = read(ser, addr)[0:len(chunk)]
+            # with open('readback.bin', 'wb') as f:
+            #     f.write(read_back)
+            assert(read_back == chunk)
+            addr += 1

@@ -59,6 +59,16 @@ see commit db563505bbceaae3890e8fb8dad93b652ad26ab6
 ### 2014/7/5
 
 - 开始移至ucore，已在QEMU上能够成功运行中断处理代码（通过时钟中断）
-- 完善指令集：支持mul, mfhi, mflo, mtlo, mthi指令
+- 完善指令集：支持mult, mfhi, mflo, mtlo, mthi指令
 
 see commit ed50a9d
+
+### 2014/7/6 - 2014/7/7
+
+出去玩了。
+
+### 2014/7/8
+
+- 使用来自IP Core的乘法器，通过C代码简单测试了mult和mfhi等指令可用，see commit 4a7df76e
+- 已在板子上成功运行ucore/lab1，可以在每次时钟中断时通过串口输出tick-tock
+- 
