@@ -45,7 +45,7 @@ see commit db563505bbceaae3890e8fb8dad93b652ad26ab6
 
 *TODO*：
 
-- [ ] 根据CP0相应寄存器mask中断
+- [x] 根据CP0相应寄存器mask中断 
 - [ ] 使TLB支持Dirty位
 
 ### 2014/7/4
@@ -54,7 +54,7 @@ see commit db563505bbceaae3890e8fb8dad93b652ad26ab6
 
 *TODO*：
 
-- [ ] eret/异常产生时对切换用户、内核态; KSU_USER
+- [ ] 执行特权指令时检查KSU_USER
 
 ### 2014/7/5
 
@@ -73,7 +73,9 @@ see commit ed50a9d
 - **已在板子上成功运行ucore/lab1，可以在每次时钟中断时通过串口输出tick-tock**
 - UCORE支持CGA
 - 增加了片内ROM用作Bootloader，现在不需要另外的SRAM下载的FPGA代码，直接通过Bootloader就能把ucore写入内存，方便日后调试
+- 中断控制器检查CP0寄存器中的IE、EXL状态位来屏蔽中断
 
 *TODO*：
 
 - [ ] 使用c写在bootloader中的下载SRAM的程序比直接使用硬件代码效率低，需要改进
+- [ ] TLB异常时设置BadVAddr寄存器
