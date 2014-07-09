@@ -129,7 +129,7 @@ begin
                             MEM_read <= '0';
                             MEM_write <= '0';
                             REG_write <= '0';
-                            ALU_output <= (others => '0');
+                            ALU_output <= c; -- output anyway, for FetcherAndRegister
                             s_skip_one <= '1'; -- skip next
                             TLB_exception <= '1';
                             if s_MEM_read = '1' then 

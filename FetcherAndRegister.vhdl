@@ -25,6 +25,7 @@ entity FetcherAndRegister is
 
     TLB_data_exception: in std_logic;
     TLB_data_exception_read_or_write: in std_logic;
+    TLB_data_addr: in std_logic_vector(31 downto 0);
 
     TLB_instruction_bad: in std_logic;
 
@@ -169,6 +170,11 @@ entity FetcherAndRegister is
   constant C0_SR_IE : Integer := 0;
   constant C0_SR_EXL : Integer := 1;
 
+  constant EXCCODE_TLBL: STD_LOGIC_VECTOR(4 downto 0) := "00010";
+  constant EXCCODE_TLBS: STD_LOGIC_VECTOR(4 downto 0) := "00011";
+  constant EXCCODE_SYSCALL: STD_LOGIC_VECTOR(4 downto 0) := "01000";
+  constant EXCCODE_TLBL_TMP: STD_LOGIC_VECTOR(4 downto 0) := "11111";
+
 begin
 
   Interrupt_mask <= REGS_C0(C0_SR)(15 downto 8);
@@ -251,17 +257,19 @@ begin
             s_exception <= '1';
             if TLB_data_exception_read_or_write = '0' then --read
               debug(1 downto 0) <= "10";
-              s_exception_cause <= "00010";  -- FIXME
+              s_exception_cause <= EXCCODE_TLBL;  -- TLBL
             else
               debug(1 downto 0) <= "11";
-              s_exception_cause <= "00011"; -- FIXME
+              s_exception_cause <= EXCCODE_TLBS; -- TLBS
             end if;
+            REGS_C0(C0_BADVADDR) <= TLB_data_addr;
 
           elsif TLB_instruction_bad = '1' then
 
             s_exception <= '1';
             debug(1 downto 0) <= "01";
-            s_exception_cause <= "00001";  -- FIXME
+            s_exception_cause <= EXCCODE_TLBL_TMP;  -- TLBL
+            REGS_C0(C0_BADVADDR) <= PC;
 
           else
 
@@ -367,7 +375,7 @@ begin
               elsif s_data(5 downto 0) = "001100" then  -- SYSCALL!
                 numA_from_reg <= '0';
                 numB_from_reg <= '0';
-                s_exception_cause <= "01000"; -- syscall only
+                s_exception_cause <= EXCCODE_SYSCALL; -- syscall only
                 s_exception <= '1';
 
               elsif s_data(5) = '1' then -- 3 reg type
@@ -643,12 +651,17 @@ begin
 
             s_exception <= '0';
 
-            if s_exception_cause = "00010" or s_exception_cause = "00011" then -- FIXME its TLB data exception
+            if s_exception_cause = EXCCODE_TLBS or 
+                s_exception_cause = EXCCODE_TLBL then -- it's TLB data exception
               REGS_C0(C0_EPC) <= std_logic_vector(unsigned(PC)-8); -- eret
             else
               REGS_C0(C0_EPC) <= PC;  -- don't +4
             end if;
-            REGS_C0(C0_CAUSE)(6 downto 2) <= s_exception_cause;
+            if s_exception_cause = EXCCODE_TLBL_TMP then
+              REGS_C0(C0_CAUSE)(6 downto 2) <= EXCCODE_TLBL; -- instruction bad
+            else
+              REGS_C0(C0_CAUSE)(6 downto 2) <= s_exception_cause;
+            end if;
             REGS_C0(C0_CAUSE)(15 downto 8) <= s_interrupt_numbers;
             REGS_C0(C0_SR)(C0_SR_EXL) <= '1'; -- EXL
             numA_from_reg <= '0';

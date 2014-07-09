@@ -127,6 +127,7 @@ component FetcherAndRegister port (
 
     TLB_data_exception: in std_logic;
     TLB_data_exception_read_or_write: in std_logic;
+    TLB_data_addr: in std_logic_vector(31 downto 0);
 
     TLB_instruction_bad: in std_logic;
 
@@ -494,6 +495,7 @@ FetcherAndRegister0: FetcherAndRegister port map (
     Interrupt_int, Interrupt_numbers,
     TLB_set_do, TLB_set_index, TLB_set_entry,
     TLB_data_exception, TLB_data_exception_read_or_write,
+    ALU_output,
     instruction_bad,
     A_HOLD,
     C_REG_write,
