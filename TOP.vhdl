@@ -468,11 +468,17 @@ begin
 
     ENET_RESET <= reset; -- ENET_RESET is valid on '0'
 
-    with SW_DIP(2 downto 0) select
-        real_clock <= CLK50M when "000",
-                      not CLK_From_Key when "010",
-                      CLK11M0592 when "101",
-                      clk25M when others;
+    -- with SW_DIP(2 downto 0) select
+    --     real_clock <= CLK50M when "000",
+    --                   not CLK_From_Key when "010",
+    --                   CLK11M0592 when "101",
+    --                   clk25M when others;
+
+    real_clock <= not CLK_From_Key when (SW_DIP(2 downto 0) = "010" 
+                                            or (SW_DIP(6) = '1' and PC(15 downto 0) = SW_DIP(31 downto 16))) else
+                  CLK50M when SW_DIP(2 downto 0) = "000" else
+                  CLK11M0592 when SW_DIP(2 downto 0) = "101" else
+                  clk25M;
 
     TLB_clock <= not real_clock;
     ENET_25M <= clk25M;

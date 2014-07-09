@@ -84,4 +84,11 @@ see commit ed50a9d
 ### 2014/7/9
 
 - 保持Timer中断信号直至Compare寄存器被更新，防止中断信号被忽略
-- **UCORE: check_vmm() passed! **
+- **UCORE: check_vmm() passed!**
+- **UCORE: Console input is working!**
+- 把SFS镜像文件改为大端（花了整个半天时间orz）
+- **增加了“断点调试”，能通过拨码开关使CPU在某个PC值时停下来**
+
+*TODO*:
+
+- [ ] Kernel Panic 调不出来啊啊啊啊啊啊啊啊啊
