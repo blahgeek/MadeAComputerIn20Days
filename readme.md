@@ -77,5 +77,11 @@ see commit ed50a9d
 
 *TODO*：
 
-- [ ] 使用c写在bootloader中的下载SRAM的程序比直接使用硬件代码效率低，需要改进。使用`-O2`优化后无法正常工作。
+- [x] 使用c写在bootloader中的下载SRAM的程序比直接使用硬件代码效率低，需要改进。使用`-O2`优化后无法正常工作。
 - [x] TLB异常时设置BadVAddr寄存器
+
+
+### 2014/7/9
+
+- 保持Timer中断信号直至Compare寄存器被更新，防止中断信号被忽略
+- **UCORE: check_vmm() passed! **

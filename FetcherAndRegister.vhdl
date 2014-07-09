@@ -302,7 +302,7 @@ begin
                   s_numA_to_c0_addr <= s_data(15 downto 11);
                   s_REG_read_number_A <= s_data(20 downto 16);
                   outbuffer_REG_write <= '0';
-                  if s_data(15 downto 11) = C0_COMPARE then -- clear timer int after updating compare
+                  if s_data(15 downto 11) = "01011" then -- clear timer int after updating compare
                     timer_int <= '0';
                   end if;
                 end if;

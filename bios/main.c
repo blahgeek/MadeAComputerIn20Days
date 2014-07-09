@@ -23,15 +23,16 @@ int main() {
 
     while(1) {
 
-        *(int *) NUMBER_ADDR = 8;
-        *(int *) (NUMBER_ADDR + 4) = 4;
+        *(volatile int *) NUMBER_ADDR = 8;
+        *(volatile int *) (NUMBER_ADDR + 4) = 4;
 
         while(!uart_readable());
-        int code = *(int *) UART_DATA;
+        int code = *(volatile int *) UART_DATA;
         if(code == 0x42) {
-            *(int *) NUMBER_ADDR = 0;
+            *(volatile int *) NUMBER_ADDR = 0;
             // batch write
-            unsigned int * addr = (unsigned int *) read4byte();
+            volatile unsigned int * addr = 
+                (unsigned int *) read4byte();
             int i = 0, check = 0;
             for( ; i < 16 ; i += 1) {
                 unsigned int value = read4byte();
