@@ -359,6 +359,9 @@ end component;
     signal real_reset: std_logic := '0';
     signal real_clock: std_logic := '0';
     signal clk25M: std_logic := '0';
+    signal clk1M8432: std_logic := '0';
+
+    signal clk_count: std_logic(2 downto 0) := "000";
 
     signal PC: std_logic_vector(31 downto 0) := (others => '0');
     signal A_HOLD: std_logic := '0';
@@ -433,8 +436,8 @@ begin
     s_rx <= InterConn(0);
     InterConn(5) <= s_tx;
 
-    uart0: UART generic map (BAUD_RATE => 115200, CLOCK_FREQUENCY => 11059200)
-                port map (CLK11M0592, real_reset, 
+    uart0: UART generic map (BAUD_RATE => 115200, CLOCK_FREQUENCY => 1843200)
+                port map (clk1M8432, real_reset, 
                           uart_data_in, uart_data_in_stb, uart_data_in_ack,
                           uart_data_out, uart_data_out_stb, uart_data_out_ack,
                           s_tx, s_rx);
@@ -463,6 +466,22 @@ begin
             clk25M <= not clk25M;
         end if;
     end process ; -- divider
+
+    process(CLK11M0592) begin
+        if rising_edge(CLK11M0592) then
+            case( clk_count ) is
+                when "000" | "001" | "010" =>
+                    clk1M8432 <= '0';
+                    clk_count <= std_logic_vector(unsigned(clk_count)+1);
+                when "011" | "100" =>
+                    clk1M8432 <= '1';
+                    clk_count <= std_logic_vector(unsigned(clk_count)+1);
+                when others =>
+                    clk1M8432 <= '1';
+                    clk_count <= "000";
+            end case ;
+        end if;
+    end process;
 
     real_reset <= not reset;
 
