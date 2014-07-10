@@ -95,10 +95,21 @@ architecture arch of Memory is
     signal sb_target_data: std_logic_vector(31 downto 0);
     signal sb_replace_pos: std_logic_vector(1 downto 0);
 
+    signal uart_send_stb_flag: std_logic := '0';
+    signal uart_send_ack_flag: std_logic := '0';
+
 begin
 
   DigitalNumber0: DigitalNumber port map(clock, reset, s_dyp_value0, DYP0);
   DigitalNumber1: DigitalNumber port map(clock, reset, s_dyp_value1, DYP1);
+
+  process(UART_DATA_SEND_ACK, reset) begin
+    if reset = '1' then 
+      uart_send_ack_flag <= '0';
+    elsif rising_edge(UART_DATA_SEND_ACK) then
+      uart_send_ack_flag <= not uart_send_ack_flag;
+    end if;
+  end process;
 
   process(clock, reset)
   begin
@@ -128,6 +139,7 @@ begin
       ENET_IOW <= '1';
       sb_in_the_middle <= '0';
       s_use_ethernet_output <= '0';
+      uart_send_stb_flag <= '0';
     elsif rising_edge(clock) then
       case( state ) is
 
@@ -138,7 +150,7 @@ begin
           BASERAM_data <= (others => 'Z');
           EXTRAM_addr <= (others => 'Z');
           BASERAM_addr <= (others => 'Z');
-          if UART_DATA_SEND_ACK = '1' then 
+          if uart_send_ack_flag = uart_send_stb_flag then
             UART_DATA_SEND_STB <= '0';
           end if;
           UART_DATA_RECV_ACK <= '0';
@@ -211,6 +223,7 @@ begin
                 when x"FD003F8" =>
                   UART_DATA_SEND <= s_MEM_data(7 downto 0);
                   UART_DATA_SEND_STB <= '1';
+                  uart_send_stb_flag <= not uart_send_stb_flag;
                 when x"FD00018" | x"FD0001C" => -- ethernet!
                   ENET_CMD <= s_MEM_addr(2); -- CMD = 1 if FD0000C which is data
                   ENET_IOW <= '0'; -- write!
@@ -266,7 +279,7 @@ begin
           end if;
           EXTRAM_WE <= '1';
           BASERAM_WE <= '1';
-          if UART_DATA_SEND_ACK = '1' then 
+          if uart_send_ack_flag = uart_send_stb_flag then
             UART_DATA_SEND_STB <= '0';
           end if;
           ENET_IOR <= '1';
@@ -298,7 +311,7 @@ begin
           BASERAM_data <= (others => 'Z');
           EXTRAM_addr <= (others => 'Z');
           BASERAM_addr <= (others => 'Z');
-          if UART_DATA_SEND_ACK = '1' then 
+          if uart_send_ack_flag = uart_send_stb_flag then
             UART_DATA_SEND_STB <= '0';
           end if;
           ENET_D <= (others => 'Z');
