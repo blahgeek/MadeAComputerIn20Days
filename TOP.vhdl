@@ -494,7 +494,7 @@ begin
     --                   clk25M when others;
 
     real_clock <= not CLK_From_Key when (SW_DIP(2 downto 0) = "010" 
-                                            or (SW_DIP(6) = '1' and PC(23 downto 0) = SW_DIP(31 downto 8))) else
+                                            or (SW_DIP(6) = '1' and PC(15 downto 0) = SW_DIP(31 downto 16))) else
                   CLK50M when SW_DIP(2 downto 0) = "000" else
                   CLK11M0592 when SW_DIP(2 downto 0) = "101" else
                   clk25M;

@@ -95,22 +95,10 @@ architecture arch of Memory is
     signal sb_target_data: std_logic_vector(31 downto 0);
     signal sb_replace_pos: std_logic_vector(1 downto 0);
 
-    signal uart_send_ack_buf: std_logic := '0';
-
 begin
 
   DigitalNumber0: DigitalNumber port map(clock, reset, s_dyp_value0, DYP0);
   DigitalNumber1: DigitalNumber port map(clock, reset, s_dyp_value1, DYP1);
-
-  process(UART_DATA_SEND_ACK, UART_DATA_SEND_STB, reset) begin
-    if reset = '1' then 
-      uart_send_ack_buf <= '0';
-    elsif rising_edge(UART_DATA_SEND_ACK) then
-      uart_send_ack_buf <= '1';
-    elsif rising_edge(UART_DATA_SEND_STB) then
-      uart_send_ack_buf <= '0';
-    end if;
-  end process;
 
   process(clock, reset)
   begin
@@ -150,7 +138,7 @@ begin
           BASERAM_data <= (others => 'Z');
           EXTRAM_addr <= (others => 'Z');
           BASERAM_addr <= (others => 'Z');
-          if uart_send_ack_buf = '1' then 
+          if UART_DATA_SEND_ACK = '1' then 
             UART_DATA_SEND_STB <= '0';
           end if;
           UART_DATA_RECV_ACK <= '0';
@@ -278,7 +266,7 @@ begin
           end if;
           EXTRAM_WE <= '1';
           BASERAM_WE <= '1';
-          if uart_send_ack_buf = '1' then 
+          if UART_DATA_SEND_ACK = '1' then 
             UART_DATA_SEND_STB <= '0';
           end if;
           ENET_IOR <= '1';
@@ -310,7 +298,7 @@ begin
           BASERAM_data <= (others => 'Z');
           EXTRAM_addr <= (others => 'Z');
           BASERAM_addr <= (others => 'Z');
-          if uart_send_ack_buf = '1' then 
+          if UART_DATA_SEND_ACK = '1' then 
             UART_DATA_SEND_STB <= '0';
           end if;
           ENET_D <= (others => 'Z');
