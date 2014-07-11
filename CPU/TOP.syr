@@ -4,15 +4,15 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 Parameter TMPDIR set to xst/projnav.tmp
 
 
-Total REAL time to Xst completion: 1.00 secs
-Total CPU time to Xst completion: 0.12 secs
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
-Total REAL time to Xst completion: 1.00 secs
-Total CPU time to Xst completion: 0.12 secs
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> 
 Reading design: TOP.prj
@@ -108,74 +108,74 @@ Slice Utilization Ratio Delta      : 5
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/UnsignedMultiplier.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/UnsignedMultiplier.vhd" into library work
 Parsing entity <UnsignedMultiplier>.
 Parsing architecture <UnsignedMultiplier_a> of entity <unsignedmultiplier>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/SignedMultiplier.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/SignedMultiplier.vhd" into library work
 Parsing entity <SignedMultiplier>.
 Parsing architecture <SignedMultiplier_a> of entity <signedmultiplier>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" into library work
 Parsing entity <Registers>.
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 20. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 21. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 20. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 21. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 Parsing architecture <Behavioral> of entity <registers>.
-WARNING:HDLCompiler:946 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 52: Actual for formal port clk is neither a static name nor a globally static expression
-WARNING:HDLCompiler:946 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 56: Actual for formal port clk is neither a static name nor a globally static expression
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/DigitalNumber.vhdl" into library work
+WARNING:HDLCompiler:946 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 52: Actual for formal port clk is neither a static name nor a globally static expression
+WARNING:HDLCompiler:946 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 56: Actual for formal port clk is neither a static name nor a globally static expression
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/DigitalNumber.vhdl" into library work
 Parsing entity <DigitalNumber>.
 Parsing architecture <arch> of entity <digitalnumber>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CoreFontRom.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/CoreFontRom.vhd" into library work
 Parsing entity <CoreFontRom>.
 Parsing architecture <CoreFontRom_a> of entity <corefontrom>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/ALU.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/ALU.vhd" into library work
 Parsing entity <ALU>.
 Parsing architecture <Behavioral> of entity <alu>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/VGA_Controller.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/VGA_Controller.vhd" into library work
 Parsing entity <VGA_Controller>.
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/VGA_Controller.vhd" Line 8. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/VGA_Controller.vhd" Line 8. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 Parsing architecture <behave> of entity <vga_controller>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/VGARowColToAddr.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/VGARowColToAddr.vhdl" into library work
 Parsing entity <VGARowColToAddr>.
 Parsing architecture <arch> of entity <vgarowcoltoaddr>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/VGAConsoleMemory.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/VGAConsoleMemory.vhd" into library work
 Parsing entity <VGAConsoleMemory>.
 Parsing architecture <VGAConsoleMemory_a> of entity <vgaconsolememory>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/UART.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl" into library work
 Parsing entity <UART>.
 Parsing architecture <RTL> of entity <uart>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/TLB.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/TLB.vhdl" into library work
 Parsing entity <TLB>.
 Parsing architecture <arch> of entity <tlb>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/PCdecider.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl" into library work
 Parsing entity <PCdecider>.
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/PCdecider.vhdl" Line 24. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl" Line 24. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 Parsing architecture <arch> of entity <pcdecider>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/Memory.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/Memory.vhdl" into library work
 Parsing entity <Memory>.
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/Memory.vhdl" Line 38. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Memory.vhdl" Line 38. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 Parsing architecture <arch> of entity <memory>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/InterruptHandler.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/InterruptHandler.vhdl" into library work
 Parsing entity <InterruptHandler>.
 Parsing architecture <arch> of entity <interrupthandler>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/FetcherAndRegister.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" into library work
 Parsing entity <FetcherAndRegister>.
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/FetcherAndRegister.vhdl" Line 32. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 32. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 Parsing architecture <arch> of entity <fetcherandregister>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CoreRom.vhd" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/CoreRom.vhd" into library work
 Parsing entity <CoreRom>.
 Parsing architecture <CoreRom_a> of entity <corerom>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/ALUWrapper.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/ALUWrapper.vhdl" into library work
 Parsing entity <ALUWrapper>.
 Parsing architecture <arch> of entity <aluwrapper>.
-Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" into library work
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" into library work
 Parsing entity <TOP>.
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" Line 55. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" Line 56. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 55. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 56. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 Parsing architecture <arch> of entity <top>.
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" Line 134. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" Line 241. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" Line 283. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
-INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" Line 341. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 134. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 241. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 283. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 341. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
 
 =========================================================================
 *                            HDL Elaboration                            *
@@ -186,8 +186,8 @@ Elaborating entity <TOP> (architecture <arch>) from library <work>.
 Elaborating entity <VGAConsoleMemory> (architecture <VGAConsoleMemory_a>) from library <work>.
 
 Elaborating entity <UART> (architecture <RTL>) with generics from library <work>.
-INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/UART.vhdl" Line 239. Case statement is complete. others clause is never selected
-INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/UART.vhdl" Line 413. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl" Line 239. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl" Line 413. Case statement is complete. others clause is never selected
 
 Elaborating entity <VGA_Controller> (architecture <behave>) from library <work>.
 
@@ -198,34 +198,34 @@ Elaborating entity <VGARowColToAddr> (architecture <arch>) from library <work>.
 Elaborating entity <TLB> (architecture <arch>) from library <work>.
 
 Elaborating entity <FetcherAndRegister> (architecture <arch>) from library <work>.
-WARNING:HDLCompiler:439 - "/home/blahgeek/MadeAComputerIn20Days/FetcherAndRegister.vhdl" Line 83: Formal port regreadvaluea of mode buffer cannot be associated with actual port regreadvaluea of mode out
-INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 20. regreadvaluea is declared here
-WARNING:HDLCompiler:439 - "/home/blahgeek/MadeAComputerIn20Days/FetcherAndRegister.vhdl" Line 84: Formal port regreadvalueb of mode buffer cannot be associated with actual port regreadvalueb of mode out
-INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 21. regreadvalueb is declared here
+WARNING:HDLCompiler:439 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 83: Formal port regreadvaluea of mode buffer cannot be associated with actual port regreadvaluea of mode out
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 20. regreadvaluea is declared here
+WARNING:HDLCompiler:439 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 84: Formal port regreadvalueb of mode buffer cannot be associated with actual port regreadvalueb of mode out
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 21. regreadvalueb is declared here
 
 Elaborating entity <Registers> (architecture <Behavioral>) from library <work>.
 
 Elaborating entity <SignedMultiplier> (architecture <SignedMultiplier_a>) from library <work>.
 
 Elaborating entity <UnsignedMultiplier> (architecture <UnsignedMultiplier_a>) from library <work>.
-INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 20. regreadvaluea is declared here
-INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd" Line 21. regreadvalueb is declared here
-WARNING:HDLCompiler:634 - "/home/blahgeek/MadeAComputerIn20Days/FetcherAndRegister.vhdl" Line 131: Net <outbuffer_MEM_data[31]> does not have a driver.
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 20. regreadvaluea is declared here
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 21. regreadvalueb is declared here
+WARNING:HDLCompiler:634 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 131: Net <outbuffer_MEM_data[31]> does not have a driver.
 
 Elaborating entity <InterruptHandler> (architecture <arch>) from library <work>.
 
 Elaborating entity <ALUWrapper> (architecture <arch>) from library <work>.
 
 Elaborating entity <ALU> (architecture <Behavioral>) from library <work>.
-INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/ALU.vhd" Line 75. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/ALU.vhd" Line 75. Case statement is complete. others clause is never selected
 
 Elaborating entity <Memory> (architecture <arch>) from library <work>.
 
 Elaborating entity <DigitalNumber> (architecture <arch>) from library <work>.
-INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/DigitalNumber.vhdl" Line 42. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/DigitalNumber.vhdl" Line 42. Case statement is complete. others clause is never selected
 
 Elaborating entity <PCdecider> (architecture <arch>) from library <work>.
-WARNING:HDLCompiler:92 - "/home/blahgeek/MadeAComputerIn20Days/PCdecider.vhdl" Line 46: reset_on_bios should be on the sensitivity list of the process
+WARNING:HDLCompiler:92 - "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl" Line 46: reset_on_bios should be on the sensitivity list of the process
 
 Elaborating entity <CoreRom> (architecture <CoreRom_a>) from library <work>.
 
@@ -234,13 +234,13 @@ Elaborating entity <CoreRom> (architecture <CoreRom_a>) from library <work>.
 =========================================================================
 
 Synthesizing Unit <TOP>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl".
 WARNING:Xst:647 - Input <FPGA_KEY> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <SW_DIP<5:3>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" line 422: Output port <spo> of the instance <VGAConsolemem0> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" line 442: Output port <VGA_CLK> of the instance <vga0> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" line 497: Output port <debug> of the instance <FetcherAndRegister0> is unconnected or connected to loadless signal.
-INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/TOP.vhdl" line 546: Output port <LED> of the instance <Mem0> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 422: Output port <spo> of the instance <VGAConsolemem0> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 442: Output port <VGA_CLK> of the instance <vga0> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 497: Output port <debug> of the instance <FetcherAndRegister0> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 546: Output port <LED> of the instance <Mem0> is unconnected or connected to loadless signal.
 Always blocking tristate driving signal <InterConn<0>> is removed.
 WARNING:Xst:2563 - Inout <InterConn<9>> is never assigned. Tied to value Z.
 WARNING:Xst:2563 - Inout <InterConn<8>> is never assigned. Tied to value Z.
@@ -269,7 +269,7 @@ WARNING:Xst:2935 - Signal 'ENET_CS', unconnected in block 'TOP', is tied to its 
 Unit <TOP> synthesized.
 
 Synthesizing Unit <UART>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/UART.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl".
         BAUD_RATE = 115200
         CLOCK_FREQUENCY = 11059200
     Found 1-bit register for signal <uart_tx_data>.
@@ -333,7 +333,7 @@ Synthesizing Unit <UART>.
 Unit <UART> synthesized.
 
 Synthesizing Unit <VGA_Controller>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/VGA_Controller.vhd".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/VGA_Controller.vhd".
 WARNING:Xst:647 - Input <data<7:7>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:653 - Signal <VGA_CLK> is used but never assigned. This sourceless signal will be automatically connected to value GND.
     Found 1-bit register for signal <vs>.
@@ -362,7 +362,7 @@ WARNING:Xst:653 - Signal <VGA_CLK> is used but never assigned. This sourceless s
 Unit <VGA_Controller> synthesized.
 
 Synthesizing Unit <VGARowColToAddr>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/VGARowColToAddr.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/VGARowColToAddr.vhdl".
     Found 12-bit adder for signal <n0021> created at line 30.
     Found 12-bit adder for signal <addr> created at line 30.
     Summary:
@@ -370,7 +370,7 @@ Synthesizing Unit <VGARowColToAddr>.
 Unit <VGARowColToAddr> synthesized.
 
 Synthesizing Unit <TLB>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/TLB.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/TLB.vhdl".
     Found 64-bit register for signal <data<1>>.
     Found 64-bit register for signal <data<2>>.
     Found 64-bit register for signal <data<3>>.
@@ -406,7 +406,7 @@ Synthesizing Unit <TLB>.
 Unit <TLB> synthesized.
 
 Synthesizing Unit <FetcherAndRegister>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/FetcherAndRegister.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl".
 WARNING:Xst:653 - Signal <outbuffer_MEM_data> is used but never assigned. This sourceless signal will be automatically connected to value GND.
     Found 4-bit register for signal <ALU_operator>.
     Found 32-bit register for signal <ALU_numA>.
@@ -542,7 +542,7 @@ INFO:Xst:3019 - HDL ADVISOR - 1024 flip-flops were inferred for signal <REGS_C0>
 Unit <FetcherAndRegister> synthesized.
 
 Synthesizing Unit <Registers>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/Registers.vhd".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd".
     Found 32-bit register for signal <RegReadValueB>.
     Found 32-bit register for signal <GPR<0>>.
     Found 32-bit register for signal <GPR<1>>.
@@ -590,7 +590,7 @@ INFO:Xst:3019 - HDL ADVISOR - 1024 flip-flops were inferred for signal <GPR>. Yo
 Unit <Registers> synthesized.
 
 Synthesizing Unit <InterruptHandler>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/InterruptHandler.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/InterruptHandler.vhdl".
 WARNING:Xst:647 - Input <mask<3:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <mask<6:5>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <clock> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
@@ -602,7 +602,7 @@ WARNING:Xst:2935 - Signal 'int_numbers<3:0>', unconnected in block 'InterruptHan
 Unit <InterruptHandler> synthesized.
 
 Synthesizing Unit <ALUWrapper>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/ALUWrapper.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/ALUWrapper.vhdl".
     Found 32-bit register for signal <ALU_output>.
     Found 2-bit register for signal <state>.
     Found 1-bit register for signal <MEM_read>.
@@ -649,7 +649,7 @@ Synthesizing Unit <ALUWrapper>.
 Unit <ALUWrapper> synthesized.
 
 Synthesizing Unit <ALU>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/ALU.vhd".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/ALU.vhd".
     Found 32-bit subtractor for signal <n0045> created at line 70.
     Found 32-bit adder for signal <A[31]_B[31]_add_1_OUT> created at line 26.
     Found 32-bit subtractor for signal <GND_24_o_GND_24_o_sub_4_OUT<31:0>> created at line 33.
@@ -669,7 +669,7 @@ Synthesizing Unit <ALU>.
 Unit <ALU> synthesized.
 
 Synthesizing Unit <Memory>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/Memory.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/Memory.vhdl".
     Found 1-bit register for signal <BASERAM_WE>.
     Found 1-bit register for signal <ENET_IOR>.
     Found 1-bit register for signal <ENET_IOW>.
@@ -974,7 +974,7 @@ Synthesizing Unit <Memory>.
 Unit <Memory> synthesized.
 
 Synthesizing Unit <DigitalNumber>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/DigitalNumber.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/DigitalNumber.vhdl".
     Found 7-bit register for signal <DYP>.
     Found 16x7-bit Read Only RAM for signal <value[3]_PWR_26_o_wide_mux_0_OUT>
     Summary:
@@ -983,7 +983,7 @@ Synthesizing Unit <DigitalNumber>.
 Unit <DigitalNumber> synthesized.
 
 Synthesizing Unit <PCdecider>.
-    Related source file is "/home/blahgeek/MadeAComputerIn20Days/PCdecider.vhdl".
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl".
     Found 1-bit register for signal <state[1]_clock_DFF_377>.
     Found 1-bit register for signal <state[1]_clock_DFF_378>.
     Found 1-bit register for signal <state[1]_clock_DFF_379>.
@@ -1602,830 +1602,3 @@ Optimizing unit <VGA_Controller> ...
 Optimizing unit <DigitalNumber> ...
 
 Optimizing unit <TLB> ...
-
-Optimizing unit <FetcherAndRegister> ...
-
-Optimizing unit <Registers> ...
-WARNING:Xst:1293 - FF/Latch <GPR_0_31> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_30> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_29> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_28> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_27> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_26> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_25> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_24> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_23> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_22> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_21> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_20> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_19> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_18> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_17> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_16> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_15> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_14> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_13> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_12> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_11> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_10> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_9> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_8> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_7> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_6> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_5> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_4> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_3> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_2> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_1> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_0> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1293 - FF/Latch <GPR_0_31> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_30> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_29> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_28> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_27> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_26> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_25> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_24> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_23> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_22> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_21> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_20> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_19> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_18> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_17> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_16> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_15> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_14> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_13> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_12> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_11> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_10> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_9> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_8> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_7> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_6> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_5> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_4> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_3> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_2> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_1> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <GPR_0_0> has a constant value of 0 in block <Registers>. This FF/Latch will be trimmed during the optimization process.
-
-Optimizing unit <ALUWrapper> ...
-
-Optimizing unit <ALU> ...
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_17> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_16> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_15> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_14> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_13> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_12> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/instruction_real_addr_11> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_real_addr_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_real_addr_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_real_addr_17> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_real_addr_16> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_0_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_7_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_5_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_4_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_6_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_2_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_1_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <tlb0/data_3_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_43> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_42> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_41> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_40> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_23> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_21> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_20> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_19> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_18> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/TLB_set_entry_1> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/debug_0> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/debug_1> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/debug_4> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/debug_5> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/debug_6> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/debug_7> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <FetcherAndRegister0/debug_3> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <ALUWrapper0/ALU_output_after_TLB_31> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <ALUWrapper0/ALU_output_after_TLB_30> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <ALUWrapper0/ALU_output_after_TLB_29> of sequential type is unconnected in block <TOP>.
-WARNING:Xst:2677 - Node <ALUWrapper0/ALU_output_after_TLB_28> of sequential type is unconnected in block <TOP>.
-INFO:Xst:2261 - The FF/Latch <ALUWrapper0/TLB_exception> in Unit <TOP> is equivalent to the following FF/Latch, which will be removed : <ALUWrapper0/s_skip_one> 
-INFO:Xst:2261 - The FF/Latch <Mem0/state_FSM_FFd2> in Unit <TOP> is equivalent to the following 3 FFs/Latches, which will be removed : <PC0/state_FSM_FFd2> <FetcherAndRegister0/state_FSM_FFd2> <ALUWrapper0/state_FSM_FFd2> 
-INFO:Xst:3203 - The FF/Latch <PC0/state[1]_clock_DFF_377> in Unit <TOP> is the opposite to the following FF/Latch, which will be removed : <Mem0/state_FSM_FFd1> 
-
-Mapping all equations...
-Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 5) on block TOP, actual ratio is 13.
-WARNING:Xst:1426 - The value init of the FF/Latch uart0/uart_rx_filter_1_LD hinder the constant cleaning in the block TOP.
-   You should achieve better results by setting this init to 1.
-INFO:Xst:2261 - The FF/Latch <PC0/s_pc_23_LDC> in Unit <TOP> is equivalent to the following FF/Latch, which will be removed : <PC0/PC_22_LDC> 
-
-Final Macro Processing ...
-
-=========================================================================
-Final Register Report
-
-Macro Statistics
-# Registers                                            : 3854
- Flip-Flops                                            : 3854
-
-=========================================================================
-
-=========================================================================
-*                           Partition Report                            *
-=========================================================================
-
-Partition Implementation Status
--------------------------------
-
-  No Partitions were found in this design.
-
--------------------------------
-
-=========================================================================
-*                            Design Summary                             *
-=========================================================================
-
-Top Level Output File Name         : TOP.ngc
-
-Primitive and Black Box Usage:
-------------------------------
-# BELS                             : 12841
-#      GND                         : 4
-#      INV                         : 69
-#      LUT1                        : 81
-#      LUT2                        : 1251
-#      LUT3                        : 521
-#      LUT4                        : 1291
-#      LUT5                        : 725
-#      LUT6                        : 2667
-#      MULT_AND                    : 1056
-#      MUXCY                       : 2507
-#      MUXF7                       : 228
-#      MUXF8                       : 56
-#      VCC                         : 2
-#      XORCY                       : 2383
-# FlipFlops/Latches                : 4000
-#      FD                          : 279
-#      FDC                         : 225
-#      FDCE                        : 2741
-#      FDE                         : 637
-#      FDP                         : 27
-#      FDPE                        : 28
-#      FDR                         : 7
-#      FDRE                        : 49
-#      FDSE                        : 5
-#      LD                          : 1
-#      LDC                         : 1
-# RAMS                             : 256
-#      RAM128X1D                   : 256
-# Clock Buffers                    : 7
-#      BUFG                        : 7
-# IO Buffers                       : 217
-#      IBUF                        : 35
-#      IOBUF                       : 120
-#      OBUF                        : 54
-#      OBUFT                       : 8
-
-Device utilization summary:
----------------------------
-
-Selected Device : 6slx100fgg676-3 
-
-
-Slice Logic Utilization: 
- Number of Slice Registers:            4000  out of  126576     3%  
- Number of Slice LUTs:                 7629  out of  63288    12%  
-    Number used as Logic:              6605  out of  63288    10%  
-    Number used as Memory:             1024  out of  15616     6%  
-       Number used as RAM:             1024
-
-Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:  10420
-   Number with an unused Flip Flop:    6420  out of  10420    61%  
-   Number with an unused LUT:          2791  out of  10420    26%  
-   Number of fully used LUT-FF pairs:  1209  out of  10420    11%  
-   Number of unique control sets:       138
-
-IO Utilization: 
- Number of IOs:                         224
- Number of bonded IOBs:                 217  out of    480    45%  
-
-Specific Feature Utilization:
- Number of BUFG/BUFGCTRLs:                7  out of     16    43%  
-
----------------------------
-Partition Resource Summary:
----------------------------
-
-  No Partitions were found in this design.
-
----------------------------
-
-
-=========================================================================
-Timing Report
-
-NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
-      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
-      GENERATED AFTER PLACE-and-ROUTE.
-
-Clock Information:
-------------------
--------------------------------------------------------------------------------+---------------------------------------------------------------+-------+
-Clock Signal                                                                   | Clock buffer(FF name)                                         | Load  |
--------------------------------------------------------------------------------+---------------------------------------------------------------+-------+
-CLK50M                                                                         | IBUF+BUFG                                                     | 28    |
-real_clock(Mmux_real_clock13:O)                                                | BUFG(*)(Mem0/state_FSM_FFd2)                                  | 2532  |
-uart0/uart_rx_data_in_ack                                                      | NONE(Mem0/uart_send_ack_flag)                                 | 1     |
-CLK11M0592                                                                     | IBUF+BUFG                                                     | 48    |
-TLB_clock(TLB_clock1:O)                                                        | BUFG(*)(tlb0/instruction_real_addr_10)                        | 453   |
-FetcherAndRegister0/s_REG_clock(FetcherAndRegister0/s_REG_clock1:O)            | BUFG(*)(FetcherAndRegister0/REG0/RegReadValueA_31)            | 1064  |
-FetcherAndRegister0/REG0/clk_INV_63_o(FetcherAndRegister0/REG0/clk_INV_63_o1:O)| BUFG(*)(FetcherAndRegister0/REG0/mul0/blk00000001/blk00000ca4)| 128   |
-PC0/reset_PWR_427_o_AND_599_o(PC0/reset_PWR_427_o_AND_599_o1:O)                | NONE(*)(PC0/s_pc_23_LDC)                                      | 1     |
-reset                                                                          | IBUF+BUFG                                                     | 1     |
--------------------------------------------------------------------------------+---------------------------------------------------------------+-------+
-(*) These 5 clock signal(s) are generated by combinatorial logic,
-and XST is not able to identify which are the primary clock signals.
-Please use the CLOCK_SIGNAL constraint to specify the clock signal(s) generated by combinatorial logic.
-INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
-
-Asynchronous Control Signals Information:
-----------------------------------------
-No asynchronous control signals found in this design
-
-Timing Summary:
----------------
-Speed Grade: -3
-
-   Minimum period: 13.920ns (Maximum Frequency: 71.837MHz)
-   Minimum input arrival time before clock: 14.549ns
-   Maximum output required time after clock: 6.298ns
-   Maximum combinational path delay: 9.940ns
-
-Timing Details:
----------------
-All values displayed in nanoseconds (ns)
-
-=========================================================================
-Timing constraint: Default period analysis for Clock 'CLK50M'
-  Clock period: 13.920ns (frequency: 71.837MHz)
-  Total number of paths / destination ports: 206305 / 53
--------------------------------------------------------------------------
-Delay:               13.920ns (Levels of Logic = 16)
-  Source:            vga0/x_7 (FF)
-  Destination:       vga0/gt_0 (FF)
-  Source Clock:      CLK50M rising
-  Destination Clock: CLK50M rising
-
-  Data Path: vga0/x_7 to vga0/gt_0
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDCE:C->Q            11   0.447   1.227  vga0/x_7 (vga0/x_7)
-     LUT6:I1->O            2   0.203   0.617  rowcol2addr0/Madd_addr_cy<0>71 (rowcol2addr0/Madd_addr_cy<0>6)
-     LUT6:I5->O            4   0.205   0.684  rowcol2addr0/Madd_addr_cy<0>81 (rowcol2addr0/Madd_addr_cy<0>7)
-     LUT5:I4->O           64   0.205   2.004  rowcol2addr0/Madd_addr_xor<0>91 (VGA_read_addr<8>)
-     begin scope: 'VGAConsolemem0:dpra<8>'
-     LUT6:I0->O            1   0.203   0.827  U0/xst_options.dist_mem_inst/gen_dp_ram.dpram_inst/inst_LPM_MUX9_81 (U0/xst_options.dist_mem_inst/gen_dp_ram.dpram_inst/inst_LPM_MUX9_81)
-     LUT6:I2->O            1   0.203   0.000  U0/xst_options.dist_mem_inst/gen_dp_ram.dpram_inst/inst_LPM_MUX9_3 (U0/xst_options.dist_mem_inst/gen_dp_ram.dpram_inst/inst_LPM_MUX9_3)
-     MUXF7:I1->O         239   0.140   2.311  U0/xst_options.dist_mem_inst/gen_dp_ram.dpram_inst/inst_LPM_MUX9_2_f7 (dpo<1>)
-     end scope: 'VGAConsolemem0:dpo<1>'
-     begin scope: 'vga0/fontrom0:a<5>'
-     LUT6:I2->O            1   0.203   0.924  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int141418 (U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int141417)
-     LUT6:I1->O            1   0.203   0.000  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int141421_F (N10)
-     MUXF7:I0->O           1   0.131   0.808  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int141421 (U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int141420)
-     LUT5:I2->O            1   0.205   0.000  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int141434_F (N12)
-     MUXF7:I0->O           1   0.131   0.808  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int141434 (spo<0>)
-     end scope: 'vga0/fontrom0:spo<0>'
-     LUT6:I3->O            1   0.205   0.000  vga0/Mmux_data_bit_2_f7_G (N629)
-     MUXF7:I1->O           1   0.140   0.580  vga0/Mmux_data_bit_2_f7 (vga0/data_bit)
-     LUT6:I5->O            1   0.205   0.000  vga0/gt_0_rstpot (vga0/gt_0_rstpot)
-     FD:D                      0.102          vga0/gt_0
-    ----------------------------------------
-    Total                     13.920ns (3.131ns logic, 10.789ns route)
-                                       (22.5% logic, 77.5% route)
-
-=========================================================================
-Timing constraint: Default period analysis for Clock 'real_clock'
-  Clock period: 12.055ns (frequency: 82.951MHz)
-  Total number of paths / destination ports: 481503 / 5628
--------------------------------------------------------------------------
-Delay:               12.055ns (Levels of Logic = 10)
-  Source:            PC0/PC_16 (FF)
-  Destination:       FetcherAndRegister0/outbuffer_ALU_numA_15 (FF)
-  Source Clock:      real_clock rising
-  Destination Clock: real_clock rising
-
-  Data Path: PC0/PC_16 to FetcherAndRegister0/outbuffer_ALU_numA_15
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDC:C->Q              9   0.447   1.194  PC0/PC_16 (PC0/PC_16)
-     LUT6:I0->O            1   0.203   0.000  FetcherAndRegister0/PWR_16_o_PC[31]_equal_2_o<31>2_G (N633)
-     MUXF7:I1->O           1   0.140   0.580  FetcherAndRegister0/PWR_16_o_PC[31]_equal_2_o<31>2 (FetcherAndRegister0/PWR_16_o_PC[31]_equal_2_o<31>1)
-     LUT5:I4->O            1   0.205   0.580  FetcherAndRegister0/PWR_16_o_PC[31]_equal_2_o<31>4_SW0 (N594)
-     LUT6:I5->O           61   0.205   1.621  FetcherAndRegister0/PWR_16_o_PC[31]_equal_2_o<31>4 (FetcherAndRegister0/PWR_16_o_PC[31]_equal_2_o)
-     LUT5:I4->O           26   0.205   1.454  FetcherAndRegister0/Mmux_s_data201 (FetcherAndRegister0/s_data<27>)
-     LUT5:I1->O          121   0.203   1.933  FetcherAndRegister0/Mmux_state[1]_GND_15_o_wide_mux_423_OUT101121 (FetcherAndRegister0/Mmux_state[1]_GND_15_o_wide_mux_423_OUT10112)
-     LUT5:I4->O           16   0.205   1.005  FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT16211 (FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT1621)
-     LUT4:I3->O            1   0.205   0.580  FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT4_SW1 (N562)
-     LUT6:I5->O            1   0.205   0.580  FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT4 (FetcherAndRegister0/outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT<10>)
-     LUT3:I2->O            1   0.205   0.000  FetcherAndRegister0/outbuffer_ALU_numA_10_dpot (FetcherAndRegister0/outbuffer_ALU_numA_10_dpot)
-     FDE:D                     0.102          FetcherAndRegister0/outbuffer_ALU_numA_10
-    ----------------------------------------
-    Total                     12.055ns (2.530ns logic, 9.525ns route)
-                                       (21.0% logic, 79.0% route)
-
-=========================================================================
-Timing constraint: Default period analysis for Clock 'uart0/uart_rx_data_in_ack'
-  Clock period: 1.950ns (frequency: 512.794MHz)
-  Total number of paths / destination ports: 1 / 1
--------------------------------------------------------------------------
-Delay:               1.950ns (Levels of Logic = 1)
-  Source:            Mem0/uart_send_ack_flag (FF)
-  Destination:       Mem0/uart_send_ack_flag (FF)
-  Source Clock:      uart0/uart_rx_data_in_ack rising
-  Destination Clock: uart0/uart_rx_data_in_ack rising
-
-  Data Path: Mem0/uart_send_ack_flag to Mem0/uart_send_ack_flag
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDC:C->Q              2   0.447   0.616  Mem0/uart_send_ack_flag (Mem0/uart_send_ack_flag)
-     INV:I->O              1   0.206   0.579  Mem0/uart_send_ack_flag_INV_147_o1_INV_0 (Mem0/uart_send_ack_flag_INV_147_o)
-     FDC:D                     0.102          Mem0/uart_send_ack_flag
-    ----------------------------------------
-    Total                      1.950ns (0.755ns logic, 1.195ns route)
-                                       (38.7% logic, 61.3% route)
-
-=========================================================================
-Timing constraint: Default period analysis for Clock 'CLK11M0592'
-  Clock period: 5.089ns (frequency: 196.489MHz)
-  Total number of paths / destination ports: 430 / 82
--------------------------------------------------------------------------
-Delay:               5.089ns (Levels of Logic = 3)
-  Source:            uart0/baud_counter_0 (FF)
-  Destination:       uart0/uart_rx_count_2 (FF)
-  Source Clock:      CLK11M0592 rising
-  Destination Clock: CLK11M0592 rising
-
-  Data Path: uart0/baud_counter_0 to uart0/uart_rx_count_2
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDPE:C->Q             7   0.447   1.118  uart0/baud_counter_0 (uart0/baud_counter_0)
-     LUT5:I0->O            1   0.203   0.924  uart0/Mmux_uart_rx_sample_tick1_SW0 (N66)
-     LUT6:I1->O            4   0.203   0.788  uart0/Mmux_uart_rx_sample_tick1 (uart0/uart_rx_sample_tick)
-     LUT3:I1->O           11   0.203   0.882  uart0/_n0262_inv1 (uart0/_n0262_inv)
-     FDCE:CE                   0.322          uart0/uart_rx_data_block_0
-    ----------------------------------------
-    Total                      5.089ns (1.378ns logic, 3.711ns route)
-                                       (27.1% logic, 72.9% route)
-
-=========================================================================
-Timing constraint: Default period analysis for Clock 'TLB_clock'
-  Clock period: 7.705ns (frequency: 129.792MHz)
-  Total number of paths / destination ports: 25912 / 56
--------------------------------------------------------------------------
-Delay:               7.705ns (Levels of Logic = 12)
-  Source:            tlb0/data_6_44 (FF)
-  Destination:       tlb0/data_real_addr_15 (FF)
-  Source Clock:      TLB_clock rising
-  Destination Clock: TLB_clock rising
-
-  Data Path: tlb0/data_6_44 to tlb0/data_real_addr_15
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDCE:C->Q             2   0.447   0.981  tlb0/data_6_44 (tlb0/data_6_44)
-     LUT6:I0->O            1   0.203   0.000  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_lut<0> (tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_lut<0>)
-     MUXCY:S->O            1   0.172   0.000  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<0> (tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<0>)
-     MUXCY:CI->O           1   0.019   0.000  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<1> (tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<1>)
-     MUXCY:CI->O           1   0.019   0.000  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<2> (tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<2>)
-     MUXCY:CI->O           1   0.019   0.000  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<3> (tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<3>)
-     MUXCY:CI->O           1   0.019   0.000  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<4> (tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<4>)
-     MUXCY:CI->O           1   0.019   0.000  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<5> (tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<5>)
-     MUXCY:CI->O           7   0.213   0.878  tlb0/Mcompar_data[6][62]_data_virt_addr[19]_equal_91_o_cy<6> (tlb0/data[6][62]_data_virt_addr[19]_equal_91_o)
-     LUT2:I0->O           17   0.203   1.275  tlb0/data[6][62]_data[6][0]_AND_64_o1 (tlb0/data[6][62]_data[6][0]_AND_64_o)
-     LUT6:I2->O            1   0.203   0.580  tlb0/_n0333_inv_SW0_SW0 (N484)
-     LUT6:I5->O            2   0.205   0.721  tlb0/_n0333_inv_SW0 (N80)
-     LUT6:I4->O           16   0.203   1.004  tlb0/_n0333_inv (tlb0/_n0333_inv)
-     FDCE:CE                   0.322          tlb0/data_real_addr_0
-    ----------------------------------------
-    Total                      7.705ns (2.266ns logic, 5.439ns route)
-                                       (29.4% logic, 70.6% route)
-
-=========================================================================
-Timing constraint: Default period analysis for Clock 'FetcherAndRegister0/s_REG_clock'
-  Clock period: 4.640ns (frequency: 215.526MHz)
-  Total number of paths / destination ports: 2000 / 64
--------------------------------------------------------------------------
-Delay:               4.640ns (Levels of Logic = 5)
-  Source:            FetcherAndRegister0/REG0/GPR_29_15_C_15 (FF)
-  Destination:       FetcherAndRegister0/REG0/RegReadValueA_15 (FF)
-  Source Clock:      FetcherAndRegister0/s_REG_clock rising
-  Destination Clock: FetcherAndRegister0/s_REG_clock rising
-
-  Data Path: FetcherAndRegister0/REG0/GPR_29_15_C_15 to FetcherAndRegister0/REG0/RegReadValueA_15
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDE:C->Q              1   0.447   0.684  FetcherAndRegister0/REG0/GPR_29_15_C_15 (FetcherAndRegister0/REG0/GPR_29_15_C_15)
-     LUT3:I1->O            2   0.203   0.721  FetcherAndRegister0/REG0/GPR_29_151 (FetcherAndRegister0/REG0/GPR_29_15)
-     LUT6:I4->O            1   0.203   0.808  FetcherAndRegister0/REG0/mux6_9 (FetcherAndRegister0/REG0/mux6_9)
-     LUT6:I3->O            1   0.205   0.000  FetcherAndRegister0/REG0/mux6_3 (FetcherAndRegister0/REG0/mux6_3)
-     MUXF7:I1->O           1   0.140   0.924  FetcherAndRegister0/REG0/mux6_2_f7 (FetcherAndRegister0/REG0/RegReadNumberA[4]_GPR[31][31]_wide_mux_76_OUT<15>)
-     LUT5:I0->O            1   0.203   0.000  FetcherAndRegister0/REG0/Mmux_RegReadNumberA[4]_realWriteValue[31]_mux_77_OUT71 (FetcherAndRegister0/REG0/RegReadNumberA[4]_realWriteValue[31]_mux_77_OUT<15>)
-     FDC:D                     0.102          FetcherAndRegister0/REG0/RegReadValueA_15
-    ----------------------------------------
-    Total                      4.640ns (1.503ns logic, 3.137ns route)
-                                       (32.4% logic, 67.6% route)
-
-=========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'real_clock'
-  Total number of paths / destination ports: 520174 / 2543
--------------------------------------------------------------------------
-Offset:              14.549ns (Levels of Logic = 12)
-  Source:            BaseRamAddr<7> (PAD)
-  Destination:       FetcherAndRegister0/outbuffer_ALU_numA_15 (FF)
-  Destination Clock: real_clock rising
-
-  Data Path: BaseRamAddr<7> to FetcherAndRegister0/outbuffer_ALU_numA_15
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IOBUF:IO->O         120   1.222   2.158  BaseRamAddr_7_IOBUF (N234)
-     begin scope: 'bios:a<7>'
-     LUT3:I0->O            8   0.205   1.167  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int11215_SW0 (N0)
-     LUT6:I0->O            1   0.203   0.580  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int87119 (U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int87118)
-     LUT4:I3->O            1   0.205   0.808  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int871117 (U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int871116)
-     LUT6:I3->O            2   0.205   0.961  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int871118 (spo<29>)
-     end scope: 'bios:spo<29>'
-     LUT5:I0->O           33   0.203   1.410  FetcherAndRegister0/Mmux_s_data221 (FetcherAndRegister0/s_data<29>)
-     LUT5:I3->O          121   0.203   1.933  FetcherAndRegister0/Mmux_state[1]_GND_15_o_wide_mux_423_OUT101121 (FetcherAndRegister0/Mmux_state[1]_GND_15_o_wide_mux_423_OUT10112)
-     LUT5:I4->O           16   0.205   1.005  FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT16211 (FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT1621)
-     LUT4:I3->O            1   0.205   0.580  FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT4_SW1 (N562)
-     LUT6:I5->O            1   0.205   0.580  FetcherAndRegister0/Mmux_outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT4 (FetcherAndRegister0/outbuffer_ALU_numA[31]_outbuffer_ALU_numA[31]_mux_150_OUT<10>)
-     LUT3:I2->O            1   0.205   0.000  FetcherAndRegister0/outbuffer_ALU_numA_10_dpot (FetcherAndRegister0/outbuffer_ALU_numA_10_dpot)
-     FDE:D                     0.102          FetcherAndRegister0/outbuffer_ALU_numA_10
-    ----------------------------------------
-    Total                     14.549ns (3.368ns logic, 11.181ns route)
-                                       (23.1% logic, 76.9% route)
-
-=========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'uart0/uart_rx_data_in_ack'
-  Total number of paths / destination ports: 1 / 1
--------------------------------------------------------------------------
-Offset:              6.046ns (Levels of Logic = 2)
-  Source:            reset (PAD)
-  Destination:       Mem0/uart_send_ack_flag (FF)
-  Destination Clock: uart0/uart_rx_data_in_ack rising
-
-  Data Path: reset to Mem0/uart_send_ack_flag
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IBUF:I->O            47   1.222   1.504  reset_IBUF (ENET_RESET_OBUF)
-     INV:I->O           2989   0.206   2.684  ENET_RESET_OBUF_BUFG_LUT1_INV_0 (ENET_RESET_OBUF_BUFG_LUT1)
-     FDC:CLR                   0.430          Mem0/uart_send_ack_flag
-    ----------------------------------------
-    Total                      6.046ns (1.858ns logic, 4.188ns route)
-                                       (30.7% logic, 69.3% route)
-
-=========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'CLK11M0592'
-  Total number of paths / destination ports: 80 / 80
--------------------------------------------------------------------------
-Offset:              6.254ns (Levels of Logic = 4)
-  Source:            reset (PAD)
-  Destination:       uart0/uart_rx_count_2 (FF)
-  Destination Clock: CLK11M0592 rising
-
-  Data Path: reset to uart0/uart_rx_count_2
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IBUF:I->O            47   1.222   1.505  reset_IBUF (ENET_RESET_OBUF)
-     LUT5:I4->O            1   0.205   0.924  uart0/Mmux_uart_rx_sample_tick1_SW0 (N66)
-     LUT6:I1->O            4   0.203   0.788  uart0/Mmux_uart_rx_sample_tick1 (uart0/uart_rx_sample_tick)
-     LUT3:I1->O           11   0.203   0.882  uart0/_n0262_inv1 (uart0/_n0262_inv)
-     FDCE:CE                   0.322          uart0/uart_rx_data_block_0
-    ----------------------------------------
-    Total                      6.254ns (2.155ns logic, 4.099ns route)
-                                       (34.5% logic, 65.5% route)
-
-=========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'CLK50M'
-  Total number of paths / destination ports: 30 / 30
--------------------------------------------------------------------------
-Offset:              6.046ns (Levels of Logic = 2)
-  Source:            reset (PAD)
-  Destination:       vga0/y_9 (FF)
-  Destination Clock: CLK50M rising
-
-  Data Path: reset to vga0/y_9
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IBUF:I->O            47   1.222   1.504  reset_IBUF (ENET_RESET_OBUF)
-     INV:I->O           2989   0.206   2.684  ENET_RESET_OBUF_BUFG_LUT1_INV_0 (ENET_RESET_OBUF_BUFG_LUT1)
-     FDC:CLR                   0.430          vga0/state
-    ----------------------------------------
-    Total                      6.046ns (1.858ns logic, 4.188ns route)
-                                       (30.7% logic, 69.3% route)
-
-=========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'TLB_clock'
-  Total number of paths / destination ports: 453 / 453
--------------------------------------------------------------------------
-Offset:              6.046ns (Levels of Logic = 2)
-  Source:            reset (PAD)
-  Destination:       tlb0/instruction_real_addr_10 (FF)
-  Destination Clock: TLB_clock rising
-
-  Data Path: reset to tlb0/instruction_real_addr_10
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IBUF:I->O            47   1.222   1.504  reset_IBUF (ENET_RESET_OBUF)
-     INV:I->O           2989   0.206   2.684  ENET_RESET_OBUF_BUFG_LUT1_INV_0 (ENET_RESET_OBUF_BUFG_LUT1)
-     FDCE:CLR                  0.430          tlb0/data_3_0
-    ----------------------------------------
-    Total                      6.046ns (1.858ns logic, 4.188ns route)
-                                       (30.7% logic, 69.3% route)
-
-=========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'FetcherAndRegister0/s_REG_clock'
-  Total number of paths / destination ports: 1056 / 1056
--------------------------------------------------------------------------
-Offset:              6.046ns (Levels of Logic = 2)
-  Source:            reset (PAD)
-  Destination:       FetcherAndRegister0/REG0/RegReadValueA_31 (FF)
-  Destination Clock: FetcherAndRegister0/s_REG_clock rising
-
-  Data Path: reset to FetcherAndRegister0/REG0/RegReadValueA_31
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IBUF:I->O            47   1.222   1.504  reset_IBUF (ENET_RESET_OBUF)
-     INV:I->O           2989   0.206   2.684  ENET_RESET_OBUF_BUFG_LUT1_INV_0 (ENET_RESET_OBUF_BUFG_LUT1)
-     FDCE:CLR                  0.430          FetcherAndRegister0/REG0/GPR_1_0
-    ----------------------------------------
-    Total                      6.046ns (1.858ns logic, 4.188ns route)
-                                       (30.7% logic, 69.3% route)
-
-=========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'PC0/reset_PWR_427_o_AND_599_o'
-  Total number of paths / destination ports: 2 / 1
--------------------------------------------------------------------------
-Offset:              4.491ns (Levels of Logic = 2)
-  Source:            reset (PAD)
-  Destination:       PC0/s_pc_23_LDC (LATCH)
-  Destination Clock: PC0/reset_PWR_427_o_AND_599_o falling
-
-  Data Path: reset to PC0/s_pc_23_LDC
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IBUF:I->O            47   1.222   1.609  reset_IBUF (ENET_RESET_OBUF)
-     LUT2:I0->O           17   0.203   1.027  PC0/reset_PWR_427_o_AND_600_o1 (PC0/reset_PWR_427_o_AND_600_o)
-     LDC:CLR                   0.430          PC0/s_pc_23_LDC
-    ----------------------------------------
-    Total                      4.491ns (1.855ns logic, 2.636ns route)
-                                       (41.3% logic, 58.7% route)
-
-=========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'real_clock'
-  Total number of paths / destination ports: 419 / 139
--------------------------------------------------------------------------
-Offset:              6.298ns (Levels of Logic = 2)
-  Source:            PC0/state[1]_clock_DFF_377 (FF)
-  Destination:       BaseRamAddr<19> (PAD)
-  Source Clock:      real_clock rising
-
-  Data Path: PC0/state[1]_clock_DFF_377 to BaseRamAddr<19>
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDP:C->Q            140   0.447   1.983  PC0/state[1]_clock_DFF_377 (PC0/state[1]_clock_DFF_377)
-     LUT2:I1->O           20   0.205   1.092  N211 (N21)
-     IOBUF:T->IO               2.571          BaseRamAddr_19_IOBUF (BaseRamAddr<19>)
-    ----------------------------------------
-    Total                      6.298ns (3.223ns logic, 3.075ns route)
-                                       (51.2% logic, 48.8% route)
-
-=========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'CLK50M'
-  Total number of paths / destination ports: 30 / 12
--------------------------------------------------------------------------
-Offset:              4.910ns (Levels of Logic = 2)
-  Source:            vga0/hs (FF)
-  Destination:       VGA_Green<2> (PAD)
-  Source Clock:      CLK50M rising
-
-  Data Path: vga0/hs to VGA_Green<2>
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDPE:C->Q             5   0.447   0.943  vga0/hs (vga0/hs)
-     LUT3:I0->O            6   0.205   0.744  vga0/oRed<0>11 (VGA_Green_0_OBUF)
-     OBUF:I->O                 2.571          VGA_Green_2_OBUF (VGA_Green<2>)
-    ----------------------------------------
-    Total                      4.910ns (3.223ns logic, 1.687ns route)
-                                       (65.6% logic, 34.4% route)
-
-=========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'CLK11M0592'
-  Total number of paths / destination ports: 1 / 1
--------------------------------------------------------------------------
-Offset:              3.634ns (Levels of Logic = 1)
-  Source:            uart0/uart_tx_data (FF)
-  Destination:       InterConn<5> (PAD)
-  Source Clock:      CLK11M0592 rising
-
-  Data Path: uart0/uart_tx_data to InterConn<5>
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     FDP:C->Q              2   0.447   0.616  uart0/uart_tx_data (uart0/uart_tx_data)
-     OBUF:I->O                 2.571          InterConn_5_OBUF (InterConn<5>)
-    ----------------------------------------
-    Total                      3.634ns (3.018ns logic, 0.616ns route)
-                                       (83.0% logic, 17.0% route)
-
-=========================================================================
-Timing constraint: Default path analysis
-  Total number of paths / destination ports: 504 / 16
--------------------------------------------------------------------------
-Delay:               9.940ns (Levels of Logic = 7)
-  Source:            BaseRamAddr<7> (PAD)
-  Destination:       LED<13> (PAD)
-
-  Data Path: BaseRamAddr<7> to LED<13>
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     IOBUF:IO->O         120   1.222   2.158  BaseRamAddr_7_IOBUF (N234)
-     begin scope: 'bios:a<7>'
-     LUT3:I0->O            8   0.205   1.167  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int11215_SW0 (N0)
-     LUT6:I0->O            1   0.203   0.580  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int87119 (U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int87118)
-     LUT4:I3->O            1   0.205   0.808  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int871117 (U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int871116)
-     LUT6:I3->O            2   0.205   0.616  U0/xst_options.dist_mem_inst/gen_rom.rom_inst/Mram_spo_int871118 (spo<29>)
-     end scope: 'bios:spo<29>'
-     OBUF:I->O                 2.571          LED_13_OBUF (LED<13>)
-    ----------------------------------------
-    Total                      9.940ns (4.611ns logic, 5.329ns route)
-                                       (46.4% logic, 53.6% route)
-
-=========================================================================
-
-Cross Clock Domains Report:
---------------------------
-
-Clock to Setup on destination clock CLK11M0592
----------------+---------+---------+---------+---------+
-               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------+---------+---------+---------+---------+
-CLK11M0592     |    5.089|         |         |         |
-real_clock     |    2.488|         |         |         |
-reset          |    3.850|         |         |         |
----------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock CLK50M
----------------+---------+---------+---------+---------+
-               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------+---------+---------+---------+---------+
-CLK50M         |   13.920|         |         |         |
----------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock FetcherAndRegister0/REG0/clk_INV_63_o
--------------------------------+---------+---------+---------+---------+
-                               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock                   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
--------------------------------+---------+---------+---------+---------+
-FetcherAndRegister0/s_REG_clock|   10.188|         |         |         |
--------------------------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock FetcherAndRegister0/s_REG_clock
--------------------------------+---------+---------+---------+---------+
-                               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock                   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
--------------------------------+---------+---------+---------+---------+
-FetcherAndRegister0/s_REG_clock|    4.640|         |         |         |
-real_clock                     |    6.684|         |         |         |
-reset                          |    5.265|         |         |         |
--------------------------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock TLB_clock
----------------+---------+---------+---------+---------+
-               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------+---------+---------+---------+---------+
-TLB_clock      |    7.705|         |         |         |
-real_clock     |    7.897|         |         |         |
----------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock real_clock
--------------------------------------+---------+---------+---------+---------+
-                                     | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock                         |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
--------------------------------------+---------+---------+---------+---------+
-CLK11M0592                           |    6.814|         |         |         |
-CLK50M                               |    7.067|         |         |         |
-FetcherAndRegister0/REG0/clk_INV_63_o|    1.579|         |         |         |
-FetcherAndRegister0/s_REG_clock      |    6.477|         |         |         |
-PC0/reset_PWR_427_o_AND_599_o        |         |   12.139|         |         |
-TLB_clock                            |    5.950|         |         |         |
-real_clock                           |   12.055|         |         |         |
-uart0/uart_rx_data_in_ack            |    1.713|         |         |         |
--------------------------------------+---------+---------+---------+---------+
-
-Clock to Setup on destination clock uart0/uart_rx_data_in_ack
--------------------------+---------+---------+---------+---------+
-                         | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock             |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
--------------------------+---------+---------+---------+---------+
-uart0/uart_rx_data_in_ack|    1.950|         |         |         |
--------------------------+---------+---------+---------+---------+
-
-=========================================================================
-
-
-Total REAL time to Xst completion: 54.00 secs
-Total CPU time to Xst completion: 51.58 secs
- 
---> 
-
-
-Total memory usage is 484212 kilobytes
-
-Number of errors   :    0 (   0 filtered)
-Number of warnings :  313 (   0 filtered)
-Number of infos    :   36 (   0 filtered)
-
