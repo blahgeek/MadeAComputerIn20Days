@@ -1,0 +1,1604 @@
+Release 14.6 - xst P.68d (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.09 secs
+ 
+--> 
+Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.09 secs
+ 
+--> 
+Reading design: TOP.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "TOP.prj"
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "TOP"
+Output Format                      : NGC
+Target Device                      : xc6slx100-3-fgg676
+
+---- Source Options
+Top Module Name                    : TOP
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Shift Register Extraction          : YES
+ROM Style                          : Auto
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Shift Register Minimum Size        : 2
+Use DSP Block                      : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+LUT Combining                      : Auto
+Reduce Control Sets                : Auto
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 100000
+Add Generic Clock Buffer(BUFG)     : 16
+Register Duplication               : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Auto
+Use Synchronous Set                : Auto
+Use Synchronous Reset              : Auto
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Power Reduction                    : NO
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+DSP48 Utilization Ratio            : 100
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/UnsignedMultiplier.vhd" into library work
+Parsing entity <UnsignedMultiplier>.
+Parsing architecture <UnsignedMultiplier_a> of entity <unsignedmultiplier>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/SignedMultiplier.vhd" into library work
+Parsing entity <SignedMultiplier>.
+Parsing architecture <SignedMultiplier_a> of entity <signedmultiplier>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" into library work
+Parsing entity <Registers>.
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 20. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 21. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+Parsing architecture <Behavioral> of entity <registers>.
+WARNING:HDLCompiler:946 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 52: Actual for formal port clk is neither a static name nor a globally static expression
+WARNING:HDLCompiler:946 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 56: Actual for formal port clk is neither a static name nor a globally static expression
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/DigitalNumber.vhdl" into library work
+Parsing entity <DigitalNumber>.
+Parsing architecture <arch> of entity <digitalnumber>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/CoreFontRom.vhd" into library work
+Parsing entity <CoreFontRom>.
+Parsing architecture <CoreFontRom_a> of entity <corefontrom>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/ALU.vhd" into library work
+Parsing entity <ALU>.
+Parsing architecture <Behavioral> of entity <alu>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/VGA_Controller.vhd" into library work
+Parsing entity <VGA_Controller>.
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/VGA_Controller.vhd" Line 8. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+Parsing architecture <behave> of entity <vga_controller>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/VGARowColToAddr.vhdl" into library work
+Parsing entity <VGARowColToAddr>.
+Parsing architecture <arch> of entity <vgarowcoltoaddr>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/VGAConsoleMemory.vhd" into library work
+Parsing entity <VGAConsoleMemory>.
+Parsing architecture <VGAConsoleMemory_a> of entity <vgaconsolememory>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl" into library work
+Parsing entity <UART>.
+Parsing architecture <RTL> of entity <uart>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/TLB.vhdl" into library work
+Parsing entity <TLB>.
+Parsing architecture <arch> of entity <tlb>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl" into library work
+Parsing entity <PCdecider>.
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl" Line 24. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+Parsing architecture <arch> of entity <pcdecider>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/Memory.vhdl" into library work
+Parsing entity <Memory>.
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Memory.vhdl" Line 38. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+Parsing architecture <arch> of entity <memory>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/InterruptHandler.vhdl" into library work
+Parsing entity <InterruptHandler>.
+Parsing architecture <arch> of entity <interrupthandler>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" into library work
+Parsing entity <FetcherAndRegister>.
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 32. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+Parsing architecture <arch> of entity <fetcherandregister>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/CoreRom.vhd" into library work
+Parsing entity <CoreRom>.
+Parsing architecture <CoreRom_a> of entity <corerom>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/ALUWrapper.vhdl" into library work
+Parsing entity <ALUWrapper>.
+Parsing architecture <arch> of entity <aluwrapper>.
+Parsing VHDL file "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" into library work
+Parsing entity <TOP>.
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 55. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 56. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+Parsing architecture <arch> of entity <top>.
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 134. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 241. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 283. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+INFO:HDLCompiler:1676 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" Line 341. declaration of a buffer port will make it difficult for you to validate this design by simulation. It is preferable to declare it as output
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+
+Elaborating entity <TOP> (architecture <arch>) from library <work>.
+
+Elaborating entity <VGAConsoleMemory> (architecture <VGAConsoleMemory_a>) from library <work>.
+
+Elaborating entity <UART> (architecture <RTL>) with generics from library <work>.
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl" Line 239. Case statement is complete. others clause is never selected
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl" Line 413. Case statement is complete. others clause is never selected
+
+Elaborating entity <VGA_Controller> (architecture <behave>) from library <work>.
+
+Elaborating entity <CoreFontRom> (architecture <CoreFontRom_a>) from library <work>.
+
+Elaborating entity <VGARowColToAddr> (architecture <arch>) from library <work>.
+
+Elaborating entity <TLB> (architecture <arch>) from library <work>.
+
+Elaborating entity <FetcherAndRegister> (architecture <arch>) from library <work>.
+WARNING:HDLCompiler:439 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 83: Formal port regreadvaluea of mode buffer cannot be associated with actual port regreadvaluea of mode out
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 20. regreadvaluea is declared here
+WARNING:HDLCompiler:439 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 84: Formal port regreadvalueb of mode buffer cannot be associated with actual port regreadvalueb of mode out
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 21. regreadvalueb is declared here
+
+Elaborating entity <Registers> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <SignedMultiplier> (architecture <SignedMultiplier_a>) from library <work>.
+
+Elaborating entity <UnsignedMultiplier> (architecture <UnsignedMultiplier_a>) from library <work>.
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 20. regreadvaluea is declared here
+INFO:HDLCompiler:1408 - "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd" Line 21. regreadvalueb is declared here
+WARNING:HDLCompiler:634 - "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl" Line 131: Net <outbuffer_MEM_data[31]> does not have a driver.
+
+Elaborating entity <InterruptHandler> (architecture <arch>) from library <work>.
+
+Elaborating entity <ALUWrapper> (architecture <arch>) from library <work>.
+
+Elaborating entity <ALU> (architecture <Behavioral>) from library <work>.
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/ALU.vhd" Line 75. Case statement is complete. others clause is never selected
+
+Elaborating entity <Memory> (architecture <arch>) from library <work>.
+
+Elaborating entity <DigitalNumber> (architecture <arch>) from library <work>.
+INFO:HDLCompiler:679 - "/home/blahgeek/MadeAComputerIn20Days/CPU/DigitalNumber.vhdl" Line 42. Case statement is complete. others clause is never selected
+
+Elaborating entity <PCdecider> (architecture <arch>) from library <work>.
+WARNING:HDLCompiler:92 - "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl" Line 46: reset_on_bios should be on the sensitivity list of the process
+
+Elaborating entity <CoreRom> (architecture <CoreRom_a>) from library <work>.
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <TOP>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl".
+WARNING:Xst:647 - Input <FPGA_KEY> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <SW_DIP<5:3>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 422: Output port <spo> of the instance <VGAConsolemem0> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 442: Output port <VGA_CLK> of the instance <vga0> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 497: Output port <debug> of the instance <FetcherAndRegister0> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.vhdl" line 546: Output port <LED> of the instance <Mem0> is unconnected or connected to loadless signal.
+Always blocking tristate driving signal <InterConn<0>> is removed.
+WARNING:Xst:2563 - Inout <InterConn<9>> is never assigned. Tied to value Z.
+WARNING:Xst:2563 - Inout <InterConn<8>> is never assigned. Tied to value Z.
+WARNING:Xst:2563 - Inout <InterConn<7>> is never assigned. Tied to value Z.
+WARNING:Xst:2563 - Inout <InterConn<6>> is never assigned. Tied to value Z.
+WARNING:Xst:2563 - Inout <InterConn<4>> is never assigned. Tied to value Z.
+WARNING:Xst:2563 - Inout <InterConn<3>> is never assigned. Tied to value Z.
+WARNING:Xst:2563 - Inout <InterConn<2>> is never assigned. Tied to value Z.
+WARNING:Xst:2563 - Inout <InterConn<1>> is never assigned. Tied to value Z.
+WARNING:Xst:2935 - Signal 'ENET_CS', unconnected in block 'TOP', is tied to its initial value (0).
+    Found 1-bit register for signal <clk25M>.
+    Found 1-bit tristate buffer for signal <InterConn<9>> created at line 40
+    Found 1-bit tristate buffer for signal <InterConn<8>> created at line 40
+    Found 1-bit tristate buffer for signal <InterConn<7>> created at line 40
+    Found 1-bit tristate buffer for signal <InterConn<6>> created at line 40
+    Found 1-bit tristate buffer for signal <InterConn<4>> created at line 40
+    Found 1-bit tristate buffer for signal <InterConn<3>> created at line 40
+    Found 1-bit tristate buffer for signal <InterConn<2>> created at line 40
+    Found 1-bit tristate buffer for signal <InterConn<1>> created at line 40
+    Found 24-bit comparator equal for signal <SW_DIP[31]_PC[23]_equal_3_o> created at line 478
+    Summary:
+	inferred   1 D-type flip-flop(s).
+	inferred   1 Comparator(s).
+	inferred   3 Multiplexer(s).
+	inferred   8 Tristate(s).
+Unit <TOP> synthesized.
+
+Synthesizing Unit <UART>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/UART.vhdl".
+        BAUD_RATE = 115200
+        CLOCK_FREQUENCY = 11059200
+    Found 1-bit register for signal <uart_tx_data>.
+    Found 1-bit register for signal <uart_rx_bit>.
+    Found 1-bit register for signal <uart_rx_data_in_ack>.
+    Found 1-bit register for signal <oversample_baud_tick>.
+    Found 1-bit register for signal <uart_rx_data_out_stb>.
+    Found 2-bit register for signal <uart_rx_filter>.
+    Found 4-bit register for signal <baud_counter>.
+    Found 8-bit register for signal <uart_tx_data_block>.
+    Found 8-bit register for signal <uart_rx_data_block>.
+    Found 3-bit register for signal <uart_tx_count>.
+    Found 3-bit register for signal <uart_tx_state>.
+    Found 3-bit register for signal <uart_rx_count>.
+    Found 3-bit register for signal <oversample_baud_counter>.
+    Found 2-bit register for signal <uart_rx_state>.
+    Found 4-bit register for signal <uart_rx_sync_clock>.
+    Found finite state machine <FSM_0> for signal <uart_tx_state>.
+    -----------------------------------------------------------------------
+    | States             | 5                                              |
+    | Transitions        | 11                                             |
+    | Inputs             | 3                                              |
+    | Outputs            | 3                                              |
+    | Clock              | CLOCK (rising_edge)                            |
+    | Reset              | RESET (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | idle                                           |
+    | Power Up State     | idle                                           |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found finite state machine <FSM_1> for signal <uart_rx_state>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 11                                             |
+    | Inputs             | 4                                              |
+    | Outputs            | 3                                              |
+    | Clock              | CLOCK (rising_edge)                            |
+    | Reset              | RESET (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | rx_wait_start_synchronise                      |
+    | Power Up State     | rx_wait_start_synchronise                      |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 3-bit adder for signal <uart_tx_count[2]_GND_8_o_add_12_OUT> created at line 1241.
+    Found 2-bit adder for signal <uart_rx_filter[1]_GND_8_o_add_32_OUT> created at line 1241.
+    Found 3-bit adder for signal <uart_rx_count[2]_GND_8_o_add_47_OUT> created at line 1241.
+    Found 4-bit subtractor for signal <GND_8_o_GND_8_o_sub_2_OUT<3:0>> created at line 1308.
+    Found 3-bit subtractor for signal <GND_8_o_GND_8_o_sub_28_OUT<2:0>> created at line 1308.
+    Found 2-bit subtractor for signal <GND_8_o_GND_8_o_sub_35_OUT<1:0>> created at line 1308.
+    Found 4-bit comparator equal for signal <uart_rx_sync_clock[3]_baud_counter[3]_equal_31_o> created at line 277
+    Found 2-bit comparator greater for signal <uart_rx_filter[1]_PWR_7_o_LessThan_32_o> created at line 295
+    Found 2-bit comparator greater for signal <GND_8_o_uart_rx_filter[1]_LessThan_34_o> created at line 297
+    Summary:
+	inferred   5 Adder/Subtractor(s).
+	inferred  40 D-type flip-flop(s).
+	inferred   3 Comparator(s).
+	inferred   8 Multiplexer(s).
+	inferred   2 Finite State Machine(s).
+Unit <UART> synthesized.
+
+Synthesizing Unit <VGA_Controller>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/VGA_Controller.vhd".
+WARNING:Xst:647 - Input <data<7:7>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:653 - Signal <VGA_CLK> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+    Found 1-bit register for signal <vs>.
+    Found 1-bit register for signal <hs>.
+    Found 10-bit register for signal <x>.
+    Found 10-bit register for signal <y>.
+    Found 1-bit register for signal <state>.
+    Found 3-bit register for signal <rt>.
+    Found 3-bit register for signal <gt>.
+    Found 3-bit register for signal <bt>.
+    Found 10-bit adder for signal <y[9]_GND_10_o_add_8_OUT> created at line 1241.
+    Found 10-bit adder for signal <x[9]_GND_10_o_add_10_OUT> created at line 1241.
+    Found 3-bit subtractor for signal <GND_10_o_GND_10_o_sub_3_OUT<2:0>> created at line 1314.
+    Found 1-bit 8-to-1 multiplexer for signal <data_bit> created at line 49.
+    Found 10-bit comparator lessequal for signal <n0013> created at line 77
+    Found 10-bit comparator greater for signal <x[9]_PWR_11_o_LessThan_15_o> created at line 77
+    Found 10-bit comparator lessequal for signal <n0018> created at line 82
+    Found 10-bit comparator greater for signal <y[9]_GND_10_o_LessThan_17_o> created at line 82
+    Found 10-bit comparator greater for signal <PWR_11_o_x[9]_LessThan_18_o> created at line 87
+    Found 10-bit comparator greater for signal <GND_10_o_y[9]_LessThan_19_o> created at line 87
+    Summary:
+	inferred   3 Adder/Subtractor(s).
+	inferred  32 D-type flip-flop(s).
+	inferred   6 Comparator(s).
+	inferred   7 Multiplexer(s).
+Unit <VGA_Controller> synthesized.
+
+Synthesizing Unit <VGARowColToAddr>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/VGARowColToAddr.vhdl".
+    Found 12-bit adder for signal <n0021> created at line 30.
+    Found 12-bit adder for signal <addr> created at line 30.
+    Summary:
+	inferred   2 Adder/Subtractor(s).
+Unit <VGARowColToAddr> synthesized.
+
+Synthesizing Unit <TLB>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/TLB.vhdl".
+    Found 64-bit register for signal <data<1>>.
+    Found 64-bit register for signal <data<2>>.
+    Found 64-bit register for signal <data<3>>.
+    Found 64-bit register for signal <data<4>>.
+    Found 64-bit register for signal <data<5>>.
+    Found 64-bit register for signal <data<6>>.
+    Found 64-bit register for signal <data<7>>.
+    Found 64-bit register for signal <data<0>>.
+    Found 20-bit register for signal <instruction_real_addr>.
+    Found 20-bit register for signal <data_real_addr>.
+    Found 1-bit register for signal <instruction_bad>.
+    Found 1-bit register for signal <data_bad>.
+    Found 19-bit comparator equal for signal <data[0][62]_instruction_virt_addr[19]_equal_43_o> created at line 67
+    Found 19-bit comparator equal for signal <data[1][62]_instruction_virt_addr[19]_equal_45_o> created at line 67
+    Found 19-bit comparator equal for signal <data[2][62]_instruction_virt_addr[19]_equal_47_o> created at line 67
+    Found 19-bit comparator equal for signal <data[3][62]_instruction_virt_addr[19]_equal_49_o> created at line 67
+    Found 19-bit comparator equal for signal <data[4][62]_instruction_virt_addr[19]_equal_51_o> created at line 67
+    Found 19-bit comparator equal for signal <data[5][62]_instruction_virt_addr[19]_equal_53_o> created at line 67
+    Found 19-bit comparator equal for signal <data[6][62]_instruction_virt_addr[19]_equal_55_o> created at line 67
+    Found 19-bit comparator equal for signal <data[7][62]_instruction_virt_addr[19]_equal_57_o> created at line 67
+    Found 19-bit comparator equal for signal <data[0][62]_data_virt_addr[19]_equal_79_o> created at line 102
+    Found 19-bit comparator equal for signal <data[1][62]_data_virt_addr[19]_equal_81_o> created at line 102
+    Found 19-bit comparator equal for signal <data[2][62]_data_virt_addr[19]_equal_83_o> created at line 102
+    Found 19-bit comparator equal for signal <data[3][62]_data_virt_addr[19]_equal_85_o> created at line 102
+    Found 19-bit comparator equal for signal <data[4][62]_data_virt_addr[19]_equal_87_o> created at line 102
+    Found 19-bit comparator equal for signal <data[5][62]_data_virt_addr[19]_equal_89_o> created at line 102
+    Found 19-bit comparator equal for signal <data[6][62]_data_virt_addr[19]_equal_91_o> created at line 102
+    Found 19-bit comparator equal for signal <data[7][62]_data_virt_addr[19]_equal_93_o> created at line 102
+    Summary:
+	inferred 554 D-type flip-flop(s).
+	inferred  16 Comparator(s).
+	inferred  64 Multiplexer(s).
+Unit <TLB> synthesized.
+
+Synthesizing Unit <FetcherAndRegister>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/FetcherAndRegister.vhdl".
+WARNING:Xst:653 - Signal <outbuffer_MEM_data> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+    Found 4-bit register for signal <ALU_operator>.
+    Found 32-bit register for signal <ALU_numA>.
+    Found 32-bit register for signal <ALU_numB>.
+    Found 32-bit register for signal <REGS_C0<0>>.
+    Found 32-bit register for signal <REGS_C0<1>>.
+    Found 32-bit register for signal <REGS_C0<2>>.
+    Found 32-bit register for signal <REGS_C0<3>>.
+    Found 32-bit register for signal <REGS_C0<4>>.
+    Found 32-bit register for signal <REGS_C0<5>>.
+    Found 32-bit register for signal <REGS_C0<6>>.
+    Found 32-bit register for signal <REGS_C0<7>>.
+    Found 32-bit register for signal <REGS_C0<8>>.
+    Found 32-bit register for signal <REGS_C0<9>>.
+    Found 32-bit register for signal <REGS_C0<10>>.
+    Found 32-bit register for signal <REGS_C0<11>>.
+    Found 32-bit register for signal <REGS_C0<12>>.
+    Found 32-bit register for signal <REGS_C0<13>>.
+    Found 32-bit register for signal <REGS_C0<14>>.
+    Found 32-bit register for signal <REGS_C0<15>>.
+    Found 32-bit register for signal <REGS_C0<16>>.
+    Found 32-bit register for signal <REGS_C0<17>>.
+    Found 32-bit register for signal <REGS_C0<18>>.
+    Found 32-bit register for signal <REGS_C0<19>>.
+    Found 32-bit register for signal <REGS_C0<20>>.
+    Found 32-bit register for signal <REGS_C0<21>>.
+    Found 32-bit register for signal <REGS_C0<22>>.
+    Found 32-bit register for signal <REGS_C0<23>>.
+    Found 32-bit register for signal <REGS_C0<24>>.
+    Found 32-bit register for signal <REGS_C0<25>>.
+    Found 32-bit register for signal <REGS_C0<26>>.
+    Found 32-bit register for signal <REGS_C0<27>>.
+    Found 32-bit register for signal <REGS_C0<28>>.
+    Found 32-bit register for signal <REGS_C0<29>>.
+    Found 32-bit register for signal <REGS_C0<30>>.
+    Found 32-bit register for signal <REGS_C0<31>>.
+    Found 32-bit register for signal <REG_LO>.
+    Found 32-bit register for signal <REG_HI>.
+    Found 5-bit register for signal <s_last_last_write_reg>.
+    Found 5-bit register for signal <s_last_write_reg>.
+    Found 2-bit register for signal <state>.
+    Found 1-bit register for signal <JUMP_true>.
+    Found 1-bit register for signal <MEM_read>.
+    Found 1-bit register for signal <MEM_write>.
+    Found 1-bit register for signal <REG_write>.
+    Found 1-bit register for signal <REG_write_byte_only>.
+    Found 1-bit register for signal <s_numA_to_c0>.
+    Found 1-bit register for signal <s_numA_to_hi>.
+    Found 1-bit register for signal <s_numA_to_lo>.
+    Found 1-bit register for signal <s_signed_mul>.
+    Found 1-bit register for signal <s_unsigned_mul>.
+    Found 1-bit register for signal <hold>.
+    Found 1-bit register for signal <s_skip_this>.
+    Found 1-bit register for signal <s_skip_next>.
+    Found 1-bit register for signal <s_exception>.
+    Found 1-bit register for signal <s_TLB_set_do>.
+    Found 1-bit register for signal <TLB_set_do>.
+    Found 1-bit register for signal <debug<7>>.
+    Found 1-bit register for signal <debug<6>>.
+    Found 1-bit register for signal <debug<5>>.
+    Found 1-bit register for signal <debug<4>>.
+    Found 1-bit register for signal <debug<3>>.
+    Found 1-bit register for signal <debug<1>>.
+    Found 1-bit register for signal <debug<0>>.
+    Found 5-bit register for signal <s_exception_cause>.
+    Found 8-bit register for signal <s_interrupt_numbers>.
+    Found 3-bit register for signal <s_jump_true_if_condition>.
+    Found 1-bit register for signal <outbuffer_MEM_read>.
+    Found 1-bit register for signal <outbuffer_MEM_write>.
+    Found 1-bit register for signal <numA_from_reg>.
+    Found 1-bit register for signal <numB_from_reg>.
+    Found 4-bit register for signal <outbuffer_ALU_operator>.
+    Found 1-bit register for signal <outbuffer_REG_write>.
+    Found 1-bit register for signal <outbuffer_JUMP_true>.
+    Found 32-bit register for signal <outbuffer_JUMP_addr>.
+    Found 32-bit register for signal <outbuffer_ALU_numA>.
+    Found 1-bit register for signal <outbuffer_REG_write_byte_only>.
+    Found 5-bit register for signal <outbuffer_REG_write_addr>.
+    Found 5-bit register for signal <s_numA_to_c0_addr>.
+    Found 5-bit register for signal <s_REG_read_number_A>.
+    Found 1-bit register for signal <timer_int>.
+    Found 3-bit register for signal <TLB_set_index>.
+    Found 64-bit register for signal <TLB_set_entry>.
+    Found 5-bit register for signal <s_REG_read_number_B>.
+    Found 32-bit register for signal <outbuffer_ALU_numB>.
+    Found 1-bit register for signal <s_jump_addr_from_reg_a>.
+    Found 1-bit register for signal <outbuffer_MEM_write_byte_only>.
+    Found 1-bit register for signal <mem_data_from_reg_B>.
+    Found 1-bit register for signal <s_link_if_jump_true>.
+    Found 1-bit register for signal <s_REG_write>.
+    Found 5-bit register for signal <s_REG_write_number>.
+    Found 32-bit register for signal <s_REG_write_value>.
+    Found 1-bit register for signal <s_REG_write_byte_only>.
+    Found 2-bit register for signal <s_REG_write_byte_pos>.
+    Found 32-bit register for signal <MEM_data>.
+    Found 32-bit register for signal <JUMP_addr>.
+    Found 1-bit register for signal <MEM_write_byte_only>.
+    Found 5-bit register for signal <REG_write_addr>.
+    Found finite state machine <FSM_2> for signal <state>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 4                                              |
+    | Inputs             | 0                                              |
+    | Outputs            | 12                                             |
+    | Clock              | clock (rising_edge)                            |
+    | Reset              | reset (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | s0                                             |
+    | Power Up State     | s0                                             |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 26-bit adder for signal <n1466> created at line 540.
+    Found 26-bit adder for signal <PC[27]_GND_15_o_add_103_OUT> created at line 1253.
+    Found 32-bit adder for signal <REGS_C0[9][31]_GND_15_o_add_224_OUT> created at line 1241.
+    Found 32-bit subtractor for signal <GND_15_o_GND_15_o_sub_218_OUT<31:0>> created at line 1308.
+INFO:Xst:3019 - HDL ADVISOR - 1024 flip-flops were inferred for signal <REGS_C0>. You may be trying to describe a RAM in a way that is incompatible with block and distributed RAM resources available on Xilinx devices, or with a specific template that is not supported. Please review the Xilinx resources documentation and the XST user manual for coding guidelines. Taking advantage of RAM resources will lead to improved device usage and reduced synthesis time.
+    Found 32-bit 32-to-1 multiplexer for signal <s_data[15]_REGS_C0[31][31]_wide_mux_13_OUT> created at line 296.
+    Found 5-bit comparator equal for signal <s_REG_read_number_A[4]_s_last_last_write_reg[4]_equal_210_o> created at line 623
+    Found 5-bit comparator equal for signal <s_REG_read_number_B[4]_s_last_last_write_reg[4]_equal_211_o> created at line 624
+    Found 5-bit comparator equal for signal <s_REG_read_number_A[4]_s_last_write_reg[4]_equal_213_o> created at line 627
+    Found 5-bit comparator equal for signal <s_REG_read_number_B[4]_s_last_write_reg[4]_equal_214_o> created at line 628
+    Found 32-bit comparator equal for signal <s_REG_read_value_B[31]_s_REG_read_value_A[31]_equal_306_o> created at line 779
+    Found 32-bit comparator greater for signal <n0604> created at line 781
+    Found 32-bit comparator greater for signal <s_REG_read_value_A[31]_GND_15_o_LessThan_312_o> created at line 782
+    Found 32-bit comparator not equal for signal <REGS_C0[9][31]_REGS_C0[11][31]_equal_368_o> created at line 820
+    Summary:
+	inferred   4 Adder/Subtractor(s).
+	inferred 1515 D-type flip-flop(s).
+	inferred   8 Comparator(s).
+	inferred 176 Multiplexer(s).
+	inferred   1 Finite State Machine(s).
+Unit <FetcherAndRegister> synthesized.
+
+Synthesizing Unit <Registers>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/Registers.vhd".
+    Found 32-bit register for signal <RegReadValueB>.
+    Found 32-bit register for signal <GPR<0>>.
+    Found 32-bit register for signal <GPR<1>>.
+    Found 32-bit register for signal <GPR<2>>.
+    Found 32-bit register for signal <GPR<3>>.
+    Found 32-bit register for signal <GPR<4>>.
+    Found 32-bit register for signal <GPR<5>>.
+    Found 32-bit register for signal <GPR<6>>.
+    Found 32-bit register for signal <GPR<7>>.
+    Found 32-bit register for signal <GPR<8>>.
+    Found 32-bit register for signal <GPR<9>>.
+    Found 32-bit register for signal <GPR<10>>.
+    Found 32-bit register for signal <GPR<11>>.
+    Found 32-bit register for signal <GPR<12>>.
+    Found 32-bit register for signal <GPR<13>>.
+    Found 32-bit register for signal <GPR<14>>.
+    Found 32-bit register for signal <GPR<15>>.
+    Found 32-bit register for signal <GPR<16>>.
+    Found 32-bit register for signal <GPR<17>>.
+    Found 32-bit register for signal <GPR<18>>.
+    Found 32-bit register for signal <GPR<19>>.
+    Found 32-bit register for signal <GPR<20>>.
+    Found 32-bit register for signal <GPR<21>>.
+    Found 32-bit register for signal <GPR<22>>.
+    Found 32-bit register for signal <GPR<23>>.
+    Found 32-bit register for signal <GPR<24>>.
+    Found 32-bit register for signal <GPR<25>>.
+    Found 32-bit register for signal <GPR<26>>.
+    Found 32-bit register for signal <GPR<27>>.
+    Found 32-bit register for signal <GPR<28>>.
+    Found 32-bit register for signal <GPR<30>>.
+    Found 32-bit register for signal <GPR<31>>.
+    Found 32-bit register for signal <RegReadValueA>.
+    Found 32-bit register for signal <GPR<29>>.
+INFO:Xst:3019 - HDL ADVISOR - 1024 flip-flops were inferred for signal <GPR>. You may be trying to describe a RAM in a way that is incompatible with block and distributed RAM resources available on Xilinx devices, or with a specific template that is not supported. Please review the Xilinx resources documentation and the XST user manual for coding guidelines. Taking advantage of RAM resources will lead to improved device usage and reduced synthesis time.
+INFO:Xst:3019 - HDL ADVISOR - 1024 flip-flops were inferred for signal <GPR>. You may be trying to describe a RAM in a way that is incompatible with block and distributed RAM resources available on Xilinx devices, or with a specific template that is not supported. Please review the Xilinx resources documentation and the XST user manual for coding guidelines. Taking advantage of RAM resources will lead to improved device usage and reduced synthesis time.
+    Found 32-bit 32-to-1 multiplexer for signal <RegReadNumberA[4]_GPR[31][31]_wide_mux_76_OUT> created at line 87.
+    Found 32-bit 32-to-1 multiplexer for signal <RegReadNumberB[4]_GPR[31][31]_wide_mux_80_OUT> created at line 94.
+    Found 5-bit comparator equal for signal <RegWriteNumber[4]_RegReadNumberA[4]_equal_76_o> created at line 84
+    Found 5-bit comparator equal for signal <RegWriteNumber[4]_RegReadNumberB[4]_equal_80_o> created at line 91
+    Summary:
+	inferred 1088 D-type flip-flop(s).
+	inferred   2 Comparator(s).
+	inferred   8 Multiplexer(s).
+Unit <Registers> synthesized.
+
+Synthesizing Unit <InterruptHandler>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/InterruptHandler.vhdl".
+WARNING:Xst:647 - Input <mask<3:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <mask<6:5>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <clock> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <reset> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:2935 - Signal 'int_numbers<6:5>', unconnected in block 'InterruptHandler', is tied to its initial value (00).
+WARNING:Xst:2935 - Signal 'int_numbers<3:0>', unconnected in block 'InterruptHandler', is tied to its initial value (0000).
+    Summary:
+	no macro.
+Unit <InterruptHandler> synthesized.
+
+Synthesizing Unit <ALUWrapper>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/ALUWrapper.vhdl".
+    Found 32-bit register for signal <ALU_output>.
+    Found 2-bit register for signal <state>.
+    Found 1-bit register for signal <MEM_read>.
+    Found 1-bit register for signal <MEM_write>.
+    Found 1-bit register for signal <REG_write>.
+    Found 1-bit register for signal <s_skip_one>.
+    Found 1-bit register for signal <TLB_exception>.
+    Found 1-bit register for signal <s_do_not_read_input>.
+    Found 32-bit register for signal <a>.
+    Found 32-bit register for signal <b>.
+    Found 4-bit register for signal <op>.
+    Found 1-bit register for signal <s_MEM_write>.
+    Found 1-bit register for signal <s_MEM_write_byte_only>.
+    Found 1-bit register for signal <s_MEM_read>.
+    Found 32-bit register for signal <s_MEM_data>.
+    Found 1-bit register for signal <s_REG_write>.
+    Found 1-bit register for signal <s_REG_write_byte_only>.
+    Found 5-bit register for signal <s_REG_write_addr>.
+    Found 20-bit register for signal <TLB_virt>.
+    Found 1-bit register for signal <TLB_exception_read_or_write>.
+    Found 32-bit register for signal <ALU_output_after_TLB>.
+    Found 1-bit register for signal <MEM_write_byte_only>.
+    Found 32-bit register for signal <MEM_data>.
+    Found 1-bit register for signal <REG_write_byte_only>.
+    Found 5-bit register for signal <REG_write_addr>.
+    Found finite state machine <FSM_3> for signal <state>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 4                                              |
+    | Inputs             | 0                                              |
+    | Outputs            | 2                                              |
+    | Clock              | clock (rising_edge)                            |
+    | Reset              | reset (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | s0                                             |
+    | Power Up State     | s0                                             |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Summary:
+	inferred 240 D-type flip-flop(s).
+	inferred   8 Multiplexer(s).
+	inferred   1 Finite State Machine(s).
+Unit <ALUWrapper> synthesized.
+
+Synthesizing Unit <ALU>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/ALU.vhd".
+    Found 32-bit subtractor for signal <n0045> created at line 70.
+    Found 32-bit adder for signal <A[31]_B[31]_add_1_OUT> created at line 26.
+    Found 32-bit subtractor for signal <GND_24_o_GND_24_o_sub_4_OUT<31:0>> created at line 33.
+    Found 32-bit shifter logical left for signal <A[31]_B[30]_shift_left_16_OUT> created at line 68
+    Found 32-bit shifter logical right for signal <n0047> created at line 70
+    Found 32-bit shifter arithmetic right for signal <A[31]_B[30]_shift_right_18_OUT> created at line 2982
+    Found 32-bit shifter logical left for signal <n0046> created at line 70
+    Found 32-bit 14-to-1 multiplexer for signal <result> created at line 19.
+    Found 32-bit comparator equal for signal <B[31]_A[31]_equal_9_o> created at line 43
+    Found 32-bit comparator greater for signal <B[31]_A[31]_LessThan_13_o> created at line 56
+    Found 32-bit comparator greater for signal <A[31]_B[31]_LessThan_15_o> created at line 62
+    Summary:
+	inferred   2 Adder/Subtractor(s).
+	inferred   3 Comparator(s).
+	inferred  17 Multiplexer(s).
+	inferred   4 Combinational logic shifter(s).
+Unit <ALU> synthesized.
+
+Synthesizing Unit <Memory>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/Memory.vhdl".
+    Found 1-bit register for signal <BASERAM_WE>.
+    Found 1-bit register for signal <ENET_IOR>.
+    Found 1-bit register for signal <ENET_IOW>.
+    Found 1-bit register for signal <EXTRAM_WE>.
+    Found 2-bit register for signal <state>.
+    Found 32-bit register for signal <MEM_output>.
+    Found 5-bit register for signal <REG_write_addr>.
+    Found 4-bit register for signal <s_dyp_value0>.
+    Found 4-bit register for signal <s_dyp_value1>.
+    Found 16-bit register for signal <LED>.
+    Found 1-bit register for signal <hold_from_memory>.
+    Found 1-bit register for signal <REG_write>.
+    Found 1-bit register for signal <UART_DATA_SEND_STB>.
+    Found 1-bit register for signal <UART_DATA_RECV_ACK>.
+    Found 1-bit register for signal <VGA_set>.
+    Found 1-bit register for signal <s_VGA_set>.
+    Found 1-bit register for signal <ENET_CMD>.
+    Found 1-bit register for signal <sb_in_the_middle>.
+    Found 1-bit register for signal <s_use_ethernet_output>.
+    Found 1-bit register for signal <uart_send_stb_flag>.
+    Found 1-bit register for signal <state[1]_clock_DFF_255>.
+    Found 1-bit register for signal <state[1]_clock_DFF_256>.
+    Found 1-bit register for signal <state[1]_clock_DFF_257>.
+    Found 1-bit register for signal <state[1]_clock_DFF_258>.
+    Found 1-bit register for signal <state[1]_clock_DFF_259>.
+    Found 1-bit register for signal <state[1]_clock_DFF_260>.
+    Found 1-bit register for signal <state[1]_clock_DFF_261>.
+    Found 1-bit register for signal <state[1]_clock_DFF_262>.
+    Found 1-bit register for signal <state[1]_clock_DFF_263>.
+    Found 1-bit register for signal <state[1]_clock_DFF_264>.
+    Found 1-bit register for signal <state[1]_clock_DFF_265>.
+    Found 1-bit register for signal <state[1]_clock_DFF_266>.
+    Found 1-bit register for signal <state[1]_clock_DFF_267>.
+    Found 1-bit register for signal <state[1]_clock_DFF_268>.
+    Found 1-bit register for signal <state[1]_clock_DFF_269>.
+    Found 1-bit register for signal <state[1]_clock_DFF_270>.
+    Found 1-bit register for signal <state[1]_clock_DFF_271>.
+    Found 1-bit register for signal <state[1]_clock_DFF_272>.
+    Found 1-bit register for signal <state[1]_clock_DFF_273>.
+    Found 1-bit register for signal <state[1]_clock_DFF_274>.
+    Found 1-bit register for signal <state[1]_clock_DFF_275>.
+    Found 1-bit register for signal <state[1]_clock_DFF_276>.
+    Found 1-bit register for signal <state[1]_clock_DFF_277>.
+    Found 1-bit register for signal <state[1]_clock_DFF_278>.
+    Found 1-bit register for signal <state[1]_clock_DFF_279>.
+    Found 1-bit register for signal <state[1]_clock_DFF_280>.
+    Found 1-bit register for signal <state[1]_clock_DFF_281>.
+    Found 1-bit register for signal <state[1]_clock_DFF_282>.
+    Found 1-bit register for signal <state[1]_clock_DFF_283>.
+    Found 1-bit register for signal <state[1]_clock_DFF_284>.
+    Found 1-bit register for signal <state[1]_clock_DFF_285>.
+    Found 1-bit register for signal <state[1]_clock_DFF_286>.
+    Found 1-bit register for signal <state[1]_clock_DFF_287>.
+    Found 1-bit register for signal <state[1]_clock_DFF_288>.
+    Found 1-bit register for signal <state[1]_clock_DFF_289>.
+    Found 1-bit register for signal <state[1]_clock_DFF_290>.
+    Found 1-bit register for signal <state[1]_clock_DFF_291>.
+    Found 1-bit register for signal <state[1]_clock_DFF_292>.
+    Found 1-bit register for signal <state[1]_clock_DFF_293>.
+    Found 1-bit register for signal <state[1]_clock_DFF_294>.
+    Found 1-bit register for signal <state[1]_clock_DFF_295>.
+    Found 1-bit register for signal <state[1]_clock_DFF_296>.
+    Found 1-bit register for signal <state[1]_clock_DFF_297>.
+    Found 1-bit register for signal <state[1]_clock_DFF_298>.
+    Found 1-bit register for signal <state[1]_clock_DFF_299>.
+    Found 1-bit register for signal <state[1]_clock_DFF_300>.
+    Found 1-bit register for signal <state[1]_clock_DFF_301>.
+    Found 1-bit register for signal <state[1]_clock_DFF_302>.
+    Found 1-bit register for signal <state[1]_clock_DFF_303>.
+    Found 1-bit register for signal <state[1]_clock_DFF_304>.
+    Found 1-bit register for signal <state[1]_clock_DFF_305>.
+    Found 1-bit register for signal <state[1]_clock_DFF_306>.
+    Found 1-bit register for signal <state[1]_clock_DFF_307>.
+    Found 1-bit register for signal <state[1]_clock_DFF_308>.
+    Found 1-bit register for signal <state[1]_clock_DFF_309>.
+    Found 1-bit register for signal <state[1]_clock_DFF_310>.
+    Found 1-bit register for signal <state[1]_clock_DFF_311>.
+    Found 1-bit register for signal <state[1]_clock_DFF_312>.
+    Found 1-bit register for signal <state[1]_clock_DFF_313>.
+    Found 1-bit register for signal <state[1]_clock_DFF_314>.
+    Found 1-bit register for signal <state[1]_clock_DFF_315>.
+    Found 1-bit register for signal <state[1]_clock_DFF_316>.
+    Found 1-bit register for signal <state[1]_clock_DFF_317>.
+    Found 1-bit register for signal <state[1]_clock_DFF_318>.
+    Found 1-bit register for signal <state[1]_clock_DFF_319>.
+    Found 1-bit register for signal <state[1]_clock_DFF_320>.
+    Found 1-bit register for signal <state[1]_clock_DFF_321>.
+    Found 1-bit register for signal <state[1]_clock_DFF_322>.
+    Found 1-bit register for signal <state[1]_clock_DFF_323>.
+    Found 1-bit register for signal <state[1]_clock_DFF_324>.
+    Found 1-bit register for signal <state[1]_clock_DFF_325>.
+    Found 1-bit register for signal <state[1]_clock_DFF_326>.
+    Found 1-bit register for signal <state[1]_clock_DFF_327>.
+    Found 1-bit register for signal <state[1]_clock_DFF_328>.
+    Found 1-bit register for signal <state[1]_clock_DFF_329>.
+    Found 1-bit register for signal <state[1]_clock_DFF_330>.
+    Found 1-bit register for signal <state[1]_clock_DFF_331>.
+    Found 1-bit register for signal <state[1]_clock_DFF_332>.
+    Found 1-bit register for signal <state[1]_clock_DFF_333>.
+    Found 1-bit register for signal <state[1]_clock_DFF_334>.
+    Found 1-bit register for signal <state[1]_clock_DFF_335>.
+    Found 1-bit register for signal <state[1]_clock_DFF_336>.
+    Found 1-bit register for signal <state[1]_clock_DFF_337>.
+    Found 1-bit register for signal <state[1]_clock_DFF_338>.
+    Found 1-bit register for signal <state[1]_clock_DFF_339>.
+    Found 1-bit register for signal <state[1]_clock_DFF_340>.
+    Found 1-bit register for signal <state[1]_clock_DFF_341>.
+    Found 1-bit register for signal <state[1]_clock_DFF_342>.
+    Found 1-bit register for signal <state[1]_clock_DFF_343>.
+    Found 1-bit register for signal <state[1]_clock_DFF_344>.
+    Found 1-bit register for signal <state[1]_clock_DFF_345>.
+    Found 1-bit register for signal <state[1]_clock_DFF_346>.
+    Found 1-bit register for signal <state[1]_clock_DFF_347>.
+    Found 1-bit register for signal <state[1]_clock_DFF_348>.
+    Found 1-bit register for signal <state[1]_clock_DFF_349>.
+    Found 1-bit register for signal <state[1]_clock_DFF_350>.
+    Found 1-bit register for signal <state[1]_clock_DFF_351>.
+    Found 1-bit register for signal <state[1]_clock_DFF_352>.
+    Found 1-bit register for signal <state[1]_clock_DFF_353>.
+    Found 1-bit register for signal <state[1]_clock_DFF_354>.
+    Found 1-bit register for signal <state[1]_clock_DFF_355>.
+    Found 1-bit register for signal <state[1]_clock_DFF_356>.
+    Found 1-bit register for signal <state[1]_clock_DFF_357>.
+    Found 1-bit register for signal <state[1]_clock_DFF_358>.
+    Found 1-bit register for signal <state[1]_clock_DFF_359>.
+    Found 1-bit register for signal <state[1]_clock_DFF_360>.
+    Found 1-bit register for signal <state[1]_clock_DFF_361>.
+    Found 1-bit register for signal <state[1]_clock_DFF_362>.
+    Found 1-bit register for signal <state[1]_clock_DFF_363>.
+    Found 1-bit register for signal <state[1]_clock_DFF_364>.
+    Found 1-bit register for signal <state[1]_clock_DFF_365>.
+    Found 1-bit register for signal <state[1]_clock_DFF_366>.
+    Found 1-bit register for signal <state[1]_clock_DFF_367>.
+    Found 1-bit register for signal <state[1]_clock_DFF_368>.
+    Found 1-bit register for signal <state[1]_clock_DFF_369>.
+    Found 1-bit register for signal <state[1]_clock_DFF_370>.
+    Found 1-bit register for signal <state[1]_clock_DFF_371>.
+    Found 1-bit register for signal <state[1]_clock_DFF_372>.
+    Found 1-bit register for signal <state[1]_clock_DFF_373>.
+    Found 1-bit register for signal <state[1]_clock_DFF_374>.
+    Found 1-bit register for signal <uart_send_ack_flag>.
+    Found 32-bit register for signal <state[1]_dff_144_OUT>.
+    Found 32-bit register for signal <state[1]_dff_145_OUT>.
+    Found 20-bit register for signal <state[1]_dff_146_OUT>.
+    Found 20-bit register for signal <state[1]_dff_147_OUT>.
+    Found 16-bit register for signal <state[1]_dff_153_OUT>.
+    Found 32-bit register for signal <s_MEM_data>.
+    Found 32-bit register for signal <s_MEM_addr>.
+    Found 2-bit register for signal <sb_replace_pos>.
+    Found 1-bit register for signal <s_use_me_as_output>.
+    Found 32-bit register for signal <s_output>.
+    Found 1-bit register for signal <ram_choice>.
+    Found 7-bit register for signal <VGA_data>.
+    Found 7-bit register for signal <VGA_x>.
+    Found 5-bit register for signal <VGA_y>.
+    Found 8-bit register for signal <UART_DATA_SEND>.
+    Found 1-bit register for signal <s_REG_write>.
+    Found 5-bit register for signal <s_REG_write_addr>.
+    Found 1-bit register for signal <s_REG_write_byte_only>.
+    Found 32-bit register for signal <sb_target_data>.
+    Found 1-bit register for signal <REG_write_byte_only>.
+    Found 2-bit register for signal <REG_write_byte_pos>.
+    Found finite state machine <FSM_4> for signal <state>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 4                                              |
+    | Inputs             | 0                                              |
+    | Outputs            | 8                                              |
+    | Clock              | clock (rising_edge)                            |
+    | Reset              | reset (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | s0                                             |
+    | Power Up State     | s0                                             |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 1-bit tristate buffer for signal <EXTRAM_data<31>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<30>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<29>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<28>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<27>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<26>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<25>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<24>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<23>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<22>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<21>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<20>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<19>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<18>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<17>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<16>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<15>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<14>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<13>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<12>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<11>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<10>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<9>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<8>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<7>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<6>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<5>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<4>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<3>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<2>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<1>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_data<0>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<31>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<30>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<29>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<28>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<27>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<26>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<25>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<24>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<23>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<22>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<21>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<20>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<19>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<18>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<17>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<16>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<15>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<14>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<13>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<12>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<11>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<10>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<9>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<8>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<7>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<6>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<5>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<4>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<3>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<2>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<1>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_data<0>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<19>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<18>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<17>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<16>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<15>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<14>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<13>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<12>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<11>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<10>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<9>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<8>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<7>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<6>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<5>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<4>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<3>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<2>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<1>> created at line 114
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<0>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<19>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<18>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<17>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<16>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<15>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<14>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<13>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<12>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<11>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<10>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<9>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<8>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<7>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<6>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<5>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<4>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<3>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<2>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<1>> created at line 114
+    Found 1-bit tristate buffer for signal <BASERAM_addr<0>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<15>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<14>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<13>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<12>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<11>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<10>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<9>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<8>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<7>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<6>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<5>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<4>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<3>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<2>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<1>> created at line 114
+    Found 1-bit tristate buffer for signal <ENET_D<0>> created at line 114
+    Summary:
+	inferred 485 D-type flip-flop(s).
+	inferred  66 Multiplexer(s).
+	inferred 120 Tristate(s).
+	inferred   1 Finite State Machine(s).
+Unit <Memory> synthesized.
+
+Synthesizing Unit <DigitalNumber>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/DigitalNumber.vhdl".
+    Found 7-bit register for signal <DYP>.
+    Found 16x7-bit Read Only RAM for signal <value[3]_PWR_26_o_wide_mux_0_OUT>
+    Summary:
+	inferred   1 RAM(s).
+	inferred   7 D-type flip-flop(s).
+Unit <DigitalNumber> synthesized.
+
+Synthesizing Unit <PCdecider>.
+    Related source file is "/home/blahgeek/MadeAComputerIn20Days/CPU/PCdecider.vhdl".
+    Found 1-bit register for signal <state[1]_clock_DFF_377>.
+    Found 1-bit register for signal <state[1]_clock_DFF_378>.
+    Found 1-bit register for signal <state[1]_clock_DFF_379>.
+    Found 1-bit register for signal <state[1]_clock_DFF_380>.
+    Found 1-bit register for signal <state[1]_clock_DFF_381>.
+    Found 1-bit register for signal <state[1]_clock_DFF_382>.
+    Found 1-bit register for signal <state[1]_clock_DFF_383>.
+    Found 1-bit register for signal <state[1]_clock_DFF_384>.
+    Found 1-bit register for signal <state[1]_clock_DFF_385>.
+    Found 1-bit register for signal <state[1]_clock_DFF_386>.
+    Found 1-bit register for signal <state[1]_clock_DFF_387>.
+    Found 1-bit register for signal <state[1]_clock_DFF_388>.
+    Found 1-bit register for signal <state[1]_clock_DFF_389>.
+    Found 1-bit register for signal <state[1]_clock_DFF_390>.
+    Found 1-bit register for signal <state[1]_clock_DFF_391>.
+    Found 1-bit register for signal <state[1]_clock_DFF_392>.
+    Found 1-bit register for signal <state[1]_clock_DFF_393>.
+    Found 1-bit register for signal <state[1]_clock_DFF_394>.
+    Found 1-bit register for signal <state[1]_clock_DFF_395>.
+    Found 1-bit register for signal <state[1]_clock_DFF_396>.
+    Found 1-bit register for signal <state[1]_clock_DFF_397>.
+    Found 1-bit register for signal <state[1]_clock_DFF_398>.
+    Found 1-bit register for signal <state[1]_clock_DFF_399>.
+    Found 1-bit register for signal <state[1]_clock_DFF_400>.
+    Found 1-bit register for signal <state[1]_clock_DFF_401>.
+    Found 1-bit register for signal <state[1]_clock_DFF_402>.
+    Found 1-bit register for signal <state[1]_clock_DFF_403>.
+    Found 1-bit register for signal <state[1]_clock_DFF_404>.
+    Found 1-bit register for signal <state[1]_clock_DFF_405>.
+    Found 1-bit register for signal <state[1]_clock_DFF_406>.
+    Found 1-bit register for signal <state[1]_clock_DFF_407>.
+    Found 1-bit register for signal <state[1]_clock_DFF_408>.
+    Found 1-bit register for signal <state[1]_clock_DFF_409>.
+    Found 1-bit register for signal <state[1]_clock_DFF_410>.
+    Found 1-bit register for signal <state[1]_clock_DFF_411>.
+    Found 1-bit register for signal <state[1]_clock_DFF_412>.
+    Found 1-bit register for signal <state[1]_clock_DFF_413>.
+    Found 1-bit register for signal <state[1]_clock_DFF_414>.
+    Found 1-bit register for signal <state[1]_clock_DFF_415>.
+    Found 1-bit register for signal <state[1]_clock_DFF_376>.
+    Found 20-bit register for signal <state[1]_dff_21_OUT>.
+    Found 20-bit register for signal <state[1]_dff_22_OUT>.
+    Found 20-bit register for signal <s_addr>.
+    Found 2-bit register for signal <state>.
+    Found 1-bit register for signal <RAM_select>.
+    Found 20-bit register for signal <TLB_virt>.
+    Found 32-bit register for signal <real_addr>.
+    Found 1-bit register for signal <s_pc<31>>.
+    Found 1-bit register for signal <s_pc<30>>.
+    Found 1-bit register for signal <s_pc<29>>.
+    Found 1-bit register for signal <s_pc<28>>.
+    Found 1-bit register for signal <s_pc<27>>.
+    Found 1-bit register for signal <s_pc<26>>.
+    Found 1-bit register for signal <s_pc<25>>.
+    Found 1-bit register for signal <s_pc<24>>.
+    Found 1-bit register for signal <s_pc<23>>.
+    Found 1-bit register for signal <s_pc<22>>.
+    Found 1-bit register for signal <s_pc<21>>.
+    Found 1-bit register for signal <s_pc<20>>.
+    Found 1-bit register for signal <s_pc<19>>.
+    Found 1-bit register for signal <s_pc<18>>.
+    Found 1-bit register for signal <s_pc<17>>.
+    Found 1-bit register for signal <s_pc<16>>.
+    Found 1-bit register for signal <s_pc<15>>.
+    Found 1-bit register for signal <s_pc<14>>.
+    Found 1-bit register for signal <s_pc<13>>.
+    Found 1-bit register for signal <s_pc<12>>.
+    Found 1-bit register for signal <s_pc<11>>.
+    Found 1-bit register for signal <s_pc<10>>.
+    Found 1-bit register for signal <s_pc<9>>.
+    Found 1-bit register for signal <s_pc<8>>.
+    Found 1-bit register for signal <s_pc<7>>.
+    Found 1-bit register for signal <s_pc<6>>.
+    Found 1-bit register for signal <s_pc<5>>.
+    Found 1-bit register for signal <s_pc<4>>.
+    Found 1-bit register for signal <s_pc<3>>.
+    Found 1-bit register for signal <s_pc<2>>.
+    Found 1-bit register for signal <s_pc<1>>.
+    Found 1-bit register for signal <s_pc<0>>.
+    Found 1-bit register for signal <PC<31>>.
+    Found 1-bit register for signal <PC<30>>.
+    Found 1-bit register for signal <PC<29>>.
+    Found 1-bit register for signal <PC<28>>.
+    Found 1-bit register for signal <PC<27>>.
+    Found 1-bit register for signal <PC<26>>.
+    Found 1-bit register for signal <PC<25>>.
+    Found 1-bit register for signal <PC<24>>.
+    Found 1-bit register for signal <PC<23>>.
+    Found 1-bit register for signal <PC<22>>.
+    Found 1-bit register for signal <PC<21>>.
+    Found 1-bit register for signal <PC<20>>.
+    Found 1-bit register for signal <PC<19>>.
+    Found 1-bit register for signal <PC<18>>.
+    Found 1-bit register for signal <PC<17>>.
+    Found 1-bit register for signal <PC<16>>.
+    Found 1-bit register for signal <PC<15>>.
+    Found 1-bit register for signal <PC<14>>.
+    Found 1-bit register for signal <PC<13>>.
+    Found 1-bit register for signal <PC<12>>.
+    Found 1-bit register for signal <PC<11>>.
+    Found 1-bit register for signal <PC<10>>.
+    Found 1-bit register for signal <PC<9>>.
+    Found 1-bit register for signal <PC<8>>.
+    Found 1-bit register for signal <PC<7>>.
+    Found 1-bit register for signal <PC<6>>.
+    Found 1-bit register for signal <PC<5>>.
+    Found 1-bit register for signal <PC<4>>.
+    Found 1-bit register for signal <PC<3>>.
+    Found 1-bit register for signal <PC<2>>.
+    Found 1-bit register for signal <PC<1>>.
+    Found 1-bit register for signal <PC<0>>.
+    Found finite state machine <FSM_5> for signal <state>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 4                                              |
+    | Inputs             | 0                                              |
+    | Outputs            | 4                                              |
+    | Clock              | clock (rising_edge)                            |
+    | Reset              | reset (positive)                               |
+    | Reset type         | asynchronous                                   |
+    | Reset State        | s0                                             |
+    | Power Up State     | s0                                             |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 32-bit adder for signal <s_pc[31]_GND_390_o_add_2_OUT> created at line 1241.
+    Found 1-bit tristate buffer for signal <BASERAM_addr<19>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<18>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<17>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<16>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<15>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<14>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<13>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<12>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<11>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<10>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<9>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<8>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<7>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<6>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<5>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<4>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<3>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<2>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<1>> created at line 42
+    Found 1-bit tristate buffer for signal <BASERAM_addr<0>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<19>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<18>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<17>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<16>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<15>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<14>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<13>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<12>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<11>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<10>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<9>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<8>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<7>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<6>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<5>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<4>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<3>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<2>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<1>> created at line 42
+    Found 1-bit tristate buffer for signal <EXTRAM_addr<0>> created at line 42
+    Summary:
+	inferred   1 Adder/Subtractor(s).
+	inferred 217 D-type flip-flop(s).
+	inferred   8 Multiplexer(s).
+	inferred  40 Tristate(s).
+	inferred   1 Finite State Machine(s).
+Unit <PCdecider> synthesized.
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# RAMs                                                 : 2
+ 16x7-bit single-port Read Only RAM                    : 2
+# Adders/Subtractors                                   : 19
+ 10-bit adder                                          : 2
+ 12-bit adder                                          : 4
+ 2-bit addsub                                          : 1
+ 26-bit adder                                          : 2
+ 3-bit adder                                           : 2
+ 3-bit subtractor                                      : 2
+ 32-bit adder                                          : 2
+ 32-bit addsub                                         : 1
+ 32-bit subtractor                                     : 2
+ 4-bit subtractor                                      : 1
+# Registers                                            : 461
+ 1-bit register                                        : 308
+ 10-bit register                                       : 2
+ 16-bit register                                       : 2
+ 2-bit register                                        : 4
+ 20-bit register                                       : 9
+ 3-bit register                                        : 8
+ 32-bit register                                       : 90
+ 4-bit register                                        : 7
+ 5-bit register                                        : 14
+ 64-bit register                                       : 9
+ 7-bit register                                        : 4
+ 8-bit register                                        : 4
+# Comparators                                          : 39
+ 10-bit comparator greater                             : 4
+ 10-bit comparator lessequal                           : 2
+ 19-bit comparator equal                               : 16
+ 2-bit comparator greater                              : 2
+ 24-bit comparator equal                               : 1
+ 32-bit comparator equal                               : 2
+ 32-bit comparator greater                             : 4
+ 32-bit comparator not equal                           : 1
+ 4-bit comparator equal                                : 1
+ 5-bit comparator equal                                : 6
+# Multiplexers                                         : 365
+ 1-bit 2-to-1 multiplexer                              : 189
+ 1-bit 8-to-1 multiplexer                              : 1
+ 10-bit 2-to-1 multiplexer                             : 2
+ 16-bit 2-to-1 multiplexer                             : 1
+ 20-bit 2-to-1 multiplexer                             : 43
+ 24-bit 2-to-1 multiplexer                             : 1
+ 3-bit 2-to-1 multiplexer                              : 16
+ 32-bit 2-to-1 multiplexer                             : 69
+ 32-bit 32-to-1 multiplexer                            : 3
+ 4-bit 2-to-1 multiplexer                              : 13
+ 5-bit 2-to-1 multiplexer                              : 23
+ 8-bit 2-to-1 multiplexer                              : 4
+# Logic shifters                                       : 4
+ 32-bit shifter arithmetic right                       : 1
+ 32-bit shifter logical left                           : 2
+ 32-bit shifter logical right                          : 1
+# Tristates                                            : 168
+ 1-bit tristate buffer                                 : 168
+# FSMs                                                 : 6
+# Xors                                                 : 2
+ 1-bit xor2                                            : 1
+ 32-bit xor2                                           : 1
+
+=========================================================================
+INFO:Xst:1767 - HDL ADVISOR - Resource sharing has identified that some arithmetic operations in this design can share the same physical resources for reduced device utilization. For improved clock frequency you may try to disable resource sharing.
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Reading core <VGAConsoleMemory.ngc>.
+Reading core <CoreRom.ngc>.
+Reading core <CoreFontRom.ngc>.
+Reading core <SignedMultiplier.ngc>.
+Reading Secure Unit <blk00000001>.
+Reading core <UnsignedMultiplier.ngc>.
+Reading Secure Unit <blk00000001>.
+Loading core <VGAConsoleMemory> for timing and area information for instance <VGAConsolemem0>.
+Loading core <CoreRom> for timing and area information for instance <bios>.
+Loading core <CoreFontRom> for timing and area information for instance <fontrom0>.
+Loading core <SignedMultiplier> for timing and area information for instance <mul0>.
+Loading core <UnsignedMultiplier> for timing and area information for instance <mul1>.
+INFO:Xst:2261 - The FF/Latch <rt_1> in Unit <vga0> is equivalent to the following FF/Latch, which will be removed : <gt_1> 
+INFO:Xst:2261 - The FF/Latch <rt_2> in Unit <vga0> is equivalent to the following FF/Latch, which will be removed : <gt_2> 
+INFO:Xst:2261 - The FF/Latch <rt_0> in Unit <vga0> is equivalent to the following FF/Latch, which will be removed : <gt_0> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_287> in Unit <Mem0> is equivalent to the following 31 FFs/Latches, which will be removed : <state[1]_clock_DFF_290> <state[1]_clock_DFF_288> <state[1]_clock_DFF_289> <state[1]_clock_DFF_291> <state[1]_clock_DFF_292> <state[1]_clock_DFF_295> <state[1]_clock_DFF_293> <state[1]_clock_DFF_294> <state[1]_clock_DFF_298> <state[1]_clock_DFF_296> <state[1]_clock_DFF_297> <state[1]_clock_DFF_301> <state[1]_clock_DFF_299> <state[1]_clock_DFF_300> <state[1]_clock_DFF_302> <state[1]_clock_DFF_303> <state[1]_clock_DFF_306> <state[1]_clock_DFF_304> <state[1]_clock_DFF_305> <state[1]_clock_DFF_307> <state[1]_clock_DFF_308> <state[1]_clock_DFF_311> <state[1]_clock_DFF_309> <state[1]_clock_DFF_310> <state[1]_clock_DFF_312> <state[1]_clock_DFF_313> <state[1]_clock_DFF_316> <state[1]_clock_DFF_314> <state[1]_clock_DFF_315> <state[1]_clock_DFF_317> <state[1]_clock_DFF_318> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_341> in Unit <Mem0> is equivalent to the following 19 FFs/Latches, which will be removed : <state[1]_clock_DFF_339> <state[1]_clock_DFF_340> <state[1]_clock_DFF_344> <state[1]_clock_DFF_342> <state[1]_clock_DFF_343> <state[1]_clock_DFF_345> <state[1]_clock_DFF_346> <state[1]_clock_DFF_349> <state[1]_clock_DFF_347> <state[1]_clock_DFF_348> <state[1]_clock_DFF_352> <state[1]_clock_DFF_350> <state[1]_clock_DFF_351> <state[1]_clock_DFF_355> <state[1]_clock_DFF_353> <state[1]_clock_DFF_354> <state[1]_clock_DFF_356> <state[1]_clock_DFF_357> <state[1]_clock_DFF_358> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_319> in Unit <Mem0> is equivalent to the following 19 FFs/Latches, which will be removed : <state[1]_clock_DFF_322> <state[1]_clock_DFF_320> <state[1]_clock_DFF_321> <state[1]_clock_DFF_323> <state[1]_clock_DFF_324> <state[1]_clock_DFF_327> <state[1]_clock_DFF_325> <state[1]_clock_DFF_326> <state[1]_clock_DFF_330> <state[1]_clock_DFF_328> <state[1]_clock_DFF_329> <state[1]_clock_DFF_333> <state[1]_clock_DFF_331> <state[1]_clock_DFF_332> <state[1]_clock_DFF_334> <state[1]_clock_DFF_335> <state[1]_clock_DFF_338> <state[1]_clock_DFF_336> <state[1]_clock_DFF_337> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_257> in Unit <Mem0> is equivalent to the following 31 FFs/Latches, which will be removed : <state[1]_clock_DFF_255> <state[1]_clock_DFF_256> <state[1]_clock_DFF_258> <state[1]_clock_DFF_259> <state[1]_clock_DFF_262> <state[1]_clock_DFF_260> <state[1]_clock_DFF_261> <state[1]_clock_DFF_265> <state[1]_clock_DFF_263> <state[1]_clock_DFF_264> <state[1]_clock_DFF_268> <state[1]_clock_DFF_266> <state[1]_clock_DFF_267> <state[1]_clock_DFF_269> <state[1]_clock_DFF_270> <state[1]_clock_DFF_273> <state[1]_clock_DFF_271> <state[1]_clock_DFF_272> <state[1]_clock_DFF_276> <state[1]_clock_DFF_274> <state[1]_clock_DFF_275> <state[1]_clock_DFF_279> <state[1]_clock_DFF_277> <state[1]_clock_DFF_278> <state[1]_clock_DFF_280> <state[1]_clock_DFF_281> <state[1]_clock_DFF_284> <state[1]_clock_DFF_282> <state[1]_clock_DFF_283> <state[1]_clock_DFF_285> <state[1]_clock_DFF_286> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_360> in Unit <Mem0> is equivalent to the following 15 FFs/Latches, which will be removed : <state[1]_clock_DFF_359> <state[1]_clock_DFF_363> <state[1]_clock_DFF_361> <state[1]_clock_DFF_362> <state[1]_clock_DFF_366> <state[1]_clock_DFF_364> <state[1]_clock_DFF_365> <state[1]_clock_DFF_367> <state[1]_clock_DFF_368> <state[1]_clock_DFF_371> <state[1]_clock_DFF_369> <state[1]_clock_DFF_370> <state[1]_clock_DFF_374> <state[1]_clock_DFF_372> <state[1]_clock_DFF_373> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_377> in Unit <PC0> is equivalent to the following 39 FFs/Latches, which will be removed : <state[1]_clock_DFF_378> <state[1]_clock_DFF_381> <state[1]_clock_DFF_379> <state[1]_clock_DFF_380> <state[1]_clock_DFF_382> <state[1]_clock_DFF_383> <state[1]_clock_DFF_386> <state[1]_clock_DFF_384> <state[1]_clock_DFF_385> <state[1]_clock_DFF_387> <state[1]_clock_DFF_388> <state[1]_clock_DFF_391> <state[1]_clock_DFF_389> <state[1]_clock_DFF_390> <state[1]_clock_DFF_392> <state[1]_clock_DFF_393> <state[1]_clock_DFF_396> <state[1]_clock_DFF_394> <state[1]_clock_DFF_395> <state[1]_clock_DFF_397> <state[1]_clock_DFF_398> <state[1]_clock_DFF_401> <state[1]_clock_DFF_399> <state[1]_clock_DFF_400> <state[1]_clock_DFF_402> <state[1]_clock_DFF_403> <state[1]_clock_DFF_406> <state[1]_clock_DFF_404> <state[1]_clock_DFF_405> <state[1]_clock_DFF_407> <state[1]_clock_DFF_408> <state[1]_clock_DFF_411> <state[1]_clock_DFF_409> <state[1]_clock_DFF_410> <state[1]_clock_DFF_412>
+   <state[1]_clock_DFF_413> <state[1]_clock_DFF_376> <state[1]_clock_DFF_414> <state[1]_clock_DFF_415> 
+WARNING:Xst:1293 - FF/Latch <s_interrupt_numbers_0> has a constant value of 0 in block <FetcherAndRegister0>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <s_interrupt_numbers_1> has a constant value of 0 in block <FetcherAndRegister0>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <s_interrupt_numbers_2> has a constant value of 0 in block <FetcherAndRegister0>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <s_interrupt_numbers_3> has a constant value of 0 in block <FetcherAndRegister0>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <s_interrupt_numbers_5> has a constant value of 0 in block <FetcherAndRegister0>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <s_interrupt_numbers_6> has a constant value of 0 in block <FetcherAndRegister0>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <s_MEM_addr_28> of sequential type is unconnected in block <Mem0>.
+WARNING:Xst:2677 - Node <s_MEM_addr_29> of sequential type is unconnected in block <Mem0>.
+WARNING:Xst:2677 - Node <s_MEM_addr_30> of sequential type is unconnected in block <Mem0>.
+WARNING:Xst:2677 - Node <s_MEM_addr_31> of sequential type is unconnected in block <Mem0>.
+WARNING:Xst:2677 - Node <real_addr_0> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_1> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_23> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_24> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_25> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_26> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_27> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_28> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_29> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_30> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <real_addr_31> of sequential type is unconnected in block <PC0>.
+WARNING:Xst:2677 - Node <data_3_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_3_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_3_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_1_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_1_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_1_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_2_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_2_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_2_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_6_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_6_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_6_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_4_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_4_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_4_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_5_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_5_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_5_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_7_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_7_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_7_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_0_1> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_0_23> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_0_63> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_real_addr_16> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_real_addr_17> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_real_addr_18> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <data_real_addr_19> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_11> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_12> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_13> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_14> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_15> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_16> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_17> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_18> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <instruction_real_addr_19> of sequential type is unconnected in block <tlb0>.
+WARNING:Xst:2677 - Node <TLB_set_entry_1> of sequential type is unconnected in block <FetcherAndRegister0>.
+WARNING:Xst:2677 - Node <TLB_set_entry_23> of sequential type is unconnected in block <FetcherAndRegister0>.
+WARNING:Xst:2677 - Node <TLB_set_entry_63> of sequential type is unconnected in block <FetcherAndRegister0>.
+WARNING:Xst:2677 - Node <ALU_output_after_TLB_28> of sequential type is unconnected in block <ALUWrapper0>.
+WARNING:Xst:2677 - Node <ALU_output_after_TLB_29> of sequential type is unconnected in block <ALUWrapper0>.
+WARNING:Xst:2677 - Node <ALU_output_after_TLB_30> of sequential type is unconnected in block <ALUWrapper0>.
+WARNING:Xst:2677 - Node <ALU_output_after_TLB_31> of sequential type is unconnected in block <ALUWrapper0>.
+WARNING:Xst:2404 -  FFs/Latches <TLB_set_entry<63:63>> (without init value) have a constant value of 0 in block <FetcherAndRegister>.
+
+Synthesizing (advanced) Unit <DigitalNumber>.
+INFO:Xst:3217 - HDL ADVISOR - Register <DYP> currently described with an asynchronous reset, could be combined with distributed RAM <Mram_value[3]_PWR_26_o_wide_mux_0_OUT> for implementation on block RAM resources if you made this reset synchronous instead.
+    -----------------------------------------------------------------------
+    | ram_type           | Distributed                         |          |
+    -----------------------------------------------------------------------
+    | Port A                                                              |
+    |     aspect ratio   | 16-word x 7-bit                     |          |
+    |     weA            | connected to signal <GND>           | high     |
+    |     addrA          | connected to signal <value>         |          |
+    |     diA            | connected to signal <GND>           |          |
+    |     doA            | connected to internal node          |          |
+    -----------------------------------------------------------------------
+Unit <DigitalNumber> synthesized (advanced).
+
+Synthesizing (advanced) Unit <FetcherAndRegister>.
+The following registers are absorbed into counter <REGS_C0_9>: 1 register on signal <REGS_C0_9>.
+Unit <FetcherAndRegister> synthesized (advanced).
+
+Synthesizing (advanced) Unit <UART>.
+The following registers are absorbed into counter <uart_rx_filter>: 1 register on signal <uart_rx_filter>.
+The following registers are absorbed into counter <uart_tx_count>: 1 register on signal <uart_tx_count>.
+The following registers are absorbed into counter <uart_rx_count>: 1 register on signal <uart_rx_count>.
+Unit <UART> synthesized (advanced).
+
+Synthesizing (advanced) Unit <VGA_Controller>.
+The following registers are absorbed into counter <x>: 1 register on signal <x>.
+The following registers are absorbed into counter <y>: 1 register on signal <y>.
+Unit <VGA_Controller> synthesized (advanced).
+WARNING:Xst:2677 - Node <s_MEM_addr_28> of sequential type is unconnected in block <Memory>.
+WARNING:Xst:2677 - Node <s_MEM_addr_29> of sequential type is unconnected in block <Memory>.
+WARNING:Xst:2677 - Node <s_MEM_addr_30> of sequential type is unconnected in block <Memory>.
+WARNING:Xst:2677 - Node <s_MEM_addr_31> of sequential type is unconnected in block <Memory>.
+WARNING:Xst:2677 - Node <real_addr_0> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_1> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_23> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_24> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_25> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_26> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_27> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_28> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_29> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_30> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <real_addr_31> of sequential type is unconnected in block <PCdecider>.
+WARNING:Xst:2677 - Node <data_3_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_3_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_3_63> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_1_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_1_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_1_63> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_2_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_2_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_2_63> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_6_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_6_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_6_63> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_4_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_4_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_4_63> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_5_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_5_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_5_63> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_7_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_7_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_7_63> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_0_1> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_0_23> of sequential type is unconnected in block <TLB>.
+WARNING:Xst:2677 - Node <data_0_63> of sequential type is unconnected in block <TLB>.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# RAMs                                                 : 2
+ 16x7-bit single-port distributed Read Only RAM        : 2
+# Adders/Subtractors                                   : 12
+ 12-bit adder                                          : 4
+ 26-bit adder carry in                                 : 1
+ 3-bit subtractor                                      : 2
+ 32-bit adder                                          : 1
+ 32-bit addsub                                         : 1
+ 32-bit subtractor                                     : 2
+ 4-bit subtractor                                      : 1
+# Counters                                             : 6
+ 10-bit up counter                                     : 2
+ 2-bit updown counter                                  : 1
+ 3-bit up counter                                      : 2
+ 32-bit up counter                                     : 1
+# Registers                                            : 4086
+ Flip-Flops                                            : 4086
+# Comparators                                          : 39
+ 10-bit comparator greater                             : 4
+ 10-bit comparator lessequal                           : 2
+ 19-bit comparator equal                               : 16
+ 2-bit comparator greater                              : 2
+ 24-bit comparator equal                               : 1
+ 32-bit comparator equal                               : 2
+ 32-bit comparator greater                             : 4
+ 32-bit comparator not equal                           : 1
+ 4-bit comparator equal                                : 1
+ 5-bit comparator equal                                : 6
+# Multiplexers                                         : 1173
+ 1-bit 2-to-1 multiplexer                              : 941
+ 1-bit 32-to-1 multiplexer                             : 96
+ 1-bit 8-to-1 multiplexer                              : 1
+ 16-bit 2-to-1 multiplexer                             : 1
+ 20-bit 2-to-1 multiplexer                             : 15
+ 24-bit 2-to-1 multiplexer                             : 1
+ 3-bit 2-to-1 multiplexer                              : 16
+ 32-bit 2-to-1 multiplexer                             : 62
+ 4-bit 2-to-1 multiplexer                              : 13
+ 5-bit 2-to-1 multiplexer                              : 23
+ 8-bit 2-to-1 multiplexer                              : 4
+# Logic shifters                                       : 4
+ 32-bit shifter arithmetic right                       : 1
+ 32-bit shifter logical left                           : 2
+ 32-bit shifter logical right                          : 1
+# FSMs                                                 : 6
+# Xors                                                 : 2
+ 1-bit xor2                                            : 1
+ 32-bit xor2                                           : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+INFO:Xst:2261 - The FF/Latch <gt_1> in Unit <VGA_Controller> is equivalent to the following FF/Latch, which will be removed : <rt_1> 
+INFO:Xst:2261 - The FF/Latch <gt_2> in Unit <VGA_Controller> is equivalent to the following FF/Latch, which will be removed : <rt_2> 
+INFO:Xst:2261 - The FF/Latch <gt_0> in Unit <VGA_Controller> is equivalent to the following FF/Latch, which will be removed : <rt_0> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_287> in Unit <Memory> is equivalent to the following 31 FFs/Latches, which will be removed : <state[1]_clock_DFF_288> <state[1]_clock_DFF_289> <state[1]_clock_DFF_292> <state[1]_clock_DFF_290> <state[1]_clock_DFF_291> <state[1]_clock_DFF_295> <state[1]_clock_DFF_293> <state[1]_clock_DFF_294> <state[1]_clock_DFF_298> <state[1]_clock_DFF_296> <state[1]_clock_DFF_297> <state[1]_clock_DFF_299> <state[1]_clock_DFF_300> <state[1]_clock_DFF_303> <state[1]_clock_DFF_301> <state[1]_clock_DFF_302> <state[1]_clock_DFF_306> <state[1]_clock_DFF_304> <state[1]_clock_DFF_305> <state[1]_clock_DFF_309> <state[1]_clock_DFF_307> <state[1]_clock_DFF_308> <state[1]_clock_DFF_310> <state[1]_clock_DFF_311> <state[1]_clock_DFF_314> <state[1]_clock_DFF_312> <state[1]_clock_DFF_313> <state[1]_clock_DFF_317> <state[1]_clock_DFF_315> <state[1]_clock_DFF_316> <state[1]_clock_DFF_318> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_339> in Unit <Memory> is equivalent to the following 19 FFs/Latches, which will be removed : <state[1]_clock_DFF_342> <state[1]_clock_DFF_340> <state[1]_clock_DFF_341> <state[1]_clock_DFF_343> <state[1]_clock_DFF_344> <state[1]_clock_DFF_347> <state[1]_clock_DFF_345> <state[1]_clock_DFF_346> <state[1]_clock_DFF_350> <state[1]_clock_DFF_348> <state[1]_clock_DFF_349> <state[1]_clock_DFF_353> <state[1]_clock_DFF_351> <state[1]_clock_DFF_352> <state[1]_clock_DFF_354> <state[1]_clock_DFF_355> <state[1]_clock_DFF_358> <state[1]_clock_DFF_356> <state[1]_clock_DFF_357> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_320> in Unit <Memory> is equivalent to the following 19 FFs/Latches, which will be removed : <state[1]_clock_DFF_319> <state[1]_clock_DFF_321> <state[1]_clock_DFF_322> <state[1]_clock_DFF_325> <state[1]_clock_DFF_323> <state[1]_clock_DFF_324> <state[1]_clock_DFF_328> <state[1]_clock_DFF_326> <state[1]_clock_DFF_327> <state[1]_clock_DFF_331> <state[1]_clock_DFF_329> <state[1]_clock_DFF_330> <state[1]_clock_DFF_332> <state[1]_clock_DFF_333> <state[1]_clock_DFF_336> <state[1]_clock_DFF_334> <state[1]_clock_DFF_335> <state[1]_clock_DFF_337> <state[1]_clock_DFF_338> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_255> in Unit <Memory> is equivalent to the following 31 FFs/Latches, which will be removed : <state[1]_clock_DFF_256> <state[1]_clock_DFF_259> <state[1]_clock_DFF_257> <state[1]_clock_DFF_258> <state[1]_clock_DFF_262> <state[1]_clock_DFF_260> <state[1]_clock_DFF_261> <state[1]_clock_DFF_265> <state[1]_clock_DFF_263> <state[1]_clock_DFF_264> <state[1]_clock_DFF_266> <state[1]_clock_DFF_267> <state[1]_clock_DFF_270> <state[1]_clock_DFF_268> <state[1]_clock_DFF_269> <state[1]_clock_DFF_273> <state[1]_clock_DFF_271> <state[1]_clock_DFF_272> <state[1]_clock_DFF_276> <state[1]_clock_DFF_274> <state[1]_clock_DFF_275> <state[1]_clock_DFF_277> <state[1]_clock_DFF_278> <state[1]_clock_DFF_281> <state[1]_clock_DFF_279> <state[1]_clock_DFF_280> <state[1]_clock_DFF_284> <state[1]_clock_DFF_282> <state[1]_clock_DFF_283> <state[1]_clock_DFF_285> <state[1]_clock_DFF_286> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_361> in Unit <Memory> is equivalent to the following 15 FFs/Latches, which will be removed : <state[1]_clock_DFF_359> <state[1]_clock_DFF_360> <state[1]_clock_DFF_364> <state[1]_clock_DFF_362> <state[1]_clock_DFF_363> <state[1]_clock_DFF_365> <state[1]_clock_DFF_366> <state[1]_clock_DFF_369> <state[1]_clock_DFF_367> <state[1]_clock_DFF_368> <state[1]_clock_DFF_372> <state[1]_clock_DFF_370> <state[1]_clock_DFF_371> <state[1]_clock_DFF_373> <state[1]_clock_DFF_374> 
+INFO:Xst:2261 - The FF/Latch <state[1]_clock_DFF_377> in Unit <PCdecider> is equivalent to the following 39 FFs/Latches, which will be removed : <state[1]_clock_DFF_378> <state[1]_clock_DFF_381> <state[1]_clock_DFF_379> <state[1]_clock_DFF_380> <state[1]_clock_DFF_382> <state[1]_clock_DFF_383> <state[1]_clock_DFF_386> <state[1]_clock_DFF_384> <state[1]_clock_DFF_385> <state[1]_clock_DFF_387> <state[1]_clock_DFF_388> <state[1]_clock_DFF_391> <state[1]_clock_DFF_389> <state[1]_clock_DFF_390> <state[1]_clock_DFF_392> <state[1]_clock_DFF_393> <state[1]_clock_DFF_396> <state[1]_clock_DFF_394> <state[1]_clock_DFF_395> <state[1]_clock_DFF_397> <state[1]_clock_DFF_398> <state[1]_clock_DFF_401> <state[1]_clock_DFF_399> <state[1]_clock_DFF_400> <state[1]_clock_DFF_402> <state[1]_clock_DFF_403> <state[1]_clock_DFF_406> <state[1]_clock_DFF_404> <state[1]_clock_DFF_405> <state[1]_clock_DFF_407> <state[1]_clock_DFF_408> <state[1]_clock_DFF_411> <state[1]_clock_DFF_409> <state[1]_clock_DFF_410> <state[1]_clock_DFF_412>
+   <state[1]_clock_DFF_413> <state[1]_clock_DFF_376> <state[1]_clock_DFF_414> <state[1]_clock_DFF_415> 
+INFO:Xst:2261 - The FF/Latch <s_interrupt_numbers_0> in Unit <FetcherAndRegister> is equivalent to the following 5 FFs/Latches, which will be removed : <s_interrupt_numbers_1> <s_interrupt_numbers_2> <s_interrupt_numbers_3> <s_interrupt_numbers_5> <s_interrupt_numbers_6> 
+WARNING:Xst:1293 - FF/Latch <s_interrupt_numbers_0> has a constant value of 0 in block <FetcherAndRegister>. This FF/Latch will be trimmed during the optimization process.
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <uart0/FSM_1> on signal <uart_rx_state[1:2]> with user encoding.
+---------------------------------------
+ State                     | Encoding
+---------------------------------------
+ rx_wait_start_synchronise | 00
+ rx_get_start_bit          | 01
+ rx_get_data               | 10
+ rx_get_stop_bit           | 11
+---------------------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <uart0/FSM_0> on signal <uart_tx_state[1:3]> with user encoding.
+----------------------------
+ State          | Encoding
+----------------------------
+ idle           | 000
+ wait_for_tick  | 001
+ send_start_bit | 010
+ transmit_data  | 011
+ send_stop_bit  | 100
+----------------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <Mem0/FSM_4> on signal <state[1:2]> with user encoding.
+-------------------
+ State | Encoding
+-------------------
+ s0    | 00
+ s1    | 01
+ s2    | 10
+ s3    | 11
+-------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <PC0/FSM_5> on signal <state[1:2]> with user encoding.
+-------------------
+ State | Encoding
+-------------------
+ s0    | 00
+ s1    | 01
+ s2    | 10
+ s3    | 11
+-------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <FetcherAndRegister0/FSM_2> on signal <state[1:2]> with user encoding.
+-------------------
+ State | Encoding
+-------------------
+ s0    | 00
+ s1    | 01
+ s2    | 10
+ s3    | 11
+-------------------
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <ALUWrapper0/FSM_3> on signal <state[1:2]> with user encoding.
+-------------------
+ State | Encoding
+-------------------
+ s0    | 00
+ s1    | 01
+ s2    | 10
+ s3    | 11
+-------------------
+INFO:Xst:2261 - The FF/Latch <gt_0> in Unit <VGA_Controller> is equivalent to the following 2 FFs/Latches, which will be removed : <gt_1> <gt_2> 
+INFO:Xst:2261 - The FF/Latch <outbuffer_ALU_numB_16> in Unit <FetcherAndRegister> is equivalent to the following 15 FFs/Latches, which will be removed : <outbuffer_ALU_numB_17> <outbuffer_ALU_numB_18> <outbuffer_ALU_numB_19> <outbuffer_ALU_numB_20> <outbuffer_ALU_numB_21> <outbuffer_ALU_numB_22> <outbuffer_ALU_numB_23> <outbuffer_ALU_numB_24> <outbuffer_ALU_numB_25> <outbuffer_ALU_numB_26> <outbuffer_ALU_numB_27> <outbuffer_ALU_numB_28> <outbuffer_ALU_numB_29> <outbuffer_ALU_numB_30> <outbuffer_ALU_numB_31> 
+INFO:Xst:2261 - The FF/Latch <s_exception_cause_2> in Unit <FetcherAndRegister> is equivalent to the following FF/Latch, which will be removed : <s_exception_cause_4> 
+WARNING:Xst:2677 - Node <Mem0/LED_15> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_14> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_13> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_12> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_11> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_10> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_9> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_8> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_7> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_6> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_5> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_4> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_3> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_2> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_1> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:2677 - Node <Mem0/LED_0> of sequential type is unconnected in block <TOP>.
+WARNING:Xst:3002 - This design contains one or more registers/latches that are directly
+   incompatible with the Spartan6 architecture. The two primary causes of this is
+   either a register or latch described with both an asynchronous set and
+   asynchronous reset, or a register or latch described with an asynchronous
+   set or reset which however has an initialization value of the opposite 
+   polarity (i.e. asynchronous reset with an initialization value of 1).
+    While this circuit can be built, it creates a sub-optimal implementation
+   in terms of area, power and performance. For a more optimal implementation
+   Xilinx highly recommends one of the following:
+
+          1) Remove either the set or reset from all registers and latches
+             if not needed for required functionality
+          2) Modify the code in order to produce a synchronous set
+             and/or reset (both is preferred)
+          3) Ensure all registers have the same initialization value as the
+             described asynchronous set or reset polarity
+          4) Use the -async_to_sync option to transform the asynchronous
+             set/reset to synchronous operation
+             (timing simulation highly recommended when using this option)
+
+  Please refer to http://www.xilinx.com search string "Spartan6 asynchronous set/reset" for more details.
+
+  List of register instances with asynchronous set and reset:
+    PC0/s_pc_27 in unit <TOP>
+    PC0/s_pc_29 in unit <TOP>
+    PC0/s_pc_28 in unit <TOP>
+    PC0/s_pc_26 in unit <TOP>
+    PC0/s_pc_25 in unit <TOP>
+    PC0/s_pc_22 in unit <TOP>
+    PC0/s_pc_24 in unit <TOP>
+    PC0/s_pc_23 in unit <TOP>
+    PC0/PC_29 in unit <TOP>
+    PC0/PC_28 in unit <TOP>
+    PC0/PC_27 in unit <TOP>
+    PC0/PC_24 in unit <TOP>
+    PC0/PC_26 in unit <TOP>
+    PC0/PC_25 in unit <TOP>
+    PC0/PC_23 in unit <TOP>
+    PC0/PC_22 in unit <TOP>
+
+
+  List of register instances with asynchronous set or reset and opposite initialization value:
+    GPR_29_15 in unit <Registers>
+    GPR_29_14 in unit <Registers>
+    GPR_29_13 in unit <Registers>
+    GPR_29_12 in unit <Registers>
+    GPR_29_11 in unit <Registers>
+    GPR_29_10 in unit <Registers>
+    GPR_29_9 in unit <Registers>
+    GPR_29_8 in unit <Registers>
+    uart_rx_filter_1 in unit <UART>
+    uart_rx_filter_0 in unit <UART>
+    uart_rx_bit in unit <UART>
+
+WARNING:Xst:2040 - Unit TOP: 40 multi-source signals are replaced by logic (pull-up yes): BaseRamAddr<0>_MLTSRCEDGE, BaseRamAddr<10>_MLTSRCEDGE, BaseRamAddr<11>_MLTSRCEDGE, BaseRamAddr<12>_MLTSRCEDGE, BaseRamAddr<13>_MLTSRCEDGE, BaseRamAddr<14>_MLTSRCEDGE, BaseRamAddr<15>_MLTSRCEDGE, BaseRamAddr<16>_MLTSRCEDGE, BaseRamAddr<17>_MLTSRCEDGE, BaseRamAddr<18>_MLTSRCEDGE, BaseRamAddr<19>_MLTSRCEDGE, BaseRamAddr<1>_MLTSRCEDGE, BaseRamAddr<2>_MLTSRCEDGE, BaseRamAddr<3>_MLTSRCEDGE, BaseRamAddr<4>_MLTSRCEDGE, BaseRamAddr<5>_MLTSRCEDGE, BaseRamAddr<6>_MLTSRCEDGE, BaseRamAddr<7>_MLTSRCEDGE, BaseRamAddr<8>_MLTSRCEDGE, BaseRamAddr<9>_MLTSRCEDGE, ExtRamAddr<0>_MLTSRCEDGE, ExtRamAddr<10>_MLTSRCEDGE, ExtRamAddr<11>_MLTSRCEDGE, ExtRamAddr<12>_MLTSRCEDGE, ExtRamAddr<13>_MLTSRCEDGE, ExtRamAddr<14>_MLTSRCEDGE, ExtRamAddr<15>_MLTSRCEDGE, ExtRamAddr<16>_MLTSRCEDGE, ExtRamAddr<17>_MLTSRCEDGE, ExtRamAddr<18>_MLTSRCEDGE, ExtRamAddr<19>_MLTSRCEDGE, ExtRamAddr<1>_MLTSRCEDGE, ExtRamAddr<2>_MLTSRCEDGE, ExtRamAddr<3>_MLTSRCEDGE, ExtRamAddr<4>_MLTSRCEDGE, ExtRamAddr<5>_MLTSRCEDGE, ExtRamAddr<6>_MLTSRCEDGE, ExtRamAddr<7>_MLTSRCEDGE, ExtRamAddr<8>_MLTSRCEDGE, ExtRamAddr<9>_MLTSRCEDGE.
+
+Optimizing unit <TOP> ...
+
+Optimizing unit <UART> ...
+
+Optimizing unit <VGA_Controller> ...
+
+Optimizing unit <DigitalNumber> ...
+
+Optimizing unit <TLB> ...
