@@ -2,18 +2,10 @@ Release 14.6 ngdbuild P.68d (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
 Command Line: /home/blahgeek/Xilinx/14.6/ISE_DS/ISE/bin/lin64/unwrapped/ngdbuild
--intstyle ise -dd _ngo -nt timestamp -uc pin.ucf -p xc6slx100-fgg676-3 TOP.ngc
-TOP.ngd
+-intstyle ise -dd _ngo -nt timestamp -uc pin.ucf -p xc6slx100-fgg676-3
+TOP_cs.ngc TOP.ngd
 
-Reading NGO file "/home/blahgeek/MadeAComputerIn20Days/TOP.ngc" ...
-Loading design module
-"/home/blahgeek/MadeAComputerIn20Days/VGAConsoleMemory.ngc"...
-Loading design module "/home/blahgeek/MadeAComputerIn20Days/CoreRom.ngc"...
-Loading design module "/home/blahgeek/MadeAComputerIn20Days/CoreFontRom.ngc"...
-Loading design module
-"/home/blahgeek/MadeAComputerIn20Days/SignedMultiplier.ngc"...
-Loading design module
-"/home/blahgeek/MadeAComputerIn20Days/UnsignedMultiplier.ngc"...
+Reading NGO file "/home/blahgeek/MadeAComputerIn20Days/CPU/TOP_cs.ngc" ...
 Gathering constraint information from source properties...
 Done.
 
@@ -35,10 +27,10 @@ NGDBUILD Design Results Summary:
   Number of errors:     0
   Number of warnings:   0
 
-Total memory usage is 458700 kilobytes
+Total memory usage is 479624 kilobytes
 
 Writing NGD file "TOP.ngd" ...
-Total REAL time to NGDBUILD completion:  28 sec
-Total CPU time to NGDBUILD completion:   28 sec
+Total REAL time to NGDBUILD completion:  13 sec
+Total CPU time to NGDBUILD completion:   13 sec
 
 Writing NGDBUILD log file "TOP.bld"...
