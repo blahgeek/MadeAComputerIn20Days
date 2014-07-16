@@ -495,7 +495,8 @@ tlb0: TLB port map (
     TLB_set_do, TLB_set_index, TLB_set_entry);
 
 FetcherAndRegister0: FetcherAndRegister port map (
-    open,
+    LED(7 downto 0),
+    -- open,
     PC, A_RAM_SELECT, real_clock, real_reset, 
     timer_int, Interrupt_mask, Interrupt_globalmask,
     Interrupt_int, Interrupt_numbers,
@@ -580,6 +581,6 @@ bios: CoreRom port map (
 
 -- debug
 
-    LED <= BIOS_data(31 downto 16);
+    -- LED <= BIOS_data(31 downto 16);
 
 end arch;
