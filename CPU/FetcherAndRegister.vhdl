@@ -238,13 +238,12 @@ begin
 
     elsif rising_edge(clock) then
 
-      debug(3) <= TLB_data_exception;
+      debug(7) <= TLB_data_exception;
+      debug(6) <= TLB_instruction_bad;
 
       case( state ) is
       
         when s0 => -- state: read instruction
-
-          debug(7 downto 4) <= PC(5 downto 2);
 
           if Interrupt_int = '1' then
 
@@ -252,14 +251,16 @@ begin
             s_exception_cause <= (others => '0'); -- int
             s_interrupt_numbers <= Interrupt_numbers;
 
+            debug(2 downto 0) <= "001";
+
           elsif TLB_data_exception = '1' then 
 
             s_exception <= '1';
             if TLB_data_exception_read_or_write = '0' then --read
-              debug(1 downto 0) <= "10";
+              debug(2 downto 0) <= "010";
               s_exception_cause <= EXCCODE_TLBL;  -- TLBL
             else
-              debug(1 downto 0) <= "11";
+              debug(2 downto 0) <= "011";
               s_exception_cause <= EXCCODE_TLBS; -- TLBS
             end if;
             REGS_C0(C0_BADVADDR) <= TLB_data_addr;
@@ -267,7 +268,7 @@ begin
           elsif TLB_instruction_bad = '1' then
 
             s_exception <= '1';
-            debug(1 downto 0) <= "01";
+            debug(2 downto 0) <= "100";
             s_exception_cause <= EXCCODE_TLBL_TMP;  -- TLBL
             REGS_C0(C0_BADVADDR) <= PC;
 
