@@ -50,7 +50,7 @@ begin
         clock <= '1';
         wait for clk_period/2;
         clock <= '0';
-        virt_addr(0) <= '1';
+        virt_addr(19) <= '1';
         wait for clk_period/2;
         clock <= '1';
         wait for clk_period/2;

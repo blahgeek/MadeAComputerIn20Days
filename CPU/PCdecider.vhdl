@@ -46,9 +46,11 @@ begin
       if reset_on_bios = '0' then
         s_pc <= BEGIN_PC;
         PC <= BEGIN_PC;
+        TLB_virt <= BEGIN_PC(31 downto 12);
       else
         s_pc <= BIOS_BEGIN_PC;
         PC <= BIOS_BEGIN_PC;
+        TLB_virt <= BIOS_BEGIN_PC(31 downto 12);
       end if;
       BASERAM_addr <= (others => '0');
       EXTRAM_addr <= (others => '0');
