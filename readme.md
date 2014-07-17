@@ -111,3 +111,20 @@ see commit ed50a9d
 ### 2013/7/14
 
 - 学会使用ChipScope了！即将开始调试！
+
+### 2013/7/15
+
+- UCORE: 使用ramdisk代替flash，实现ramdisk驱动
+- 成功使用了ChipScope，但是插入ChipScope代码后BUG无法稳定重现！？
+
+### 2013/7/16
+
+- 怀疑是TLB的实现有问题（之前为了更高速度使用了与其他模块不同的下降沿时钟触发），使用组合逻辑重新实现。见branch sync-tlb
+- 依然怀疑TLB的实现有问题，写了一个永远不会返回错误的DummyTLB，见branch dummy-tlb
+
+不过折腾了一天，问题依旧，看来与TLB无关……
+
+### 2013/7/17
+
+- **UCORE: 在QEMU上运行用户程序通过！**
+- BUG……………………周五前再调不出来就上多周期吧……
