@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.ncd
+OUTFILE=/home/blahgeek/MadeAComputerIn20Days/CPU/TOP.bit
+FAMILY=Spartan6
+PART=xc6slx100-3fgg676
+WORKINGDIR=/home/blahgeek/MadeAComputerIn20Days/CPU
+LICENSE=ISE
+USER_INFO=__0_0_0
