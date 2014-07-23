@@ -150,4 +150,4 @@ see commit ed50a9d
 
 CPU降频至1M现象无变化，可以肯定与频率无关。
 
-UCore写文件系统还无法工作。
+- [x] UCore写文件系统还无法工作。 **在QEMU上测试已经可以向磁盘中写文件。无法创建文件（Ucore中未实现，wontfix）
